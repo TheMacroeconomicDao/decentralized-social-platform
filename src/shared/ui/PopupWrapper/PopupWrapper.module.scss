@@ -1,0 +1,26 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 45vw;
+    max-height: fit-content;
+    max-width: 400px;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 999;
+  }
+  
+  .popup {
+    width: 100%;
+    max-height: 90vh;
+    background: rgba(51, 51, 51, 0.35) padding-box, linear-gradient(138deg, rgb(130, 133, 140), rgb(16, 28, 35), rgb(16, 28, 35), rgb(111, 114, 114), rgb(111, 134, 113), rgb(93, 148, 105), rgb(37, 50, 72)) border-box;
+
+    border-radius: 1rem;
+    padding: 1rem;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  }

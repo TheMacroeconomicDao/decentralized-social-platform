@@ -78,12 +78,18 @@ const data = [
   },
   {
     id: 18,
+    avatarSrc: '/images/teams/Zeyad-Elshenhab.jpg',
+    fullName: 'Zeyad Elshenhab',
+    skills: 'Flutter Developer',
+  },
+  {
+    id: 19,
     avatarSrc: '/images/teams/ChimdaluNnenne.jpg',
     fullName: 'Chimdalu Nnenne (Fantasy)',
     skills: 'Content Marketer/Writer',
   },
   {
-    id: 19,
+    id: 20,
     avatarSrc: '/images/teams/IrinaChekalina.jpg',
     fullName: 'Irina Chekalina',
     skills: 'Frontend Developer',

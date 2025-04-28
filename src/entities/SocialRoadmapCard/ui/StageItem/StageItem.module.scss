@@ -1,0 +1,28 @@
+.StageItem {
+    display: flex;
+    column-gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    color: var(--c-grey);
+    .title {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 22px;
+        &.done {
+            color: var(--c-orange);
+        }
+        &.progress {
+            color: var(--c-blue);
+        }
+    }
+    .status {
+        font-size: 12px;
+        font-weight: 400;
+        &.done {
+            color: var(--c-orange);
+        }
+        &.progress {
+            color: var(--c-blue);
+        }
+    }
+}

@@ -1,0 +1,50 @@
+.Footer {
+  background: rgba(0, 37, 58, 0.5);
+  border-top: 2px solid #113d5a;
+  width: 100%;
+  padding: 20px 0;
+  margin-top: 100px;
+
+  .wrapper {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 'logo social copyright';
+    gap: 1rem;
+
+    .logo {
+      grid-area: logo;
+    }
+
+    .social {
+      grid-area: social;
+    }
+
+    .Copyright {
+      grid-area: copyright;
+      color: var(--c-white);
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .Footer {
+    padding: 20px 40px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .Footer {
+    margin-bottom: 70px;
+    .wrapper {
+      grid-template-columns: 30px 1fr;
+      grid-template-areas: 
+      'logo social '
+       '. copyright';
+    }
+  }
+}

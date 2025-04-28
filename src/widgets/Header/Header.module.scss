@@ -1,0 +1,50 @@
+.Header {
+  width: 1280px;
+  max-width: 100%;
+  padding: 30px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  .btnGroup {
+    display: flex;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .Header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #072b40;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    .btnGroup {
+      gap: 1rem;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .Header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 20px 20px;
+    background: linear-gradient(
+      318deg,
+      rgba(9, 21, 26, 0.8) 0%,
+      rgba(7, 46, 63, 0.8) 100%
+    );
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    .btnGroup{
+      button{
+        max-width: 135px;
+        width: 100%;
+      }
+    }
+  }
+}

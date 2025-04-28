@@ -1,0 +1,119 @@
+.bgWrapper {
+  margin-top: 50px;
+  border-radius: 26px;
+  background: linear-gradient(
+                  318deg,
+                  rgba(9, 21, 26, 0.3) 0%,
+                  rgba(7, 46, 63, 0.3) 100%
+  );
+  box-shadow: 1px 1px 2px 0 rgba(255, 255, 255, 0.25) inset,
+  -2px -2px 4px 0 rgba(61, 86, 95, 0.25) inset,
+  900px -200px 500px -20px rgba(123, 68, 0, 0.20),
+  -1000px 400px 700px 0px rgba(33, 209, 220, 0.15);
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 1200px;
+  padding: 50px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  h2 {
+    font-weight: 600;
+    white-space: pre-line;
+  }
+  h3 {
+    max-width: 600px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 2;
+    text-align: center;
+    margin-bottom: 20px;
+    white-space: pre-line;
+  }
+  .timeCard {
+    display: flex;
+    width: 628px;
+    padding: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    border-radius: 6px;
+    border: 2px solid  #105390;
+    background: linear-gradient(277deg, rgba(9, 21, 26, 0.50) -0.5%, rgba(7, 46, 63, 0.50) 102.88%);
+
+    /* effect 1 */
+    box-shadow: 1px 1px 2px 0 rgba(255, 255, 255, 0.25) inset, -2px -2px 4px 0px rgba(61, 86, 95, 0.25) inset;
+    backdrop-filter: blur(10px);
+  }
+  .buttonWrapper {
+    padding: 30px 36px;
+    border-radius: 20px;
+    background: #072b40;
+    box-shadow: 0 0 50px 0 #072b40;
+  }
+  .infoWrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 40px;
+    h4, p {
+      font-size: 20px;
+      font-weight: 400;
+      text-align: left;
+    }
+    span {
+        color: #D49D32;
+    }
+    .separator {
+      height: 60px;
+      width: 2px;
+      background: #FCFCFC;
+    }
+    .infoLeft {
+      display: flex;
+      flex-direction: column;
+      row-gap: 30px;
+    }
+    .infoRight {
+      display: flex;
+      flex-direction: column;
+      row-gap: 30px;
+    }
+  }
+}
+
+
+@media screen and (max-width: 1200px) {
+  .Substrate {
+    padding: 40px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .bgWrapper {
+      padding: 50px 20px;
+      h3 {
+        font-size: 14px;
+      }
+
+    .timeCard {
+        width: 100%;
+        padding: 20px;
+    }
+    .buttonWrapper {
+      width: 100%;
+      padding: 30px 36px;
+      display: flex;
+      justify-content: center;
+    }
+    .infoWrapper {
+      flex-direction: column;
+      .separator {
+        height: 2px;
+        width: 30px;
+      }
+    }
+  }
+}

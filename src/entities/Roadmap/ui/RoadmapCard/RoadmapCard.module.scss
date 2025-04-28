@@ -1,0 +1,100 @@
+.RoadmapCard {
+    position: relative;
+    width: 100%;
+    max-width: 1056px;
+    min-height: 224px;
+    padding: 10px 36px;
+    border-radius: 26px;
+    background: linear-gradient(146deg, rgba(7, 38, 54, 0.30) 0%, rgba(6, 46, 82, 0.30) 100%);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border-top: 2px solid rgb(43, 73, 102);
+    display: flex;
+    align-items: center;
+    column-gap: 30px;
+    color: var(--c-blue);
+
+    .period {
+        font-size: 64px;
+        font-weight: 700;    
+    }
+    
+    .svgItem {
+        position: absolute;
+        opacity: 0.7;
+        left: -113px;
+
+        &.Start {
+            top: -80px;
+        }
+        &.Next {
+            top: 113px; 
+        }
+        &.NextYear {
+            top: -260px;
+        }
+    }
+    .title {
+        position: absolute;
+        left: 46%;
+        top: -100px;
+        font-size: 36px;
+        font-weight: 700;
+    }
+    .stages {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 10px;
+    }
+}
+.yellow {
+    color: var(--c-orange);
+}
+
+@media screen and (max-width: 1280px) {
+    .RoadmapCard {
+        height: auto;
+        .svgItem {
+            position: absolute;
+            left: 50%;
+        }
+        .title {
+            position: absolute;
+            left: 46%;
+            top: -70px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+        .svgItem {
+            left: 50%;
+            &.Next {
+                top: 110%;              
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .RoadmapCard {
+        flex-direction: column;
+        .period {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 2;
+        }
+        .title {
+            position: absolute;
+            left: 42%;
+            top: -70px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+        .svgItem {
+            left: 50%;
+            &.Next {
+                top: 106%;              
+            }
+        }
+    }
+}

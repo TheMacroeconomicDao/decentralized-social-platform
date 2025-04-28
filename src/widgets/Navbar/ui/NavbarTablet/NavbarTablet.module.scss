@@ -1,0 +1,41 @@
+.NavbarTablet {
+  position: relative;
+}
+.Dropdown {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  padding: 24px 44px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.5rem;
+  border-radius: 26px;
+  background: linear-gradient(
+    318deg,
+    rgba(28, 77, 98, 0.8) 0%,
+    rgba(28, 116, 153, 0.8) 100%
+  );
+  box-shadow: 1px 1px 2px 0px rgba(255, 255, 255, 0.25) inset,
+    -2px -2px 4px 0px rgba(61, 86, 95, 0.25) inset;
+  backdrop-filter: blur(10px);
+  .item {
+    font-size: var(--fs-2);
+    font-weight: 500;
+    min-width: 250px;
+    text-align: right;
+    &.active {
+      color: var(--c-orange);
+    }
+  }
+}
+
+.NavbarTablet {
+  display: none;
+}
+@media screen and (max-width: 900px) and (min-width: 480px) {
+  .NavbarTablet {
+    display: flex;
+  }
+}

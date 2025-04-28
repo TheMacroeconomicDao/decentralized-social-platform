@@ -1,0 +1,23 @@
+.Section {
+  width: 100%;
+  margin-top: 50px;
+  padding: 30px 0;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  flex-direction: column;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  opacity: .8;
+  mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    #02121c 20%,
+    #02121c 80%,
+    transparent 100%
+  );
+}

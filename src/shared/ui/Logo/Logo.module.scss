@@ -1,0 +1,20 @@
+.Logo {
+  display: flex;
+  align-items: center;
+  span {
+    margin-left: 10px;
+    margin-top: 2px;
+    color: var(--c-grey);
+    font-size: 30px;
+    font-weight: 500;
+
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .Logo {
+    span {
+      display: none;
+    }
+  }
+}

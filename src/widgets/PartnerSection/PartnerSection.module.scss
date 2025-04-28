@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 0 100px;
+
+  .textContent {
+    color: #e1e1e1;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2;
+    text-align: justify;
+  }
+
+  .buttonWrapper {
+    padding: 40px 46px;
+    border-radius: 20px;
+    font-size: 20px;
+    background: #072b40;
+    box-shadow: 0 0 50px 0 #072b40;
+  }
+}
+@media screen and (max-width: 1280px) {
+  .wrapper {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .wrapper {
+    .buttonWrapper {
+      padding: 40px 40px;
+      font-size: 18px;
+    }
+  }
+}

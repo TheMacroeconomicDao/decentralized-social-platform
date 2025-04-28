@@ -1,0 +1,59 @@
+.Card {
+    position: relative;
+    max-width: 1056px;
+    height: 316px;
+    padding: 32px 36px;
+    border-radius: 26px;
+    background: linear-gradient(146deg, rgba(7, 38, 54, 0.30) 0%, rgba(6, 46, 82, 0.30) 100%);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border-top: 2px solid rgb(43, 73, 102);
+
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    color: var(--c-blue);
+
+    .StageWrapper {
+        width: 120px;
+        font-size: 32px;
+        font-weight: 700;
+        h3 {
+            font-size: 64px;
+            sup {
+                font-size: 32px;
+            }
+        }
+    }
+    .Line {
+        position: absolute;
+        left: -113px;
+        top: 160px;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .Card {
+        height: auto;  
+        .Line {
+            position: absolute;
+            left: 50%;
+            top: 100%;        
+        }      
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .Card {
+        .StageWrapper {
+            width: 70px;
+            font-size: 26px;
+            font-weight: 700;
+            h3 {
+                font-size: 48px;
+                sup {
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+}

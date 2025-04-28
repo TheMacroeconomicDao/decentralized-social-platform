@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "description": "",
+    "stages": [
+      {
+        "id": 1,
+        "title": "Unit Docs",
+        "status": "done"
+      },
+      {
+        "id": 2,
+        "title": "Unit Dashboard",
+        "status": "progress"
+      },
+      {
+        "id": 3,
+        "title": "Secure Messenger",
+        "status": "progress"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "description": "",
+    "stages": [
+      {
+        "id": 1,
+        "title": "File hosting (video, photo, documents)",
+        "status": "todo"
+      },
+      {
+        "id": 2,
+        "title": "Secure Calls",
+        "status": "todo"
+      },
+      {
+        "id": 3,
+        "title": "Video Calls",
+        "status": "todo"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "description": "",
+    "stages": [
+      {
+        "id": 1,
+        "title": "Project Managment",
+        "status": "todo"
+      },
+      {
+        "id": 2,
+        "title": "Creating projects",
+        "status": "todo"
+      },
+      {
+        "id": 3,
+        "title": "Project work",
+        "status": "todo"
+      }
+    ]
+  }
+]

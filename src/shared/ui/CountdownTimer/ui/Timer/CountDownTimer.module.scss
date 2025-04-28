@@ -1,0 +1,25 @@
+.timerContainer {
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  
+}
+.numblock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60px;
+  time {
+    width: 100%;
+    text-align: center;
+  }
+  span {
+    font-size: 14px;
+    color: #4d7da9;
+  }
+}
+.stopped {
+  color: #4d7da9;
+}

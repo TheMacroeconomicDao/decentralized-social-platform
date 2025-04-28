@@ -1,0 +1,104 @@
+html {
+    font-size: 16px;
+    background: #001019;
+}
+:root {
+    --c-white: #e1e1e1;
+    --c-orange: #d49d32;
+    --c-blue: #42b8f3;
+    --c-grey: #b8b8b8;
+
+    --fs-s: 0.75rem;
+    --fs-xs: 0.875rem;
+    --fs-1: 1rem;
+    --fs-2: 1.25rem;
+    --fs-3: 1.5rem;
+    --fs-4: 2rem;
+    --fs-5: 2.5rem;
+    --fs-6: 3rem;
+
+    --bp-s: 576px;
+    --bp-m: 768px;
+    --bp-l: 960px;
+    --bp-xl: 1280px;
+}
+
+body {
+    background: #072b40;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--c-white);
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        width: 4px;
+        background: #072b40;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #a46b17;
+        -webkit-border-radius: 2ex;
+    }
+
+    background-image: url("../../../public/images/gyber_background.svg");
+}
+main {
+    width: 900px;
+    margin: 0 auto;
+}
+h1 {
+    font-size: var(--fs-5);
+    line-height: 1.5;
+}
+h2 {
+    font-size: var(--fs-4);
+    line-height: 1.5;
+}
+
+@media screen and (max-width: 576px) {
+    body {
+        background: 
+        linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(9, 17, 26, 0.4) 30%,
+            rgba(9, 17, 26, 0.4) 70%,
+            transparent 100%
+        ),
+        radial-gradient(circle at 70% 0%, rgba(51, 73, 151, 0.2) 10px, transparent 400px),
+        radial-gradient(circle at 10% 10%, rgba(51, 73, 151, 0.3) 10px, transparent 400px),
+        radial-gradient(circle at 80% 13%, rgba(226, 255, 179, 0.2) 10px, transparent 600px),
+        radial-gradient(circle at 10% 30%, rgba(81, 133, 141, 0.3) 15px, transparent 400px),
+        radial-gradient(circle at 70% 50%, rgba(81, 133, 141, 0.3) 15px, transparent 400px),
+        radial-gradient(circle at 10% 80%, rgba(69, 82, 64, 0.6) 4px, transparent 500px),
+        radial-gradient(circle at 90% 100%, rgba(81, 133, 141, 0.3) 10px, transparent 600px),
+        // url("../../../public/images/bg-shapes-cropped.svg");
+    
+    }    
+    h1 {
+        font-size: var(--fs-4);
+        line-height: 1.5;
+    }
+    h2 {
+        font-size: var(--fs-3);
+        line-height: 1.5;
+    }
+}
+
+.show-counter {
+    display: flex;
+    align-items: center;
+    color: #fcfcfc;
+
+    .countdown {
+        line-height: 1.25rem;
+        padding: 0 0.75rem 0 0.75rem;
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+    }
+}
+

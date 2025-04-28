@@ -1,0 +1,110 @@
+.selectOption {
+    position: relative;
+}
+.optionList {
+    background: #041923;
+    position: absolute;
+    border: 2px solid #05598E;
+    border-top: none;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    list-style: none;
+    padding: 0 0 1rem 0;
+    left: 0;
+    right: 0;
+    top: 50px;
+    z-index: 1;
+}
+.listItem {
+    padding: 10px 0 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    .value {
+        width: 100%;
+    }
+    .currency {
+        width: 100px;
+        flex-shrink: 0;
+        padding-left: 10px;
+        border-left: 1px solid rgba(255,255,255,0.2);
+    }
+    &:hover {
+        background: #05598E;
+    }
+}
+
+.wrapper {
+    width: 100%;
+    height: 50px;
+    background: #041923;
+    border: 2px solid #05598E;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.active {
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.input {
+    height: 100%;
+    width: 100%;
+    padding: 0 1rem;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: var(--fs-1);
+
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    &[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+.select {
+    width: 100px;
+    height: 100%;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 10px;
+    border-left: 1px solid rgba(255,255,255,0.2);
+    user-select: none;
+    transition: .3s;
+    &:hover {
+        background: #05598E;
+    }
+}
+
+.caret {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #fff;
+    transition: .3s;
+}
+.caretRotate {
+    transform: rotate(180deg);
+}

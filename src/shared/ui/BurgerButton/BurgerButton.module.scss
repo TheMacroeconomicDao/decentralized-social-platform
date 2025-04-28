@@ -1,0 +1,10 @@
+.BurgerBtn {
+    padding: 14px 20px;
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .BurgerBtn {
+        display: flex;
+    }
+}

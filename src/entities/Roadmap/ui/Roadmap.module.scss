@@ -1,0 +1,13 @@
+.Roadmap {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 154px;
+}
+
+@media screen and (max-width: 1280px) {
+  .Roadmap {
+    gap: 100px;
+  }
+}

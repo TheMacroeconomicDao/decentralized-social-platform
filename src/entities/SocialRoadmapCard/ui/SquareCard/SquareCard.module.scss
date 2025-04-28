@@ -1,0 +1,37 @@
+.SquareCard {
+    width: 336px;
+    height: 245px;
+    flex-shrink: 0;
+    border-radius: 40px;
+    background: linear-gradient(146deg, #072636 0%, #083d6c 100%);
+    background: linear-gradient(
+        53deg,
+        rgb(20, 39, 49),
+        rgb(18, 31, 38),
+        rgb(18, 31, 38),
+        rgb(40, 41, 37)
+      )
+      padding-box,
+    linear-gradient(
+        138deg,
+        rgb(130, 133, 140),
+        rgb(16, 28, 35),
+        rgb(57, 100, 125),
+        rgb(59, 63, 71),
+        rgb(34, 36, 38),
+        rgb(93, 109, 148),
+        rgb(37, 50, 72)
+      )
+      border-box;
+      border: 3px solid transparent;
+      box-shadow: 32px 32px 32px 0 rgba(0, 0, 0, 0.3);
+    // box-shadow: 0 1px 1px #184f69 inset;
+    padding: 30px;
+}
+
+@media screen and (max-width: 480px) {
+  .SquareCard {
+  height: auto;
+  }
+
+}

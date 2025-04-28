@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.documents {
+  display: flex;
+  padding: 0 10px;
+  gap: 10px;
+}
+.pdf {
+    padding: 0 10px 0;
+    font-size: 16px;
+    opacity: .8;
+    transition: ease-in;
+    &:hover {
+      opacity: 1;
+      color: var(--c-orange);
+    }
+}

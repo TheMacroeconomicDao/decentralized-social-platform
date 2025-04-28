@@ -1,0 +1,18 @@
+.EventsSection {
+  max-width: 1200px;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  align-items: center;
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .Wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+  }
+}

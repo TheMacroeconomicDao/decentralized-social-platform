@@ -1,0 +1,11 @@
+.TechnicalRoadmap {
+    display: flex;
+    flex-direction: column;
+    gap: 160px;
+}
+
+@media screen and (max-width: 1280px) {
+    .TechnicalRoadmap {
+        gap: 80px;
+    }
+}

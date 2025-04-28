@@ -1,0 +1,66 @@
+.Button {
+  background: none;
+  border: none;
+  user-select: none;
+  border-radius: 8px;
+  padding: 14px 60px;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--c-white);
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  &:hover {
+    filter: brightness(90%);
+  }
+}
+.default {
+  border-radius: 26px;
+}
+.orange {
+  background: linear-gradient(161deg, #4a4b08 0%, #a46b17 100%);
+  box-shadow: 2px 12px 8px 4px #041c30, 2px -5px 7px 2px #10436d,
+    1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+}
+.blue {
+  background: linear-gradient(161deg, #105390 0%, #4d7da9 100%);
+  box-shadow: 2px 12px 8px 4px #041c30, 2px -5px 7px 2px #10436d,
+    1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+}
+
+.fire {
+  background: linear-gradient(97deg, #907C10 0.89%, #A53434 90.47%);
+  box-shadow: 2px 12px 8px 4px #041C30, 2px -5px 7px 2px #10436D, 1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+}
+
+.green_blue {
+  background: linear-gradient(161deg, #109034 0%, #4d7da9 91.23%);
+  box-shadow: 2px 12px 8px 4px #041c30, 2px -5px 7px 2px #10436d,
+    1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+}
+.clear {
+  padding: 0;
+  border-radius: 0;
+}
+
+.disabled {
+  background: linear-gradient(161deg, #4e4e4e 0%, #10436d 100%);
+  &:hover {
+    filter: none;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .Button {
+    padding: 14px 30px;
+    width: 100%;
+  }
+  .clear {
+    padding: 0;
+    border-radius: 0;
+  }
+}

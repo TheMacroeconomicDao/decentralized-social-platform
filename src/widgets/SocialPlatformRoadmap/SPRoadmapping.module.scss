@@ -1,0 +1,45 @@
+.Wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 2rem;
+  z-index: 1;
+}
+
+.Roadmap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 0;
+}
+
+@media screen and (max-width: 1400px) {
+  .Roadmap {
+    gap: 120px;
+    overflow-x: scroll;
+    touch-action: pan-x;
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-orange) #072b40;
+    &::-webkit-scrollbar {
+      height: 2px;
+      background: #072b40;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--c-orange);
+      outline: 2px solid var(--c-orange);
+      -webkit-border-radius: 1ex;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .Roadmap {
+    flex-direction: column;
+    overflow-x: unset;
+    align-items: center;
+    touch-action: unset;
+  }
+}

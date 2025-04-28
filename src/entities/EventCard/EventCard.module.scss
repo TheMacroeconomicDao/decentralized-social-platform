@@ -1,0 +1,73 @@
+.EventCard {
+  --card-width: 550px;
+  display: flex;
+  width: var(--card-width);
+  padding: 40px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 26px;
+  background: linear-gradient(
+    318deg,
+    rgba(9, 21, 26, 0.3) 0%,
+    rgba(7, 46, 63, 0.3) 100%
+  );
+  box-shadow: 1px 1px 2px 0px rgba(255, 255, 255, 0.25) inset,
+    -2px -2px 4px 0px rgba(61, 86, 95, 0.25) inset;
+  backdrop-filter: blur(10px);
+
+  span {
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  h3 {
+    margin-top: 10px;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--c-orange);
+  }
+  p {
+    margin-top: 30px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+  }
+  .Image {
+    position: relative;
+    width: 100%;
+    height: calc(var(--card-width) * 0.8);
+  }
+  .buttonWrapper {
+    margin-top: 30px;
+    padding: 40px 46px;
+    border-radius: 20px;
+    background: #072b40;
+    box-shadow: 0 0 50px 0 #072b40;
+  }
+}
+
+@media screen and (max-width: 1180px) {
+  .EventCard {
+    --card-width: 500px;
+    
+  }
+}
+@media screen and (max-width: 1080px) {
+  .EventCard {
+    --card-width: 450px;
+    padding: 30px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .EventCard {
+    --card-width: 370px;
+    padding: 20px;
+  }
+}

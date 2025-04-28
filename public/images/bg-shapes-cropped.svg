@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="1039.2079207920792 0 925.1485148514852 2750.692" style="max-height: 500px" width="925.1485148514852" height="2750.692">
+<g clip-path="url(#clip0_14_2652)">
+<g filter="url(#filter0_f_14_2652)">
+<path stroke-width="7" stroke-opacity="0.8" stroke="url(#paint0_angular_14_2652)" d="M1443.17 2429.45L1621.68 2603.27L1900.71 2603.27L2149 2361.96L2149 2147.43L1870.61 1896L1567.94 1896L1308 2103.39L1308 2587.2L1532.98 2794L1994.59 2794L2149 2652.07"/>
+</g>
+<g filter="url(#filter1_f_14_2652)">
+<path stroke-width="7" stroke-opacity="0.8" stroke="url(#paint1_angular_14_2652)" d="M1111.75 898.807L1364.96 1145.41L1760.79 1145.41L2113 803.062L2113 498.703L1718.09 142L1288.74 142L920 436.227L920 1122.62L1239.14 1416L1893.96 1416L2113 1214.64"/>
+</g>
+<g filter="url(#filter2_f_14_2652)">
+<path stroke-width="7" stroke-opacity="0.8" stroke="url(#paint2_angular_14_2652)" d="M316.944 2394L572.067 2149.7V1767.81L217.893 1428H-96.9774L-466 1809.01L-466 2223.24L-161.611 2579H548.484L852 2271.09V1639.33L643.688 1428"/>
+</g>
+</g>
+<defs>
+<filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="915" width="858" y="1887.5" x="1299.5" id="filter0_f_14_2652">
+<feFlood result="BackgroundImageFix" flood-opacity="0"/>
+<feBlend result="shape" in2="BackgroundImageFix" in="SourceGraphic" mode="normal"/>
+<feGaussianBlur result="effect1_foregroundBlur_14_2652" stdDeviation="2.5"/>
+</filter>
+<filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1291" width="1210" y="133.5" x="911.5" id="filter1_f_14_2652">
+<feFlood result="BackgroundImageFix" flood-opacity="0"/>
+<feBlend result="shape" in2="BackgroundImageFix" in="SourceGraphic" mode="normal"/>
+<feGaussianBlur result="effect1_foregroundBlur_14_2652" stdDeviation="2.5"/>
+</filter>
+<filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="1168" width="1335" y="1419.5" x="-474.5" id="filter2_f_14_2652">
+<feFlood result="BackgroundImageFix" flood-opacity="0"/>
+<feBlend result="shape" in2="BackgroundImageFix" in="SourceGraphic" mode="normal"/>
+<feGaussianBlur result="effect1_foregroundBlur_14_2652" stdDeviation="2.5"/>
+</filter>
+<radialGradient gradientTransform="translate(1728.5 2345) rotate(-180) scale(420.5 449)" gradientUnits="userSpaceOnUse" r="1" cy="0" cx="0" id="paint0_angular_14_2652">
+<stop stop-opacity="0" stop-color="#E5BA01" offset="0.0349213"/>
+<stop stop-opacity="0" stop-color="#E5BA01" offset="0.0950739"/>
+<stop stop-opacity="0.38" stop-color="#E5BA01" offset="0.172523"/>
+<stop stop-color="#132A3C" offset="0.257734"/>
+<stop stop-opacity="0.28" stop-color="#1B688F" offset="0.406837"/>
+<stop stop-color="#414D51" offset="0.584037"/>
+<stop stop-opacity="0.31149" stop-color="#E5BA01" offset="0.68851"/>
+<stop stop-color="#47361E" offset="0.749082"/>
+<stop stop-opacity="0.089352" stop-color="#E5BA01" offset="0.816005"/>
+</radialGradient>
+<radialGradient gradientTransform="translate(1516.5 779) rotate(180) scale(596.5 637)" gradientUnits="userSpaceOnUse" r="1" cy="0" cx="0" id="paint1_angular_14_2652">
+<stop stop-opacity="0" stop-color="#E5BA01" offset="0.0349213"/>
+<stop stop-opacity="0" stop-color="#E5BA01" offset="0.0950739"/>
+<stop stop-opacity="0.38" stop-color="#E5BA01" offset="0.172523"/>
+<stop stop-color="#132A3C" offset="0.257734"/>
+<stop stop-opacity="0.28" stop-color="#1B688F" offset="0.406837"/>
+<stop stop-color="#414D51" offset="0.584037"/>
+<stop stop-opacity="0.31149" stop-color="#E5BA01" offset="0.68851"/>
+<stop stop-color="#47361E" offset="0.749082"/>
+<stop stop-opacity="0.089352" stop-color="#E5BA01" offset="0.816005"/>
+</radialGradient>
+<radialGradient gradientTransform="translate(193 2003.5) rotate(90) scale(575.5 659)" gradientUnits="userSpaceOnUse" r="1" cy="0" cx="0" id="paint2_angular_14_2652">
+<stop stop-opacity="0.38" stop-color="#E5BA01" offset="0.0735246"/>
+<stop stop-color="#132A3C" offset="0.176667"/>
+<stop stop-opacity="0.28" stop-color="#1B688F" offset="0.406837"/>
+<stop stop-opacity="0.06" stop-color="#47361E" offset="0.752595"/>
+<stop stop-opacity="0.089352" stop-color="#E5BA01" offset="0.836233"/>
+<stop stop-opacity="0" stop-color="#E5BA01" offset="0.966663"/>
+</radialGradient>
+<clipPath id="clip0_14_2652">
+<rect fill="white" height="3169" width="1920"/>
+</clipPath>
+</defs>
+</svg>

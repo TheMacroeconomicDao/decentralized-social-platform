@@ -100,3 +100,5 @@ Gybernaty - это прогрессивное сообщество исслед�
 
 - **Сайт**: [gyber.org](https://gyber.org)
 - **GitHub**: [TheMacroeconomicDao](https://github.com/TheMacroeconomicDao)
+- **GitHub**: [GyberExperiment](https://github.com/GyberExperiment)
+

@@ -3,6 +3,7 @@ import { Slider } from '@/widgets/Slider/Slider'
 import { Substrate } from '@/shared/ui/Substrate/Substrate'
 import { PartnerSection } from '@/widgets/PartnerSection/PartnerSection'
 import { TechnicalRoadmapSection } from '@/widgets/TechnicalRoadmapSection/TechnicalRoadmapSection'
+import { AnimatedBackground } from '@/features/AnimatedBackground'
 // import { Products } from '@/widgets/Products/Products';
 
 import type { Metadata } from 'next'
@@ -20,9 +21,11 @@ const AIC = () => {
         mobilePath={'/images/slides/aic-mobile-slide-2.jpg'}
         title={'Large-scale AI research'}
       />
-      <Substrate {...data} />
-      {/* <Products /> */}
-      <TechnicalRoadmapSection />
+      <AnimatedBackground icons={["react", "python", "nodejs", "nextjs"]}>
+        <Substrate {...data} />
+        {/* <Products /> */}
+        <TechnicalRoadmapSection />
+      </AnimatedBackground>
       <PartnerSection>
         Our projects realize a potential opportunity for partners and investors.
         We invite you to take advantage of our initiative and participate in the

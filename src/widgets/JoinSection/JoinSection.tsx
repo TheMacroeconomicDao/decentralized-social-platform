@@ -20,7 +20,7 @@ export const JoinSection = ({ className = "" }: JoinUsBlockProps) => {
                 <Line />
                 <div className={cls.buttonWrapper}>
                     <ExternalLink
-                        href="https://t.me/+ahBl6aq1PGtmMTFi"
+                        href="https://t.me/HeadsHub"
                         theme={ThemeExternalLink.BLUE}
                         target="_blank"
                     >

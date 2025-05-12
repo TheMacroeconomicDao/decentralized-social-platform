@@ -70,6 +70,6 @@ const data = {
 
     Join our community and together we can make a huge contribution to the development of AI for society. By joining our platform, you will have access to the most advanced technologies, libraries, and frameworks for AI development. `,
   buttonText: `Join`,
-  buttonLink: `https://t.me/+ahBl6aq1PGtmMTFi`,
+  buttonLink: `https://t.me/HeadsHub`,
 }
 export default AIC

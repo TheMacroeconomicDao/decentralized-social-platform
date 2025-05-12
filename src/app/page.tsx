@@ -23,7 +23,7 @@ export default function Home() {
         mobilePath={'/images/slides/main-mobile-slide.jpg'}
         title={'Community of Progressive Enthusiasts '}
       />
-      <AnimatedBackground>
+      <AnimatedBackground density={1.5}>
         <Substrate {...data} />
         <Team />
       </AnimatedBackground>

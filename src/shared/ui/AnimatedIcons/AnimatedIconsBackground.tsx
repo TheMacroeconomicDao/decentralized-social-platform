@@ -16,10 +16,24 @@ export const AnimatedIconsBackground = ({
     density = 1,
     className = "",
 }: AnimatedIconsBackgroundProps) => {
+    const [mounted, setMounted] = useState(false);
     const [iconsToRender, setIconsToRender] = useState<React.ReactNode[]>([]);
-    const isMobile = useMediaQuery({ maxWidth: 768 });
+    
+    // Используем isClient для безопасной проверки вместо isMobile
+    const [isClient, setIsClient] = useState(false);
+    
+    // Определяем isMobile только после монтирования
+    const isMobile = isClient ? useMediaQuery({ maxWidth: 768 }) : false;
+    
+    // Устанавливаем флаг isClient при монтировании компонента
+    useEffect(() => {
+        setIsClient(true);
+        setMounted(true);
+    }, []);
     
     useEffect(() => {
+        if (!mounted) return;
+        
         // Calculate the number of icons based on viewport size and density
         const calculateIconCount = () => {
             if (typeof window === "undefined") return 5; // Default for SSR
@@ -52,7 +66,10 @@ export const AnimatedIconsBackground = ({
         }
         
         setIconsToRender(nodes);
-    }, [icons, density, isMobile]);
+    }, [icons, density, isMobile, mounted]);
+    
+    // Не рендерим ничего на сервере или во время первого рендера
+    if (!mounted) return <div className={`${cls.container} ${className}`}></div>;
     
     return (
         <div className={`${cls.container} ${className}`}>

@@ -45,6 +45,14 @@ export const AnimatedIcon = ({
         
         return () => clearInterval(interval);
     }, [duration]);
+
+    const getImageSize = () => {
+        if (size === "small") return 20;
+        if (size === "medium") return 30;
+        return 40; // large
+    };
+    
+    const imageSize = getImageSize();
     
     return (
         <motion.div
@@ -84,9 +92,10 @@ export const AnimatedIcon = ({
         >
             <Image 
                 src={`/images/icons/${icon}.svg`} 
-                alt={icon} 
-                width={size === "small" ? 20 : size === "medium" ? 30 : 40} 
-                height={size === "small" ? 20 : size === "medium" ? 30 : 40}
+                alt={icon}
+                width={imageSize}
+                height={imageSize}
+                priority
             />
         </motion.div>
     );

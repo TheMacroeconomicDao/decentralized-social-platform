@@ -8,6 +8,12 @@ interface AnimatedBackgroundProps extends Omit<AnimatedIconsBackgroundProps, 'cl
     className?: string;
 }
 
+const containerStyle = {
+    position: "relative" as const,
+    overflow: "hidden" as const,
+    minHeight: "200px" as const,
+};
+
 export const AnimatedBackground = ({
     children,
     icons,
@@ -15,10 +21,11 @@ export const AnimatedBackground = ({
     className = "",
 }: AnimatedBackgroundProps) => {
     return (
-        <div style={{ position: "relative" }} className={className}>
+        <div style={containerStyle} className={className}>
             <AnimatedIconsBackground
                 icons={icons}
                 density={density}
+                className={className}
             />
             {children}
         </div>

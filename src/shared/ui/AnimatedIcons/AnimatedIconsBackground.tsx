@@ -7,9 +7,9 @@ import cls from "./AnimatedIcons.module.scss";
 // Выносим дефолтный массив в константу вне компонента
 const DEFAULT_ICONS = [
     "bitcoin", "ethereum", "cardano", "solana", "polygon", 
-    "chainlink", "polkadot", "litecoin",
-    "react", "nodejs", "nextjs", "python",
-    "flutter", "rust", "golang"
+    "polkadot", "litecoin", "bnb", "near", "ethereum-classic", 
+    "toncoin", "tron", "internet",
+    "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang"
 ];
 
 export interface AnimatedIconsBackgroundProps {

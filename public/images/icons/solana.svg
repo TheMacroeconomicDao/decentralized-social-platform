@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-  <defs>
-    <linearGradient id="solanaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#9945FF"/>
-      <stop offset="100%" style="stop-color:#14F195"/>
-    </linearGradient>
-  </defs>
-  <path fill="url(#solanaGradient)" d="M4.5 17.5h15c.828 0 1.5-.672 1.5-1.5s-.672-1.5-1.5-1.5H7.5l-3-3zm0-11h12l3 3H4.5c-.828 0-1.5-.672-1.5-1.5S3.672 6.5 4.5 6.5zm15 3.5h-12l-3 3h15c.828 0 1.5-.672 1.5-1.5S20.328 10 19.5 10z"/>
-</svg> 

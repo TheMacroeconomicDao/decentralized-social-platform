@@ -1,19 +1,10 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { useState } from "react";
-import cls from "./AnimatedIcons.module.scss";
-import Image from "next/image";
-
-type IconSize = "small" | "medium" | "large";
-
 export interface AnimatedIconProps {
     icon: string;
     size?: IconSize;
     duration?: number;
     delay?: number;
     startX?: number; // позиция X в процентах
-    startY?: number; // позиция Y (не используется для анимации вверх)
+    endX?: number;   // конечная позиция X
     onComplete?: () => void;
 }
 
@@ -23,12 +14,9 @@ export const AnimatedIcon = ({
     duration = 20,
     delay = 0,
     startX = 50, // по умолчанию в центре
-    startY = 0,  // не используется, но оставляю для совместимости
+    endX = 60,   // по умолчанию небольшой дрейф
     onComplete,
 }: AnimatedIconProps) => {
-
-    // Рассчитываем конечную позицию на основе стартовой
-    const endX = Math.max(5, Math.min(95, startX + (Math.random() - 0.5) * 20));
 
     const getImageSize = () => {
         if (size === "small") return 18;

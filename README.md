@@ -1,176 +1,176 @@
-# Gybernaty DSP - Децентрализованная Социальная Платформа
+# Gybernaty DSP - Decentralized Social Platform
 
-Децентрализованная социальная платформа сообщества Gybernaty - проект для объединения исследователей и энтузиастов, интересующихся технологиями Web3, блокчейн, распределенными вычислениями и искусственным интеллектом.
+Decentralized Social Platform of the Gybernaty community - a project to unite researchers and enthusiasts interested in Web3 technologies, blockchain, distributed computing, and artificial intelligence.
 
 ![Gybernaty Community](public/images/slides/main-slide.jpg)
 
-## 🚀 Особенности проекта
+## 🚀 Project Features
 
-- **Полная мобильная адаптация**: Адаптивный дизайн для всех устройств с единой системой брейкпоинтов
-- **Анимированные иконки**: Динамические летающие криптовалютные и технологические иконки
-- **Современная архитектура**: Feature-Sliced Design (FSD) для масштабируемости
-- **Производительность**: Оптимизированные анимации с учетом мобильных устройств
-- **Docker Ready**: Полная поддержка контейнеризации
-- **TypeScript**: Строгая типизация для надежности кода
-- **Децентрализация**: Построен на принципах децентрализованных систем
-- **Open Source**: Открытый исходный код для совместного развития
+- **Full Mobile Adaptation**: Responsive design for all devices with unified breakpoint system
+- **Animated Icons**: Dynamic flying cryptocurrency and technology icons
+- **Modern Architecture**: Feature-Sliced Design (FSD) for scalability
+- **Performance**: Optimized animations considering mobile devices
+- **Docker Ready**: Full containerization support
+- **TypeScript**: Strict typing for code reliability
+- **Decentralization**: Built on decentralized system principles
+- **Open Source**: Open source code for collaborative development
 
-## 🛠 Технический стек
+## 🛠 Technology Stack
 
 - **Frontend**: Next.js 15.3.2, React 18.2.0, TypeScript 5.1.6
-- **Анимации**: Framer Motion 10.16.1
-- **Стилизация**: SCSS/Sass с адаптивными брейкпоинтами
-- **Архитектура**: Feature-Sliced Design (FSD)
-- **Контейнеризация**: Docker с multi-stage build
-- **Responsive**: Адаптивный дизайн с react-responsive
+- **Animations**: Framer Motion 10.16.1
+- **Styling**: SCSS/Sass with responsive breakpoints
+- **Architecture**: Feature-Sliced Design (FSD)
+- **Containerization**: Docker with multi-stage build
+- **Responsive**: Responsive design with react-responsive
 - **CI/CD**: GitHub Actions
-- **Деплой**: Docker-ready production build
+- **Deploy**: Docker-ready production build
 
-## 📱 Мобильная адаптация
+## 📱 Mobile Adaptation
 
-Проект полностью адаптирован для мобильных устройств:
+The project is fully adapted for mobile devices:
 
-- **Единая система брейкпоинтов**:
-  - `xs`: 480px и выше (мобильные)
-  - `sm`: 576px и выше 
-  - `md`: 768px и выше (планшеты)
-  - `lg`: 960px и выше
-  - `xl`: 1280px и выше (десктоп)
+- **Unified Breakpoint System**:
+  - `xs`: 480px and above (mobile)
+  - `sm`: 576px and above 
+  - `md`: 768px and above (tablets)
+  - `lg`: 960px and above
+  - `xl`: 1280px and above (desktop)
 
-- **Оптимизированные анимации**:
-  - 3 иконки максимум на мобильных устройствах
-  - 5 иконок максимум на десктопе
-  - Адаптивные размеры и интервалы
+- **Optimized Animations**:
+  - Maximum 3 icons on mobile devices
+  - Maximum 5 icons on desktop
+  - Adaptive sizes and intervals
 
-- **Исправлен hydration mismatch** в useMediaQuery хуке
-- **Адаптивные контейнеры** с правильными отступами
+- **Fixed hydration mismatch** in useMediaQuery hook
+- **Responsive containers** with proper padding
 
-## 🎨 Анимированные иконки
+## 🎨 Animated Icons
 
-21 высококачественная SVG иконка:
+21 high-quality SVG icons:
 
-**Криптовалюты (13)**: Bitcoin, Ethereum, Cardano, Solana, Polygon, Polkadot, Litecoin, BNB, NEAR, Ethereum Classic, Toncoin, Tron, Internet Computer
+**Cryptocurrencies (13)**: Bitcoin, Ethereum, Cardano, Solana, Polygon, Polkadot, Litecoin, BNB, NEAR, Ethereum Classic, Toncoin, Tron, Internet Computer
 
-**Технологии (8)**: React, Node.js, Next.js, Python, Flutter, Rust, Go, **Kubernetes (новая)**
+**Technologies (8)**: React, Node.js, Next.js, Python, Flutter, Rust, Go, **Kubernetes (new)**
 
-- Плавные анимации с Framer Motion
-- Адаптивное управление производительностью
-- Автоматическая генерация каждые 3 секунды
-- Полная поддержка мобильных устройств
+- Smooth animations with Framer Motion
+- Adaptive performance management
+- Automatic generation every 3 seconds
+- Full mobile device support
 
-## 📦 Быстрый старт
+## 📦 Quick Start
 
-### Локальная разработка
+### Local Development
 
 ```bash
-# Клонирование репозитория
+# Clone repository
 git clone https://github.com/TheMacroeconomicDao/DSP.git
 cd DSP
 
-# Установка зависимостей
+# Install dependencies
 npm install
-# или
+# or
 yarn install
 
-# Запуск в режиме разработки
+# Run in development mode
 npm run dev
-# или
+# or
 yarn dev
 ```
 
-Откройте [http://localhost:3000](http://localhost:3000) в браузере.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Docker (рекомендуется для продакшена)
+### Docker (recommended for production)
 
 ```bash
-# Сборка и запуск с docker-compose
+# Build and run with docker-compose
 docker-compose up --build
 
-# Или отдельные команды Docker
+# Or separate Docker commands
 docker build -t gybernaty-dsp .
 docker run -p 3000:3000 gybernaty-dsp
 ```
 
-Приложение будет доступно на [http://localhost:3000](http://localhost:3000).
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## 📝 Документация
+## 📝 Documentation
 
-Подробная документация проекта доступна в директории [docs](./docs/):
+Detailed project documentation is available in the [docs](./docs/) directory:
 
-- [Обзор архитектуры](./docs/architecture/README.md)
-- [Компоненты](./docs/components/README.md)
-- [Руководство по разработке](./docs/development/README.md)
-- [API документация](./docs/api/README.md)
-- [Руководство по развертыванию](./docs/deployment/README.md)
-- [Гайд по вкладу](./docs/contribution/README.md)
+- [Architecture Overview](./docs/architecture/README.md)
+- [Components](./docs/components/README.md)
+- [Development Guide](./docs/development/README.md)
+- [API Documentation](./docs/api/README.md)
+- [Deployment Guide](./docs/deployment/README.md)
+- [Contribution Guide](./docs/contribution/README.md)
 
-## 🏗 Архитектура проекта (FSD)
+## 🏗 Project Architecture (FSD)
 
 ```
 src/
-├── app/                 # Страницы приложения (Next.js App Router)
-│   ├── aic/            # AIC страница
-│   ├── events/         # События
-│   ├── experiment/     # Эксперименты
-│   ├── offering/       # Предложения
-│   └── platform/       # Платформа
-├── entities/           # Бизнес-сущности
-│   ├── CardMember/     # Карточка участника
-│   ├── EventCard/      # Карточка события
-│   ├── Roadmap/        # Дорожная карта
+├── app/                 # Application pages (Next.js App Router)
+│   ├── aic/            # AIC page
+│   ├── events/         # Events
+│   ├── experiment/     # Experiments
+│   ├── offering/       # Offerings
+│   └── platform/       # Platform
+├── entities/           # Business entities
+│   ├── CardMember/     # Member card
+│   ├── EventCard/      # Event card
+│   ├── Roadmap/        # Roadmap
 │   └── ...
-├── features/           # Фичи приложения
-│   └── AnimatedBackground/ # Анимированный фон
-├── shared/             # Общие компоненты
-│   ├── constants/      # Константы (брейкпоинты, конфигурация)
-│   ├── hooks/          # Переиспользуемые хуки
-│   ├── ui/             # UI компоненты
+├── features/           # Application features
+│   └── AnimatedBackground/ # Animated background
+├── shared/             # Shared components
+│   ├── constants/      # Constants (breakpoints, configuration)
+│   ├── hooks/          # Reusable hooks
+│   ├── ui/             # UI components
 │   └── ...
-└── widgets/            # Составные виджеты
-    ├── Header/         # Шапка
-    ├── Footer/         # Подвал
-    ├── Navbar/         # Навигация
+└── widgets/            # Composite widgets
+    ├── Header/         # Header
+    ├── Footer/         # Footer
+    ├── Navbar/         # Navigation
     └── ...
 ```
 
-## 🔧 Технические улучшения
+## 🔧 Technical Improvements
 
-### Последние исправления:
-- ✅ **Исправлен hydration mismatch** в useMediaQuery хуке
-- ✅ **Решена проблема с анимациями** - иконки теперь корректно летают
-- ✅ **TypeScript ошибки устранены** - экспорт интерфейсов AnimatedIconsBackgroundProps
-- ✅ **Docker оптимизация** - multi-stage build с Node 18 Alpine
-- ✅ **Webpack кеширование** - отключены проблемные опции для стабильности
-- ✅ **Единая система брейкпоинтов** - консистентный responsive дизайн
-- ✅ **Добавлена иконка Kubernetes** - расширена коллекция до 21 иконки
+### Recent Fixes:
+- ✅ **Fixed hydration mismatch** in useMediaQuery hook
+- ✅ **Solved animation problem** - icons now fly correctly
+- ✅ **TypeScript errors resolved** - export of AnimatedIconsBackgroundProps interfaces
+- ✅ **Docker optimization** - multi-stage build with Node 18 Alpine
+- ✅ **Webpack caching** - disabled problematic options for stability
+- ✅ **Unified breakpoint system** - consistent responsive design
+- ✅ **Added Kubernetes icon** - expanded collection to 21 icons
 
-### Конфигурация производительности:
-- Оптимизированные анимации для мобильных устройств
-- Ленивая загрузка компонентов
-- Сжатие статических ресурсов
-- Кеширование в production билде
+### Performance Configuration:
+- Optimized animations for mobile devices
+- Lazy loading components
+- Static resource compression
+- Caching in production build
 
-## 🌐 О проекте Gybernaty
+## 🌐 About Gybernaty Project
 
-Gybernaty - это прогрессивное сообщество исследователей и разработчиков. Мы занимаемся исследованиями в актуальных областях технологий и разработкой инновационных прототипов и продуктов в сферах web3, блокчейн, распределенных систем и искусственного интеллекта.
+Gybernaty is a progressive community of researchers and developers. We conduct research in relevant areas of technology and develop innovative prototypes and products in the fields of web3, blockchain, distributed systems, and artificial intelligence.
 
-Наша миссия - реализовать масштабную экосистему с открытым исходным кодом, которая является мощной и удобной средой, способствующей открытому образованию, эффективному обмену опытом и организации прогрессивных исследований и разработке инновационных прототипов и продуктов в рамках GyberExperiment.
+Our mission is to realize a large-scale open source ecosystem that is a powerful and user-friendly environment promoting open education, effective experience sharing, and organization of progressive research and development of innovative prototypes and products within GyberExperiment.
 
-## 💪 Вклад в проект
+## 💪 Contributing to the Project
 
-Мы приветствуем вклад сообщества в развитие проекта. Ознакомьтесь с [руководством по вкладу](./docs/contribution/README.md).
+We welcome community contributions to the project development. Please refer to the [contribution guide](./docs/contribution/README.md).
 
-Основные шаги:
-1. Сделайте форк репозитория
-2. Создайте ветку для вашей функции/исправления
-3. Следуйте стандартам кода проекта
-4. Создайте Pull Request
+Main steps:
+1. Fork the repository
+2. Create a branch for your feature/fix
+3. Follow project code standards
+4. Create a Pull Request
 
-## 📄 Лицензия
+## 📄 License
 
-Этот проект распространяется под открытой лицензией. См. файл [LICENSE](LICENSE) для получения дополнительной информации.
+This project is distributed under an open license. See the [LICENSE](LICENSE) file for additional information.
 
-## 📞 Контакты
+## 📞 Contacts
 
 - **Telegram**: [HeadsHub](https://t.me/HeadsHub)
 - **GitHub**: [TheMacroeconomicDao](https://github.com/TheMacroeconomicDao)

@@ -8,7 +8,8 @@ import cls from "./AnimatedIcons.module.scss";
 const DEFAULT_ICONS = [
     "bitcoin", "ethereum", "cardano", "solana", "polygon", 
     "chainlink", "polkadot", "litecoin",
-    "react", "nodejs", "nextjs", "python"
+    "react", "nodejs", "nextjs", "python",
+    "flutter", "rust", "golang"
 ];
 
 export interface AnimatedIconsBackgroundProps {

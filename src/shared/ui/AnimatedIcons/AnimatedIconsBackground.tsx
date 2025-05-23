@@ -5,7 +5,7 @@ import cls from "./AnimatedIcons.module.scss";
 import { ALL_ICONS } from './constants';
 import { useAnimatedIcons } from './useAnimatedIcons';
 
-interface AnimatedIconsBackgroundProps {
+export interface AnimatedIconsBackgroundProps {
     icons?: readonly string[];
     className?: string;
 }

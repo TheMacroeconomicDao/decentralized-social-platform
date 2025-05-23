@@ -18,13 +18,11 @@ const containerStyle = {
 export const AnimatedBackground = ({
     children,
     icons,
-    density = 0.8,
     className = "",
 }: AnimatedBackgroundProps) => {
     
-    // Создаем пропсы для AnimatedIconsBackground, исключая undefined значения
-    const backgroundProps: any = {
-        density,
+    // Создаем пропсы для AnimatedIconsBackground
+    const backgroundProps: AnimatedIconsBackgroundProps = {
         className,
     };
     

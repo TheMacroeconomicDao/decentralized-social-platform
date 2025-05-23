@@ -5,7 +5,7 @@ export const CRYPTO_ICONS = [
 ] as const;
 
 export const TECH_ICONS = [
-    "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang"
+    "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang", "kuber"
 ] as const;
 
 export const ALL_ICONS = [...CRYPTO_ICONS, ...TECH_ICONS] as const;

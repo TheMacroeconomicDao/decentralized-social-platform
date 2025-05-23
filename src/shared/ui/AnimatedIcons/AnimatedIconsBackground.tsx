@@ -14,10 +14,7 @@ export const AnimatedIconsBackground = ({
     icons = ALL_ICONS,
     className = "",
 }: AnimatedIconsBackgroundProps) => {
-    const { activeIcons, removeIcon, isMobile } = useAnimatedIcons(icons);
-
-    console.log(`🔥 AnimatedIconsBackground rendered, activeIcons: ${activeIcons.length}`, 
-                isMobile ? "(mobile)" : "(desktop)");
+    const { activeIcons, removeIcon } = useAnimatedIcons(icons);
 
     return (
         <div className={`${cls.container} ${className}`}>

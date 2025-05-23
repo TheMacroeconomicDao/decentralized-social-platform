@@ -21,14 +21,6 @@ export const useAnimatedIcons = (icons: readonly string[]) => {
     
     const isMobile = useIsMobile();
     const isReducedMotion = useReducedMotion();
-    
-    // DEBUG: Логируем состояния
-    console.log('🔍 useAnimatedIcons Debug:', { 
-        isMobile, 
-        isReducedMotion, 
-        iconsLength: icons.length,
-        activeIconsLength: activeIcons.length 
-    });
 
     const createIcon = useCallback((): IconInstance => {
         const config = isMobile ? ANIMATION_CONFIG_MOBILE : ANIMATION_CONFIG;
@@ -52,78 +44,52 @@ export const useAnimatedIcons = (icons: readonly string[]) => {
             y: Math.random() * 80 + 10,
         };
 
-        console.log("✨ Created icon:", newIcon.icon, isMobile ? "(mobile)" : "(desktop)");
         return newIcon;
     }, [icons, isMobile]);
 
     const removeIcon = useCallback((iconId: string) => {
-        console.log("🗑️ Removing icon:", iconId);
         setActiveIcons(prev => prev.filter(icon => icon.id !== iconId));
     }, []);
 
     useEffect(() => {
-        console.log('🔍 useEffect triggered with:', { isReducedMotion, isMobile });
-        
         // Отключаем анимацию при prefers-reduced-motion
         if (isReducedMotion) {
-            console.log('❌ Animation disabled due to reduced motion preference');
             setActiveIcons([]);
             return;
         }
 
-        console.log("🚀 Starting animation system...", isMobile ? "(mobile mode)" : "(desktop mode)");
-        
         // Очищаем предыдущий интервал
         if (intervalRef.current) {
-            console.log('🔄 Clearing existing interval');
             clearInterval(intervalRef.current);
             intervalRef.current = null;
         }
 
         // Создаем первую иконку
-        try {
-            const firstIcon = createIcon();
-            console.log('👆 Setting first icon:', firstIcon);
-            setActiveIcons([firstIcon]);
-        } catch (error) {
-            console.error('❌ Error creating first icon:', error);
-            return;
-        }
+        const firstIcon = createIcon();
+        setActiveIcons([firstIcon]);
 
         // Настраиваем интервал
         const config = isMobile ? ANIMATION_CONFIG_MOBILE : ANIMATION_CONFIG;
-        console.log('⏲️ Setting interval with config:', config);
 
         intervalRef.current = setInterval(() => {
-            console.log('⏰ Interval tick - creating new icon');
             setActiveIcons(prev => {
                 // На мобильных ограничиваем количество активных иконок
                 if (isMobile && 'maxActiveIcons' in config && prev.length >= config.maxActiveIcons) {
-                    console.log('🚫 Max mobile icons reached:', prev.length);
                     return prev;
                 }
                 
-                try {
-                    const newIcon = createIcon();
-                    console.log('➕ Adding icon to array, total will be:', prev.length + 1);
-                    return [...prev, newIcon];
-                } catch (error) {
-                    console.error('❌ Error creating icon in interval:', error);
-                    return prev;
-                }
+                const newIcon = createIcon();
+                return [...prev, newIcon];
             });
         }, config.intervalMs);
 
-        console.log('✅ Animation system started successfully');
-
         return () => {
-            console.log('🧹 Cleanup: clearing interval');
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
                 intervalRef.current = null;
             }
         };
-    }, [isReducedMotion, isMobile, createIcon]); // Упростил зависимости
+    }, [isReducedMotion, isMobile, createIcon]);
 
     return {
         activeIcons: isReducedMotion ? [] : activeIcons,

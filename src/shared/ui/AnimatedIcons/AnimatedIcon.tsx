@@ -19,8 +19,6 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ iconData, onAnimatio
     const iconPath = getIconPath(iconData.icon);
     const sizeValue = sizes[iconData.size];
 
-    console.log("🎬 AnimatedIcon render:", iconData.icon, iconData.id);
-
     return (
         <motion.div
             style={{
@@ -49,10 +47,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ iconData, onAnimatio
                 duration: iconData.duration,
                 ease: "linear",
             }}
-            onAnimationComplete={() => {
-                console.log("🏁 Animation completed for:", iconData.id);
-                onAnimationEnd(iconData.id);
-            }}
+            onAnimationComplete={() => onAnimationEnd(iconData.id)}
         >
             <Image
                 src={iconPath}

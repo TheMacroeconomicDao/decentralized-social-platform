@@ -22,9 +22,9 @@ const AIC = () => {
         title={'Large-scale AI research'}
       />
       <AnimatedBackground icons={["react", "python", "nodejs", "nextjs"]}>
-        <Substrate {...data} />
-        {/* <Products /> */}
-        <TechnicalRoadmapSection />
+      <Substrate {...data} />
+      {/* <Products /> */}
+      <TechnicalRoadmapSection />
       </AnimatedBackground>
       <PartnerSection>
         Our projects realize a potential opportunity for partners and investors.

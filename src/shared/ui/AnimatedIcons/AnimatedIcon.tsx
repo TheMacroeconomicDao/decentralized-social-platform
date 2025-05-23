@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import cls from "./AnimatedIcons.module.scss";
 import Image from "next/image";
 
@@ -12,6 +12,7 @@ export interface AnimatedIconProps {
     size?: IconSize;
     duration?: number;
     delay?: number;
+    onComplete?: () => void;
 }
 
 export const AnimatedIcon = ({
@@ -19,37 +20,27 @@ export const AnimatedIcon = ({
     size = "medium",
     duration = 20,
     delay = 0,
+    onComplete,
 }: AnimatedIconProps) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [target, setTarget] = useState({ x: 0, y: 0 });
     
-    // Generate random initial positions
-    useEffect(() => {
-        const getRandomPosition = () => {
-            return {
-                x: Math.random() * 100, // percentage
-                y: Math.random() * 100, // percentage
-            };
+    // Generate random animation config once - no changing
+    const animationConfig = useMemo(() => {
+        const startX = Math.random() * 95 + 2.5; // 2.5-97.5%
+        const endX = startX + (Math.random() - 0.5) * 15; // smaller drift
+        
+        return {
+            startX,
+            endX: Math.max(2.5, Math.min(97.5, endX)),
+            startY: 105, // start below screen
+            endY: -15, // end above screen
+            actualDuration: 15 + Math.random() * 20, // 15-35 seconds
         };
-        
-        const initialPosition = getRandomPosition();
-        setPosition(initialPosition);
-        
-        const newTarget = getRandomPosition();
-        setTarget(newTarget);
-        
-        // Set new targets periodically
-        const interval = setInterval(() => {
-            setTarget(getRandomPosition());
-        }, duration * 1000);
-        
-        return () => clearInterval(interval);
-    }, [duration]);
+    }, []);
 
     const getImageSize = () => {
-        if (size === "small") return 20;
-        if (size === "medium") return 30;
-        return 40; // large
+        if (size === "small") return 18;
+        if (size === "medium") return 28;
+        return 38; // large
     };
     
     const imageSize = getImageSize();
@@ -58,37 +49,45 @@ export const AnimatedIcon = ({
         <motion.div
             className={`${cls.icon} ${cls[size]}`}
             initial={{
-                x: `${position.x}%`,
-                y: `${position.y}%`,
+                x: `${animationConfig.startX}vw`,
+                y: `${animationConfig.startY}vh`,
                 opacity: 0,
+                rotate: 0,
+                scale: 0.6,
             }}
             animate={{
-                x: `${target.x}%`,
-                y: `${target.y}%`,
-                opacity: 0.3,
-                rotate: [0, 360],
+                x: `${animationConfig.endX}vw`,
+                y: `${animationConfig.endY}vh`,
+                opacity: [0, 0.8, 0.8, 0],
+                rotate: Math.random() > 0.5 ? 360 : -360,
+                scale: [0.6, 1, 1, 0.6],
             }}
             transition={{
+                duration: animationConfig.actualDuration,
+                delay: delay,
+                ease: "easeInOut",
+                opacity: {
+                    duration: animationConfig.actualDuration,
+                    times: [0, 0.15, 0.85, 1],
+                },
+                scale: {
+                    duration: animationConfig.actualDuration,
+                    times: [0, 0.15, 0.85, 1],
+                },
                 x: {
-                    duration,
-                    delay,
-                    ease: "linear",
+                    duration: animationConfig.actualDuration,
+                    ease: "easeInOut",
                 },
                 y: {
-                    duration,
-                    delay,
+                    duration: animationConfig.actualDuration,
                     ease: "linear",
                 },
-                opacity: {
-                    duration: 2,
-                    delay,
-                },
                 rotate: {
-                    duration: duration * 2,
-                    repeat: Infinity,
+                    duration: animationConfig.actualDuration * 1.2,
                     ease: "linear",
                 },
             }}
+            onAnimationComplete={onComplete}
         >
             <Image 
                 src={`/images/icons/${icon}.svg`} 

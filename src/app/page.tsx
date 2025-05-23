@@ -24,8 +24,8 @@ export default function Home() {
         title={'Community of Progressive Enthusiasts '}
       />
       <AnimatedBackground density={1.5}>
-        <Substrate {...data} />
-        <Team />
+      <Substrate {...data} />
+      <Team />
       </AnimatedBackground>
       <Banner />
       <JoinSection />

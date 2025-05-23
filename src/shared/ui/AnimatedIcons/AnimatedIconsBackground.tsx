@@ -19,15 +19,12 @@ export const AnimatedIconsBackground = ({
     const [mounted, setMounted] = useState(false);
     const [iconsToRender, setIconsToRender] = useState<React.ReactNode[]>([]);
     
-    // Используем isClient для безопасной проверки вместо isMobile
-    const [isClient, setIsClient] = useState(false);
+    // Всегда вызываем хук, но используем результат только после монтирования
+    const isMobileQuery = useMediaQuery({ maxWidth: 768 });
+    const isMobile = mounted ? isMobileQuery : false;
     
-    // Определяем isMobile только после монтирования
-    const isMobile = isClient ? useMediaQuery({ maxWidth: 768 }) : false;
-    
-    // Устанавливаем флаг isClient при монтировании компонента
+    // Устанавливаем флаг mounted при монтировании компонента
     useEffect(() => {
-        setIsClient(true);
         setMounted(true);
     }, []);
     

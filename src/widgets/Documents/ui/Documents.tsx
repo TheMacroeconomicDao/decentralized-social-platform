@@ -63,7 +63,7 @@ interface DocumentsProps {
                     <motion.span variants={item}>
                         <ExternalLink
                             className={cls.pdf}
-                            href="https://docs.gyber.org"
+                            href="https://github.com/GyberExperiment/live-papers/wiki"
                             target="_blank"
                             theme={ThemeExternalLink.CLEAR}>
                             White Paper

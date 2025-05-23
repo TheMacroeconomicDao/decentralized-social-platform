@@ -27,8 +27,6 @@ export const AnimatedIcon = ({
     onComplete,
 }: AnimatedIconProps) => {
 
-    console.log("🎯 AnimatedIcon rendering:", { icon, size, startX, endX, duration });
-
     const getImageSize = () => {
         if (size === "small") return 18;
         if (size === "medium") return 28;
@@ -44,8 +42,6 @@ export const AnimatedIcon = ({
                 position: "absolute",
                 left: 0,
                 top: 0,
-                border: "2px solid red", // Временно для отладки
-                background: "rgba(255,0,0,0.2)" // Временно для отладки
             }}
             initial={{
                 x: `${startX}vw`,
@@ -66,7 +62,6 @@ export const AnimatedIcon = ({
                 ease: "linear",
             }}
             onAnimationComplete={() => {
-                console.log("🏁 Animation completed for icon:", icon);
                 if (onComplete) onComplete();
             }}
         >
@@ -76,7 +71,6 @@ export const AnimatedIcon = ({
                 width={imageSize}
                 height={imageSize}
                 priority={false}
-                onLoad={() => console.log("🖼️ Image loaded:", icon)}
                 onError={(e) => console.error(`❌ AnimatedIcon ${icon}: image error`, e)}
             />
         </motion.div>

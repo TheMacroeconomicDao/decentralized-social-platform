@@ -1,0 +1,14 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="flutterGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4FC3F7"/>
+      <stop offset="100%" style="stop-color:#29B6F6"/>
+    </linearGradient>
+    <linearGradient id="flutterGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0277BD"/>
+      <stop offset="100%" style="stop-color:#01579B"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#flutterGradient1)" d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.37zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z"/>
+  <path fill="url(#flutterGradient2)" d="m7.857 17.53 6.47 6.47H21.7l-6.46-6.468z"/>
+</svg> 

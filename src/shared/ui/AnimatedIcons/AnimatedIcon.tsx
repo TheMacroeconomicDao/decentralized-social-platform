@@ -1,98 +1,70 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import cls from "./AnimatedIcons.module.scss";
 import Image from "next/image";
+import { ICON_SIZES, ICON_SIZES_MOBILE } from './constants';
+import { getIconPath } from './utils';
+import { useIsMobile } from '@/shared/hooks/mediaQuery/useMediaQuery';
+import { IconInstance } from './useAnimatedIcons';
 
-type IconSize = "small" | "medium" | "large";
-
-export interface AnimatedIconProps {
-    icon: string;
-    size?: IconSize;
-    duration?: number;
-    delay?: number;
-    startX?: number; // позиция X в процентах
-    endX?: number;   // конечная позиция X
-    onComplete?: () => void;
+interface AnimatedIconProps {
+    iconData: IconInstance;
+    onAnimationEnd: (iconId: string) => void;
 }
 
-export const AnimatedIcon = ({
-    icon,
-    size = "medium",
-    duration = 20,
-    delay = 0,
-    startX = 50, // по умолчанию в центре
-    endX = 60,   // по умолчанию небольшой дрейф
-    onComplete,
-}: AnimatedIconProps) => {
+export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ iconData, onAnimationEnd }) => {
+    const isMobile = useIsMobile();
+    const sizes = isMobile ? ICON_SIZES_MOBILE : ICON_SIZES;
+    const iconPath = getIconPath(iconData.icon);
+    const sizeValue = sizes[iconData.size];
 
-    const getImageSize = () => {
-        if (size === "small") return 18;
-        if (size === "medium") return 28;
-        return 38; // large
-    };
+    console.log("🎬 AnimatedIcon render:", iconData.icon, iconData.id);
 
-    // Определяем путь к иконке в зависимости от её типа
-    const getIconPath = (iconName: string) => {
-        const cryptoIcons = [
-            "bitcoin", "ethereum", "cardano", "solana", "polygon", 
-            "polkadot", "litecoin", "bnb", "near", "ethereum-classic", 
-            "toncoin", "tron", "internet"
-        ];
-        
-        const techIcons = [
-            "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang"
-        ];
-        
-        if (cryptoIcons.includes(iconName)) {
-            return `/images/icons/flying/crypto/${iconName}.svg`;
-        } else if (techIcons.includes(iconName)) {
-            return `/images/icons/flying/tech/${iconName}.svg`;
-        }
-        // Fallback для неизвестных иконок
-        return `/images/icons/flying/${iconName}.svg`;
-    };
-    
-    const imageSize = getImageSize();
-    
     return (
         <motion.div
-            className={`${cls.icon} ${cls[size]}`}
             style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
+                position: 'absolute',
+                width: `${sizeValue}px`,
+                height: `${sizeValue}px`,
+                zIndex: 1,
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))',
             }}
             initial={{
-                x: `${startX}vw`,
+                x: `${iconData.startX}vw`,
                 y: "110vh",
                 opacity: 0,
                 scale: 0.8,
+                rotate: 0,
             }}
             animate={{
-                x: `${endX}vw`,
+                x: `${iconData.endX}vw`,
                 y: "-10vh",
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1, 1, 0.8],
                 rotate: 360,
             }}
             transition={{
-                duration: duration,
-                delay: delay,
+                duration: iconData.duration,
                 ease: "linear",
             }}
             onAnimationComplete={() => {
-                if (onComplete) onComplete();
+                console.log("🏁 Animation completed for:", iconData.id);
+                onAnimationEnd(iconData.id);
             }}
         >
-            <Image 
-                src={getIconPath(icon)} 
-                alt={icon}
-                width={imageSize}
-                height={imageSize}
-                priority={false}
-                onError={(e) => console.error(`❌ AnimatedIcon ${icon}: image error`, e)}
+            <Image
+                src={iconPath}
+                alt={iconData.icon}
+                width={sizeValue}
+                height={sizeValue}
+                unoptimized
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                }}
             />
         </motion.div>
     );

@@ -45,10 +45,14 @@ body {
 
     background-image: url("../../../public/images/gyber_background.svg");
 }
+
 main {
-    width: 900px;
+    width: 100%;
+    max-width: 900px;
     margin: 0 auto;
+    padding: 0 1rem;
 }
+
 h1 {
     font-size: var(--fs-5);
     line-height: 1.5;
@@ -56,6 +60,22 @@ h1 {
 h2 {
     font-size: var(--fs-4);
     line-height: 1.5;
+}
+
+/* Мобильная адаптация */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 0 0.75rem;
+    }
+    
+    h1 {
+        font-size: var(--fs-4);
+        line-height: 1.4;
+    }
+    h2 {
+        font-size: var(--fs-3);
+        line-height: 1.4;
+    }
 }
 
 @media screen and (max-width: 576px) {
@@ -74,17 +94,20 @@ h2 {
         radial-gradient(circle at 10% 30%, rgba(81, 133, 141, 0.3) 15px, transparent 400px),
         radial-gradient(circle at 70% 50%, rgba(81, 133, 141, 0.3) 15px, transparent 400px),
         radial-gradient(circle at 10% 80%, rgba(69, 82, 64, 0.6) 4px, transparent 500px),
-        radial-gradient(circle at 90% 100%, rgba(81, 133, 141, 0.3) 10px, transparent 600px),
-        // url("../../../public/images/bg-shapes-cropped.svg");
+        radial-gradient(circle at 90% 100%, rgba(81, 133, 141, 0.3) 10px, transparent 600px);
+    }
     
-    }    
+    main {
+        padding: 0 0.5rem;
+    }
+    
     h1 {
-        font-size: var(--fs-4);
-        line-height: 1.5;
+        font-size: var(--fs-3);
+        line-height: 1.3;
     }
     h2 {
-        font-size: var(--fs-3);
-        line-height: 1.5;
+        font-size: var(--fs-2);
+        line-height: 1.3;
     }
 }
 
@@ -99,6 +122,14 @@ h2 {
         align-items: flex-start;
         display: flex;
         flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .show-counter {
+        .countdown {
+            padding: 0 0.5rem;
+        }
     }
 }
 

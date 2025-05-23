@@ -1,5 +1,6 @@
 "use client"
-import { useState, useLayoutEffect, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { MEDIA_QUERIES, type MediaQueryKey } from '@/shared/constants/breakpoints';
 
 const getMatches = (query: string): boolean => {
     if (typeof window !== 'undefined') {
@@ -8,29 +9,43 @@ const getMatches = (query: string): boolean => {
     return false;
 }
 
-export function useMediaQuery(query: string): boolean | undefined {
-    const [hasMatch, setHasMatch] = useState<boolean>(getMatches(query));
-    const [initialLoad, setInitialLoad] = useState(true);
+// Хук с готовыми медиа-запросами
+export function useMediaQuery(queryKey: MediaQueryKey): boolean;
+// Хук с кастомным запросом
+export function useMediaQuery(customQuery: string): boolean;
+export function useMediaQuery(queryOrKey: MediaQueryKey | string): boolean {
+    const query = useMemo(() => {
+        const result = queryOrKey in MEDIA_QUERIES 
+            ? MEDIA_QUERIES[queryOrKey as MediaQueryKey]
+            : queryOrKey;
+        return result;
+    }, [queryOrKey]);
 
-    useLayoutEffect(() => {
-        if (initialLoad) {
-            setInitialLoad(false);
-        }
-    }, [initialLoad])
-
-    function handleChange() {
-        setHasMatch(getMatches(query));
-    }
+    const [matches, setMatches] = useState(() => {
+        // Инициализируем сразу правильным значением если на клиенте
+        return typeof window !== 'undefined' ? getMatches(query) : false;
+    });
 
     useEffect(() => {
-        const matchMedia = window.matchMedia(query);
-        handleChange();
-        matchMedia.addEventListener('change', handleChange);
-        return () => {
-            matchMedia.removeEventListener('change', handleChange);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [query])
-    
-    return initialLoad ? undefined : hasMatch;
+        // Проверяем только если мы на клиенте
+        if (typeof window === 'undefined') return;
+
+        const mediaQuery = window.matchMedia(query);
+        const handleChange = () => setMatches(mediaQuery.matches);
+        
+        // Устанавливаем текущее значение
+        setMatches(mediaQuery.matches);
+        
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, [query]);
+
+    return matches;
 }
+
+// Хуки для популярных breakpoints
+export const useIsMobile = () => useMediaQuery('mobile');
+export const useIsTablet = () => useMediaQuery('tablet');
+export const useIsDesktop = () => useMediaQuery('desktop');
+export const useIsTouchDevice = () => useMediaQuery('touch');
+export const useReducedMotion = () => useMediaQuery('reducedMotion');

@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { useMediaQuery } from '@/shared/hooks/mediaQuery/useMediaQuery'
+import { useIsMobile } from '@/shared/hooks/mediaQuery/useMediaQuery'
 import cls from './Slider.module.scss'
 
 interface SlideImageProps {
@@ -10,7 +10,8 @@ interface SlideImageProps {
 }
 
 const SlideImage = ({ path, mobilePath, title }: SlideImageProps) => {
-  const isMobile = useMediaQuery('(max-width: 760px)')
+  const isMobile = useIsMobile()
+
   return (
     <>
       {(!isMobile || isMobile === undefined) && (
@@ -25,6 +26,7 @@ const SlideImage = ({ path, mobilePath, title }: SlideImageProps) => {
           className={cls.mask_img}
           quality={70}
           priority
+          sizes={isMobile ? '100vw' : '50vw'}
         />
       )}
 
@@ -39,6 +41,7 @@ const SlideImage = ({ path, mobilePath, title }: SlideImageProps) => {
             objectPosition: 'center 26%',
           }}
           priority
+          sizes={isMobile ? '100vw' : '50vw'}
         />
       )}
     </>

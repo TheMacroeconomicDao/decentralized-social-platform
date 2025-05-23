@@ -9,9 +9,28 @@
     overflow: hidden;
 }
 
+@keyframes iconFloat {
+    0% {
+        transform: translateX(var(--start-x)) translateY(100vh) scale(0.8) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+        transform: translateX(var(--start-x)) translateY(90vh) scale(1) rotate(36deg);
+    }
+    90% {
+        opacity: 1;
+        transform: translateX(var(--end-x)) translateY(-5vh) scale(1) rotate(324deg);
+    }
+    100% {
+        transform: translateX(var(--end-x)) translateY(-10vh) scale(0.8) rotate(360deg);
+        opacity: 0;
+    }
+}
+
 .icon {
     position: absolute;
-    will-change: transform;
+    will-change: transform, opacity;
     filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
     pointer-events: none;
     
@@ -36,23 +55,66 @@
         animation: none !important;
         transform: none !important;
     }
+    
+    @keyframes iconFloat {
+        0% { opacity: 0; }
+        100% { opacity: 0; }
+    }
 }
 
 @media (max-width: 768px) {
     .icon {
         &.small {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
         }
         
         &.medium {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
         }
         
         &.large {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
+        }
+    }
+    
+    @keyframes iconFloat {
+        0% {
+            transform: translateX(var(--start-x)) translateY(100vh) scale(0.9) rotate(0deg);
+            opacity: 0;
+        }
+        15% {
+            opacity: 1;
+            transform: translateX(var(--start-x)) translateY(85vh) scale(1) rotate(30deg);
+        }
+        85% {
+            opacity: 1;
+            transform: translateX(var(--end-x)) translateY(-5vh) scale(1) rotate(300deg);
+        }
+        100% {
+            transform: translateX(var(--end-x)) translateY(-10vh) scale(0.9) rotate(360deg);
+            opacity: 0;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .icon {
+        &.small {
+            width: 12px;
+            height: 12px;
+        }
+        
+        &.medium {
+            width: 18px;
+            height: 18px;
+        }
+        
+        &.large {
+            width: 24px;
+            height: 24px;
         }
     }
 } 

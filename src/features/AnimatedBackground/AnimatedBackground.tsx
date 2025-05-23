@@ -1,7 +1,17 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { AnimatedIconsBackground, AnimatedIconsBackgroundProps } from "@/shared/ui/AnimatedIcons";
+import dynamic from 'next/dynamic';
+import type { AnimatedIconsBackgroundProps } from "@/shared/ui/AnimatedIcons";
+
+// Упрощенный динамический импорт для исправления ENOENT ошибки
+const AnimatedIconsBackground = dynamic(
+    () => import("@/shared/ui/AnimatedIcons/AnimatedIconsBackground").then(mod => ({ default: mod.AnimatedIconsBackground })),
+    { 
+        ssr: false,
+        loading: () => null
+    }
+);
 
 interface AnimatedBackgroundProps extends Omit<AnimatedIconsBackgroundProps, 'className'> {
     children: ReactNode;
@@ -21,7 +31,7 @@ export const AnimatedBackground = ({
     className = "",
 }: AnimatedBackgroundProps) => {
     return (
-        <div style={containerStyle} className={className}>
+        <div style={containerStyle} className={className} suppressHydrationWarning>
             <AnimatedIconsBackground
                 icons={icons}
                 density={density}

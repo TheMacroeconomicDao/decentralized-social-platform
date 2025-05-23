@@ -27,6 +27,8 @@ export const AnimatedIcon = ({
     onComplete,
 }: AnimatedIconProps) => {
 
+    console.log("🎯 AnimatedIcon rendering:", { icon, size, startX, endX, duration });
+
     const getImageSize = () => {
         if (size === "small") return 18;
         if (size === "medium") return 28;
@@ -42,18 +44,18 @@ export const AnimatedIcon = ({
                 position: "absolute",
                 left: 0,
                 top: 0,
-                // Отладочная рамка
-                border: "1px solid rgba(255,0,0,0.3)",
+                border: "2px solid red", // Временно для отладки
+                background: "rgba(255,0,0,0.2)" // Временно для отладки
             }}
             initial={{
-                x: `${startX}vw`, // используем vw вместо %
-                y: "110vh", // используем vh
+                x: `${startX}vw`,
+                y: "110vh",
                 opacity: 0,
                 scale: 0.8,
             }}
             animate={{
-                x: `${endX}vw`, // используем vw вместо %
-                y: "-10vh", // используем vh
+                x: `${endX}vw`,
+                y: "-10vh",
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1, 1, 0.8],
                 rotate: 360,
@@ -63,7 +65,10 @@ export const AnimatedIcon = ({
                 delay: delay,
                 ease: "linear",
             }}
-            onAnimationComplete={onComplete}
+            onAnimationComplete={() => {
+                console.log("🏁 Animation completed for icon:", icon);
+                if (onComplete) onComplete();
+            }}
         >
             <Image 
                 src={`/images/icons/${icon}.svg`} 
@@ -71,7 +76,8 @@ export const AnimatedIcon = ({
                 width={imageSize}
                 height={imageSize}
                 priority={false}
-                onError={(e) => console.error(`AnimatedIcon ${icon}: image error`, e)}
+                onLoad={() => console.log("🖼️ Image loaded:", icon)}
+                onError={(e) => console.error(`❌ AnimatedIcon ${icon}: image error`, e)}
             />
         </motion.div>
     );

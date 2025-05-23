@@ -1,3 +1,11 @@
+"use client";
+
+import { motion } from "framer-motion";
+import Image from "next/image";
+import cls from "../AnimatedIcons/AnimatedIcons.module.scss";
+
+type IconSize = "small" | "medium" | "large";
+
 export interface AnimatedIconProps {
     icon: string;
     size?: IconSize;

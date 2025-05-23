@@ -1,17 +1,8 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import dynamic from 'next/dynamic';
+import { AnimatedIconsBackground } from "@/shared/ui/AnimatedIcons";
 import type { AnimatedIconsBackgroundProps } from "@/shared/ui/AnimatedIcons";
-
-// Упрощенный динамический импорт для исправления ENOENT ошибки
-const AnimatedIconsBackground = dynamic(
-    () => import("@/shared/ui/AnimatedIcons/AnimatedIconsBackground").then(mod => ({ default: mod.AnimatedIconsBackground })),
-    { 
-        ssr: false,
-        loading: () => null
-    }
-);
 
 interface AnimatedBackgroundProps extends Omit<AnimatedIconsBackgroundProps, 'className'> {
     children: ReactNode;
@@ -22,6 +13,8 @@ const containerStyle = {
     position: "relative" as const,
     overflow: "hidden" as const,
     minHeight: "200px" as const,
+    border: "3px solid blue", // Временно для отладки
+    background: "rgba(0,0,255,0.1)" // Временно для отладки
 };
 
 export const AnimatedBackground = ({
@@ -30,13 +23,24 @@ export const AnimatedBackground = ({
     density = 0.8,
     className = "",
 }: AnimatedBackgroundProps) => {
+    console.log("🔵 AnimatedBackground rendering with props:", { icons, density, className });
+    
+    // Создаем пропсы для AnimatedIconsBackground, исключая undefined значения
+    const backgroundProps: any = {
+        density,
+        className,
+    };
+    
+    // Передаем icons только если он не undefined
+    if (icons !== undefined) {
+        backgroundProps.icons = icons;
+    }
+    
+    console.log("🔵 Passing props to AnimatedIconsBackground:", backgroundProps);
+    
     return (
         <div style={containerStyle} className={className} suppressHydrationWarning>
-            <AnimatedIconsBackground
-                icons={icons}
-                density={density}
-                className={className}
-            />
+            <AnimatedIconsBackground {...backgroundProps} />
             {children}
         </div>
     );

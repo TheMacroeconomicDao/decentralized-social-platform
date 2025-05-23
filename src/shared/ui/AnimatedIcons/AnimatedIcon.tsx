@@ -32,6 +32,27 @@ export const AnimatedIcon = ({
         if (size === "medium") return 28;
         return 38; // large
     };
+
+    // Определяем путь к иконке в зависимости от её типа
+    const getIconPath = (iconName: string) => {
+        const cryptoIcons = [
+            "bitcoin", "ethereum", "cardano", "solana", "polygon", 
+            "polkadot", "litecoin", "bnb", "near", "ethereum-classic", 
+            "toncoin", "tron", "internet"
+        ];
+        
+        const techIcons = [
+            "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang"
+        ];
+        
+        if (cryptoIcons.includes(iconName)) {
+            return `/images/icons/flying/crypto/${iconName}.svg`;
+        } else if (techIcons.includes(iconName)) {
+            return `/images/icons/flying/tech/${iconName}.svg`;
+        }
+        // Fallback для неизвестных иконок
+        return `/images/icons/flying/${iconName}.svg`;
+    };
     
     const imageSize = getImageSize();
     
@@ -66,7 +87,7 @@ export const AnimatedIcon = ({
             }}
         >
             <Image 
-                src={`/images/icons/${icon}.svg`} 
+                src={getIconPath(icon)} 
                 alt={icon}
                 width={imageSize}
                 height={imageSize}

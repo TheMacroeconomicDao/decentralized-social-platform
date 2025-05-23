@@ -16,7 +16,8 @@ interface IconInstance {
     size: "small" | "medium" | "large";
     duration: number;
     delay: number;
-    x: number; // позиция X
+    startX: number; // стартовая позиция X
+    endX: number;   // конечная позиция X
     y: number; // позиция Y
 }
 
@@ -47,14 +48,18 @@ export const AnimatedIconsBackground = ({
             const randomSize = ["small", "medium", "large"][Math.floor(Math.random() * 3)] as "small" | "medium" | "large";
             const randomDuration = 15 + Math.random() * 15;
             
+            const startX = Math.random() * 80 + 10; // 10-90%
+            const endX = Math.max(5, Math.min(95, startX + (Math.random() - 0.5) * 30)); // больший дрейф
+            
             const newIcon = {
                 id: `icon-${counterRef.current++}`,
                 icon: randomIcon,
                 size: randomSize,
                 duration: randomDuration,
                 delay: 0,
-                x: Math.random() * 80 + 10, // 10-90%
-                y: Math.random() * 80 + 10, // 10-90%
+                startX: startX,
+                endX: endX,
+                y: Math.random() * 80 + 10, // не используется но оставляю
             };
             
             return newIcon;
@@ -91,7 +96,8 @@ export const AnimatedIconsBackground = ({
                     size={iconInstance.size}
                     duration={iconInstance.duration}
                     delay={iconInstance.delay}
-                    startX={iconInstance.x}
+                    startX={iconInstance.startX}
+                    endX={iconInstance.endX}
                     onComplete={() => removeIcon(iconInstance.id)}
                 />
             ))}

@@ -13,7 +13,7 @@ export interface AnimatedIconProps {
     duration?: number;
     delay?: number;
     startX?: number; // позиция X в процентах
-    startY?: number; // позиция Y (не используется для анимации вверх)
+    endX?: number;   // конечная позиция X
     onComplete?: () => void;
 }
 
@@ -23,12 +23,9 @@ export const AnimatedIcon = ({
     duration = 20,
     delay = 0,
     startX = 50, // по умолчанию в центре
-    startY = 0,  // не используется, но оставляю для совместимости
+    endX = 60,   // по умолчанию небольшой дрейф
     onComplete,
 }: AnimatedIconProps) => {
-
-    // Рассчитываем конечную позицию на основе стартовой
-    const endX = Math.max(5, Math.min(95, startX + (Math.random() - 0.5) * 20));
 
     const getImageSize = () => {
         if (size === "small") return 18;
@@ -41,15 +38,22 @@ export const AnimatedIcon = ({
     return (
         <motion.div
             className={`${cls.icon} ${cls[size]}`}
+            style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                // Отладочная рамка
+                border: "1px solid rgba(255,0,0,0.3)",
+            }}
             initial={{
-                x: `${startX}%`,
-                y: "110%", // всегда начинаем снизу
+                x: `${startX}vw`, // используем vw вместо %
+                y: "110vh", // используем vh
                 opacity: 0,
                 scale: 0.8,
             }}
             animate={{
-                x: `${endX}%`,
-                y: "-10%", // всегда летим вверх
+                x: `${endX}vw`, // используем vw вместо %
+                y: "-10vh", // используем vh
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1, 1, 0.8],
                 rotate: 360,

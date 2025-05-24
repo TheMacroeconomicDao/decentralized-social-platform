@@ -11,7 +11,7 @@ interface AnimatedBackgroundProps extends Omit<AnimatedIconsBackgroundProps, 'cl
 
 const containerStyle = {
     position: "relative" as const,
-    overflow: "hidden" as const,
+    overflow: "visible" as const,
     minHeight: "200px" as const,
 };
 

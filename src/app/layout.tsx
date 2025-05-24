@@ -5,6 +5,7 @@ import { Montserrat, Grape_Nuts } from 'next/font/google'
 import { Header } from '@/widgets/Header/Header'
 import { Navbar, NavbarMobile } from '@/widgets/Navbar'
 import { Footer } from '@/widgets/Footer/Footer'
+import { GlobalAnimatedBackground } from '@/shared/ui/AnimatedIcons/GlobalAnimatedBackground'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -44,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={montserrat.className}>
+        <GlobalAnimatedBackground />
         <Header />
         <Navbar />
         {children}

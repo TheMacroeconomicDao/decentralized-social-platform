@@ -18,7 +18,9 @@ Decentralized Social Platform (DSP) for progressive technology enthusiasts and d
 - Docker support
 
 ## Key Components
-- **AnimatedIconsBackground**: floating crypto/tech icons
+- **AnimatedIconsBackground**: floating crypto/tech icons - **ТЕПЕРЬ ГЛОБАЛЬНЫЕ**
+  - ✅ ДОБАВЛЕНЫ В LAYOUT.TX: летающие иконки теперь присутствуют на всех страницах сайта
+  - ✅ УБРАН AnimatedBackground с отдельных страниц (main, aic) - иконки теперь глобальные
   - ✅ РЕШЕНА hydration mismatch проблема с Math.random()
   - ✅ РЕШЕНА проблема с постоянным перезапуском useEffect
   - ✅ ОБНОВЛЕНЫ ВСЕ ИКОНКИ НА ВЫСОКОКАЧЕСТВЕННЫЕ SVG
@@ -45,6 +47,8 @@ Decentralized Social Platform (DSP) for progressive technology enthusiasts and d
     - Социальные иконки: `public/images/icons/` (telegram, twitter, discord, github)
   - Icons float from bottom to top with horizontal drift
   - Duration: 15-30 seconds per icon
+  - **ГЛОБАЛЬНОЕ РАЗМЕЩЕНИЕ**: AnimatedIconsBackground добавлен в layout.tsx для всех страниц
+  - Position: fixed, полная ширина экрана, z-index: 1, pointer-events: none
 - CountdownTimer: with progress timer and timer components
 - Join buttons: link to Telegram communities
 - Roadmap components: social and technical roadmaps
@@ -131,6 +135,16 @@ Decentralized Social Platform (DSP) for progressive technology enthusiasts and d
   - Корень: ExternalLink по умолчанию использовал theme=CLEAR, но не был явно указан
   - Решение: Добавлен theme={ThemeExternalLink.CLEAR} к ExternalLink в Substrate.tsx
   - Результат: Кнопка Join отображается с корректным зелёно-синим градиентом без лишних фонов
+- **ИСПРАВЛЕНА: Обрезание синих линий роадмапа на странице /aic**
+  - Проблема: AnimatedBackground имел overflow: "hidden", что обрезало синие линии TechnicalRoadmap
+  - Корень: RoadLine (SVG шириной 1284px) выходил за границы контейнера и обрезался
+  - Решение: Изменён overflow с "hidden" на "visible" в AnimatedBackground
+  - Результат: Синие анимированные линии роадмапа отображаются полностью без обрезания
+- **СДЕЛАНЫ ГЛОБАЛЬНЫМИ: Летающие иконки для всех страниц сайта**
+  - Проблема: AnimatedBackground использовался только на главной странице и /aic
+  - Решение: AnimatedIconsBackground добавлен в layout.tsx как глобальный фоновый слой
+  - Убран AnimatedBackground с отдельных страниц (main, aic)
+  - Результат: Летающие иконки теперь присутствуют на всех страницах сайта
 
 ## Telegram Links
 - Main Join buttons: `https://t.me/HeadsHub`

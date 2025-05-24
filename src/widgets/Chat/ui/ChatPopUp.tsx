@@ -2,6 +2,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './Chatpopup.module.scss';
 import { Logo } from "@/shared/ui/Logo/Logo";
+import { Button, ThemeButton } from "@/shared/ui/Button/Button";
+import { SendIcon } from "@/shared/ui/SvgIcons";
 import { useChatPopup } from '../model/useChatPopUp';
 import { MarkdownRenderer } from '@/shared/ui/MarkdownRenderer/MarkdownRenderer';
 import { DraggablePopup } from './DraggablePopup';
@@ -196,7 +198,7 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
                     rows={1}
                     maxLength={4000}
                 />
-                <button 
+                <Button 
                     className={styles.sendButton} 
                     onClick={handleSubmit}
                     disabled={!newMessage.trim() || isLoading}
@@ -205,9 +207,9 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
                     {isLoading ? (
                         <div className={styles.loadingSpinner} />
                     ) : (
-                        '🚀'
+                        <SendIcon />
                     )}
-                </button>
+                </Button>
             </div>
 
             {/* Character counter */}

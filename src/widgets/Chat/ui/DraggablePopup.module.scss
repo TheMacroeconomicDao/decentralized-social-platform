@@ -54,11 +54,30 @@
 .popup {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(145deg, rgba(20, 39, 49, 0.95), rgba(18, 31, 38, 0.95));
-  border-radius: 1rem;
+  border: 3px solid transparent;
+  box-shadow: 32px 32px 32px 0 rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+        53deg,
+        rgb(20, 39, 49),
+        rgb(18, 31, 38),
+        rgb(18, 31, 38),
+        rgb(65, 67, 60)
+      )
+      padding-box,
+    linear-gradient(
+        138deg,
+        rgb(37, 99, 235),
+        rgb(59, 130, 246),
+        rgb(29, 78, 216),
+        rgb(30, 64, 175),
+        rgb(30, 58, 138),
+        rgb(99, 129, 219),
+        rgb(59, 130, 246)
+      )
+      border-box;
+  border-radius: 40px;
   overflow: hidden;
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(130, 133, 140, 0.3);
   min-height: 400px;
   min-width: 350px;
   position: relative;

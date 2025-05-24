@@ -18,6 +18,7 @@ const AIC = () => {
         path={'/images/slides/aic-slide-2.jpg'}
         mobilePath={'/images/slides/aic-mobile-slide-2.jpg'}
         title={'Large-scale AI research'}
+        verticalOffset={-30}
       />
       <Substrate {...data} />
       <TechnicalRoadmapSection />

@@ -299,17 +299,17 @@
 }
 
 .sendButton {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border: none;
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-  color: white;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  color: white !important;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
+  min-width: 60px;
   height: 44px;
   
   &:hover:not(:disabled) {
@@ -318,7 +318,7 @@
   }
   
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.5 !important;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;

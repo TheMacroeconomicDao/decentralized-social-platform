@@ -36,9 +36,17 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
     const [isMobile, setIsMobile] = useState(false);
     
     // Объединенное состояние для избежания множественных ре-рендеров
-    const [popupState, setPopupState] = useState<PopupState>({
-        position: { x: 100, y: 100 },
-        size: { width: 420, height: 650 }
+    const [popupState, setPopupState] = useState<PopupState>(() => {
+        // Сразу вычисляем центрированную позицию при инициализации
+        const defaultWidth = 420;
+        const defaultHeight = 650;
+        const centerX = typeof window !== 'undefined' ? Math.max(0, (window.innerWidth - defaultWidth) / 2) : 100;
+        const centerY = typeof window !== 'undefined' ? Math.max(50, (window.innerHeight - defaultHeight) / 2) : 100;
+        
+        return {
+            position: { x: centerX, y: centerY },
+            size: { width: defaultWidth, height: defaultHeight }
+        };
     });
     
     const [isDragging, setIsDragging] = useState(false);
@@ -66,18 +74,23 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         return () => window.removeEventListener('resize', checkMobile);
     }, [checkMobile]);
 
-    // Центрирование при открытии - упрощенная логика
+    // Центрирование только при изменении размера окна
     useEffect(() => {
-        if (isOpen && !isMobile) {
-            const centerX = Math.max(0, (window.innerWidth - popupState.size.width) / 2);
-            const centerY = Math.max(50, (window.innerHeight - popupState.size.height) / 2);
+        if (!isMobile) {
+            const handleResize = () => {
+                const centerX = Math.max(0, (window.innerWidth - popupState.size.width) / 2);
+                const centerY = Math.max(50, (window.innerHeight - popupState.size.height) / 2);
+                
+                setPopupState(prev => ({
+                    ...prev,
+                    position: { x: centerX, y: centerY }
+                }));
+            };
             
-            setPopupState(prev => ({
-                ...prev,
-                position: { x: centerX, y: centerY }
-            }));
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
         }
-    }, [isOpen, isMobile]); // Убрал лишние зависимости
+    }, [isMobile, popupState.size]);
 
     // Обработка начала перетаскивания
     const handleMouseDown = useCallback((e: React.MouseEvent) => {

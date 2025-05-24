@@ -122,6 +122,15 @@ Decentralized Social Platform (DSP) for progressive technology enthusiasts and d
   - Решение: Удалены все ненужные обходы и отладочная система
   - Код упрощен до базовой загрузки Puter.js и отправки сообщений
   - Результат: Чистый код, чат работает для всех пользователей
+- **ИСПРАВЛЕНА: Ошибка "Cannot find module './447.js'" после восстановления анимаций**
+  - Проблема: Конфликт в webpack кеше Next.js после структурных изменений компонентов
+  - Решение: Полная очистка кеша (.next) и переустановка зависимостей (node_modules)
+  - Результат: Dev сервер и сборка работают стабильно
+- **ИСПРАВЛЕНА: Проблема с синим фоном кнопки Join на странице /aic**
+  - Проблема: Конфликт стилей между ExternalLink и Button компонентами в Substrate
+  - Корень: ExternalLink по умолчанию использовал theme=CLEAR, но не был явно указан
+  - Решение: Добавлен theme={ThemeExternalLink.CLEAR} к ExternalLink в Substrate.tsx
+  - Результат: Кнопка Join отображается с корректным зелёно-синим градиентом без лишних фонов
 
 ## Telegram Links
 - Main Join buttons: `https://t.me/HeadsHub`

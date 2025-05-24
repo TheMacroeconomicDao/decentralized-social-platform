@@ -4,9 +4,8 @@ import { Container } from "@/shared/ui/Container/Container";
 import cls from "./JoinSection.module.scss";
 import { motion } from "framer-motion";
 
-import ExternalLink, {
-    ThemeExternalLink,
-} from "@/shared/ui/ExternalLink/ExternalLink";
+import { JoinButton } from "@/shared/ui/JoinButton/JoinButton";
+import { ThemeExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { Line } from "@/shared/ui/Line/Line";
 
 interface JoinUsBlockProps {
@@ -18,15 +17,14 @@ export const JoinSection = ({ className = "" }: JoinUsBlockProps) => {
         <Section className={cls.section}>
             <div className={cls.line_container}>
                 <Line />
-                <div className={cls.buttonWrapper}>
-                    <ExternalLink
-                        href="https://t.me/HeadsHub"
-                        theme={ThemeExternalLink.BLUE}
-                        target="_blank"
-                    >
-                        Join
-                    </ExternalLink>
-                </div>
+                <JoinButton 
+                    href="https://t.me/HeadsHub"
+                    theme={ThemeExternalLink.BLUE}
+                    buttonTheme={null}
+                    className={cls.buttonWrapper}
+                >
+                    Join
+                </JoinButton>
             </div>
             <Container>
                 <div className={cls.wrapper}>

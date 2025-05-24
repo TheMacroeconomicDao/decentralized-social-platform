@@ -145,6 +145,11 @@ Decentralized Social Platform (DSP) for progressive technology enthusiasts and d
   - Решение: AnimatedIconsBackground добавлен в layout.tsx как глобальный фоновый слой
   - Убран AnimatedBackground с отдельных страниц (main, aic)
   - Результат: Летающие иконки теперь присутствуют на всех страницах сайта
+- **ДОБАВЛЕН СБРОС АНИМАЦИИ: при переходе между страницами**
+  - Проблема: При навигации между страницами анимация иконок продолжалась без обновления
+  - Решение: Добавлена функция resetAnimation() в useAnimatedIcons + отслеживание usePathname() в GlobalAnimatedBackground
+  - Механизм: При изменении маршрута очищаются все активные иконки и анимация запускается заново
+  - Результат: Каждый переход между страницами запускает свежую анимацию иконок
 
 ## Telegram Links
 - Main Join buttons: `https://t.me/HeadsHub`

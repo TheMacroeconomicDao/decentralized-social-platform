@@ -42,11 +42,7 @@ export const Navbar = ({}: NavbarProps) => {
                     {pathName == item.link && (
                         <motion.div
                             layoutId="bow"
-                            style={{
-                                position: 'absolute',
-                                background: 'var(--c-orange)',
-                                width: '100%'
-                            }}
+                            className={cls.hatLink}
                             variants={elementVariants}
                             animate={'start'}
                             initial={'end'}

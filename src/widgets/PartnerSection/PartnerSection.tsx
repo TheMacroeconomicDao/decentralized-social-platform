@@ -40,25 +40,26 @@ export const PartnerSection = ({
                     >
                         Partners
                     </motion.h2>
-                    <motion.p
-                        initial={{
-                            y: 10,
-                            opacity: 0,
-                        }}
-                        whileInView={{
-                            y: 0,
-                            opacity: 1,
-                            transition: {
-                                type: "spring",
-                                bounce: 0.2,
-                                duration: 1,
-                            },
-                        }}
-                        viewport={{once:true, amount: 0.4 }}
-                        className={cls.textContent}
-                    >
-                        {children}
-                    </motion.p>
+                    <p className={cls.textContent}>
+                        <motion.span
+                            initial={{
+                                y: 10,
+                                opacity: 0,
+                            }}
+                            whileInView={{
+                                y: 0,
+                                opacity: 1,
+                                transition: {
+                                    type: "spring",
+                                    bounce: 0.2,
+                                    duration: 1,
+                                },
+                            }}
+                            viewport={{once:true, amount: 0.4 }}
+                        >
+                            {children}
+                        </motion.span>
+                    </p>
                     <div className={cls.buttonWrapper}>
                         <ExternalLink
                             href="mailto:back@gyber.org?subject=Become a Gyber Partner"

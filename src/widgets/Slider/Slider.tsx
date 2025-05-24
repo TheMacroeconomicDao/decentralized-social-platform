@@ -36,47 +36,49 @@ export const Slider = (props: SliderProps) => {
 
     return (
         <AnimatePresence>
-            <motion.div
-                initial={{
-                    opacity: 0,
-                    y: 10
-                }}
-                animate={{
-                    opacity: 1,
-                    y: 0
-                }}
-                transition={{
-                  type: "spring",
-                  bounce: 0.2,
-                  duration: 1,
-              }}
-                className={classNames(cls.Slider, {}, [className])}
-            >
-                <SlideImage
-                    path={path}
-                    mobilePath={mobilePath || ""}
-                    title={title}
-                />
-                {title && (
-                    <motion.div
-                        initial={{
-                            opacity: 0,
-                            x: 10,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            x: 0,
-                        }}
-                        transition={{
-                            duration: 0.5,
-                            ease: 'easeInOut'
-                        }}
-                        className={cls.sliderTitle}
-                    >
-                        <h1>{title}</h1>
-                    </motion.div>
-                )}
-            </motion.div>
+            <div className={classNames(cls.Slider, {}, [className])}>
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 10
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0
+                    }}
+                    transition={{
+                      type: "spring",
+                      bounce: 0.2,
+                      duration: 1,
+                  }}
+                >
+                    <SlideImage
+                        path={path}
+                        mobilePath={mobilePath || ""}
+                        title={title}
+                    />
+                    {title && (
+                        <div className={cls.sliderTitle}>
+                            <motion.div
+                                initial={{
+                                    opacity: 0,
+                                    x: 10,
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    x: 0,
+                                }}
+                                transition={{
+                                    duration: 0.5,
+                                    ease: 'easeInOut'
+                                }}
+                            >
+                                <h1>{title}</h1>
+                            </motion.div>
+                        </div>
+                    )}
+                </motion.div>
+            </div>
         </AnimatePresence>
     );
 };

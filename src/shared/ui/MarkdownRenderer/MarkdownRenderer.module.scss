@@ -1,0 +1,637 @@
+.markdownRenderer {
+  line-height: 1.6;
+  color: inherit;
+  font-size: inherit;
+
+  // Обнуляем margin для корневых элементов
+  > *:first-child {
+    margin-top: 0;
+  }
+  
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Заголовки
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.h1 {
+  font-size: 1.5rem;
+  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+  padding-bottom: 0.3rem;
+}
+
+.h2 {
+  font-size: 1.3rem;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  padding-bottom: 0.2rem;
+}
+
+.h3 {
+  font-size: 1.1rem;
+}
+
+.h4 {
+  font-size: 1rem;
+}
+
+.h5 {
+  font-size: 0.9rem;
+}
+
+.h6 {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+// Параграфы
+.paragraph {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+// Списки
+.unorderedList, .orderedList {
+  margin: 0.5rem 0;
+  padding-left: 1.2rem;
+}
+
+.orderedList {
+  list-style-type: decimal;
+}
+
+.unorderedList {
+  list-style-type: disc;
+}
+
+.listItem {
+  margin: 0.2rem 0;
+  
+  &::marker {
+    color: #3b82f6;
+  }
+}
+
+// Ссылки
+.link {
+  color: #60a5fa;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #93c5fd;
+    border-bottom-color: #60a5fa;
+  }
+  
+  &:active {
+    color: #3b82f6;
+  }
+}
+
+// Инлайн код
+.inlineCode {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.3rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.85em;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+// Блоки кода
+.codeBlock {
+  margin: 0.75rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.codeLanguage {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+}
+
+.pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow-x: auto;
+  background: transparent;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(130, 133, 140, 0.5);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(130, 133, 140, 0.7);
+    }
+  }
+}
+
+.code {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #e2e8f0;
+  white-space: pre;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Цитаты
+.blockquote {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: #cbd5e1;
+  font-style: italic;
+  
+  .paragraph {
+    margin: 0;
+  }
+}
+
+// Таблицы
+.tableWrapper {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tableHeader {
+  background: rgba(59, 130, 246, 0.2);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: left;
+}
+
+.tableCell {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  &:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Горизонтальная линия
+.divider {
+  margin: 1rem 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(59, 130, 246, 0.5) 50%, 
+    transparent 100%
+  );
+}
+
+// Выделение текста
+.bold {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.italic {
+  font-style: italic;
+  color: #cbd5e1;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+// Подсветка синтаксиса для кода (базовая темная тема)
+.code {
+  // Ключевые слова
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-built_in {
+    color: #f97316;
+  }
+  
+  // Строки
+  .hljs-string,
+  .hljs-attr {
+    color: #22d3ee;
+  }
+  
+  // Числа
+  .hljs-number,
+  .hljs-literal {
+    color: #a78bfa;
+  }
+  
+  // Комментарии
+  .hljs-comment,
+  .hljs-quote {
+    color: #64748b;
+    font-style: italic;
+  }
+  
+  // Функции
+  .hljs-function,
+  .hljs-title {
+    color: #fbbf24;
+  }
+  
+  // Переменные
+  .hljs-variable,
+  .hljs-name {
+    color: #60a5fa;
+  }
+  
+  // Типы
+  .hljs-type,
+  .hljs-class {
+    color: #34d399;
+  }
+}
+
+// Адаптивность для всех размеров экранов
+
+// Планшет горизонтальный (768px - 1023px)
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .markdownRenderer {
+    font-size: 0.9rem;
+  }
+  
+  .h1 {
+    font-size: 1.4rem;
+  }
+  
+  .h2 {
+    font-size: 1.2rem;
+  }
+  
+  .h3 {
+    font-size: 1.05rem;
+  }
+  
+  .codeBlock {
+    margin: 0.6rem 0;
+  }
+  
+  .pre {
+    padding: 0.6rem;
+  }
+  
+  .inlineCode {
+    font-size: 0.8em;
+  }
+}
+
+// Планшет вертикальный и мобильный большой (481px - 767px)
+@media screen and (min-width: 481px) and (max-width: 767px) {
+  .markdownRenderer {
+    font-size: 0.85rem;
+  }
+  
+  .h1 {
+    font-size: 1.25rem;
+  }
+  
+  .h2 {
+    font-size: 1.1rem;
+  }
+  
+  .h3 {
+    font-size: 1rem;
+  }
+  
+  .h4 {
+    font-size: 0.95rem;
+  }
+  
+  .h5 {
+    font-size: 0.85rem;
+  }
+  
+  .h6 {
+    font-size: 0.8rem;
+  }
+  
+  .paragraph {
+    margin: 0.4rem 0;
+  }
+  
+  .unorderedList, .orderedList {
+    padding-left: 1rem;
+  }
+  
+  .codeBlock {
+    margin: 0.5rem 0;
+  }
+  
+  .pre {
+    padding: 0.5rem;
+  }
+  
+  .inlineCode {
+    font-size: 0.75em;
+    padding: 0.05rem 0.25rem;
+  }
+  
+  .blockquote {
+    padding: 0.6rem 0.8rem;
+    margin: 0.6rem 0;
+  }
+  
+  .tableWrapper {
+    font-size: 0.8rem;
+  }
+  
+  .tableHeader,
+  .tableCell {
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+// Мобильный стандартный (361px - 480px)
+@media screen and (min-width: 361px) and (max-width: 480px) {
+  .markdownRenderer {
+    font-size: 0.8rem;
+  }
+  
+  .h1 {
+    font-size: 1.15rem;
+  }
+  
+  .h2 {
+    font-size: 1rem;
+  }
+  
+  .h3 {
+    font-size: 0.95rem;
+  }
+  
+  .h4 {
+    font-size: 0.9rem;
+  }
+  
+  .h5 {
+    font-size: 0.8rem;
+  }
+  
+  .h6 {
+    font-size: 0.75rem;
+  }
+  
+  .paragraph {
+    margin: 0.35rem 0;
+    line-height: 1.5;
+  }
+  
+  .unorderedList, .orderedList {
+    margin: 0.4rem 0;
+    padding-left: 0.9rem;
+  }
+  
+  .listItem {
+    margin: 0.15rem 0;
+  }
+  
+  .codeBlock {
+    margin: 0.4rem 0;
+  }
+  
+  .codeLanguage {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+  }
+  
+  .pre {
+    padding: 0.4rem;
+  }
+  
+  .code {
+    font-size: 0.75rem;
+  }
+  
+  .inlineCode {
+    font-size: 0.7em;
+    padding: 0.05rem 0.2rem;
+  }
+  
+  .blockquote {
+    padding: 0.5rem 0.7rem;
+    margin: 0.5rem 0;
+  }
+  
+  .tableWrapper {
+    font-size: 0.75rem;
+  }
+  
+  .table {
+    font-size: 0.65rem;
+  }
+  
+  .tableHeader,
+  .tableCell {
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .divider {
+    margin: 0.8rem 0;
+  }
+}
+
+// Мобильный маленький (≤ 360px)
+@media screen and (max-width: 360px) {
+  .markdownRenderer {
+    font-size: 0.75rem;
+  }
+  
+  .h1 {
+    font-size: 1rem;
+  }
+  
+  .h2 {
+    font-size: 0.95rem;
+  }
+  
+  .h3 {
+    font-size: 0.9rem;
+  }
+  
+  .h4 {
+    font-size: 0.85rem;
+  }
+  
+  .h5 {
+    font-size: 0.75rem;
+  }
+  
+  .h6 {
+    font-size: 0.7rem;
+  }
+  
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin: 0.8rem 0 0.4rem 0;
+  }
+  
+  .paragraph {
+    margin: 0.3rem 0;
+    line-height: 1.4;
+  }
+  
+  .unorderedList, .orderedList {
+    margin: 0.3rem 0;
+    padding-left: 0.8rem;
+  }
+  
+  .listItem {
+    margin: 0.1rem 0;
+  }
+  
+  .codeBlock {
+    margin: 0.3rem 0;
+  }
+  
+  .codeLanguage {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+  }
+  
+  .pre {
+    padding: 0.3rem;
+  }
+  
+  .code {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  
+  .inlineCode {
+    font-size: 0.65em;
+    padding: 0.03rem 0.15rem;
+  }
+  
+  .blockquote {
+    padding: 0.4rem 0.6rem;
+    margin: 0.4rem 0;
+  }
+  
+  .tableWrapper {
+    font-size: 0.7rem;
+  }
+  
+  .table {
+    font-size: 0.65rem;
+  }
+  
+  .tableHeader,
+  .tableCell {
+    padding: 0.25rem 0.4rem;
+  }
+  
+  .divider {
+    margin: 0.6rem 0;
+  }
+}
+
+// Ландшафтная ориентация на маленьких экранах
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .markdownRenderer {
+    font-size: 0.8rem;
+  }
+  
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin: 0.5rem 0 0.3rem 0;
+  }
+  
+  .paragraph {
+    margin: 0.25rem 0;
+  }
+  
+  .codeBlock {
+    margin: 0.3rem 0;
+  }
+  
+  .blockquote {
+    margin: 0.3rem 0;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .unorderedList, .orderedList {
+    margin: 0.25rem 0;
+  }
+}
+
+// Очень старые или маленькие устройства
+@media screen and (max-width: 320px) {
+  .markdownRenderer {
+    font-size: 0.7rem;
+  }
+  
+  .h1 {
+    font-size: 0.95rem;
+  }
+  
+  .h2 {
+    font-size: 0.9rem;
+  }
+  
+  .h3 {
+    font-size: 0.85rem;
+  }
+  
+  .codeBlock {
+    margin: 0.25rem 0;
+  }
+  
+  .pre {
+    padding: 0.25rem;
+  }
+  
+  .code {
+    font-size: 0.65rem;
+  }
+  
+  .tableWrapper {
+    font-size: 0.6rem;
+  }
+  
+  .tableHeader,
+  .tableCell {
+    padding: 0.2rem 0.3rem;
+  }
+} 

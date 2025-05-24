@@ -59,11 +59,11 @@ jobs:
 
       - name: Deploy to k3s
         run: |
-          # Update image in deployment
-          kubectl set image deployment/dsp-stage-deployment dsp-stage=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:stage-${{ github.sha }} -n default
-          
-          # Apply manifests (in case of first deployment)
+          # Apply manifests (creates or updates resources)
           kubectl apply -f k8s/stage/
+
+          # Update image in deployment to the specific new sha
+          kubectl set image deployment/dsp-stage-deployment dsp-stage=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:stage-${{ github.sha }} -n default
           
           # Wait for rollout
           kubectl rollout status deployment/dsp-stage-deployment -n default --timeout=300s

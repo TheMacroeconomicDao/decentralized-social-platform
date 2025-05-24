@@ -10,6 +10,12 @@ interface MarkdownRendererProps {
   className?: string;
 }
 
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
+
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ 
   children, 
   className = '' 
@@ -48,7 +54,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
           ),
           
           // Стилизация кода
-          code: ({ inline, className, children }) => {
+          code: ({ inline, className, children, ...props }: CodeProps) => {
             if (inline) {
               return <code className={styles.inlineCode}>{children}</code>;
             }

@@ -7,7 +7,7 @@
   width: 180px;
   text-align: center;
   .avatar {
-    position: relative;
+    position: relative !important;
     overflow: hidden;
     border-radius: 26px;
     width: 100%;

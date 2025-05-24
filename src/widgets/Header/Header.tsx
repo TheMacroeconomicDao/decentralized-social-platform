@@ -37,15 +37,15 @@ export const Header = ({className = ""}: HeaderProps) => {
             </Link>
 
             <div className={cls.btnGroup}>
+                <Button theme={ThemeButton.CLEAR} disabled={false} onClick={handleClickChat}>
+                    Chat
+                </Button>
                 <Documents handleClick={handleClick} isShow={isShow} />
                 {!isShow &&
                     <Button theme={ThemeButton.ORANGE} disabled={false}>
                         Dapp
                     </Button>
                 }
-                <Button theme={ThemeButton.CLEAR} disabled={false} onClick={handleClickChat}>
-                    Chat
-                </Button>
                 {isShowChat &&
                     <ChatPopup isOpen={isShowChat} onClose={handleCloseChat} />
                 }

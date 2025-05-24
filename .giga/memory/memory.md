@@ -11,6 +11,14 @@ Decentralized Social Platform (DSP) for progressive technology enthusiasts and d
 - SCSS/Sass
 - Feature-Sliced Design (FSD) architecture
 
+## Deployment
+- **Production**: Deployed via GitHub Actions from `main` branch
+- **Stage**: stage.dsp.build.infra.gyber.org - Deployed to k3s cluster from `stage` branch
+  - Domain: stage.dsp.build.infra.gyber.org (A: 31.129.105.180)
+  - GitHub Actions workflow triggers on `stage` branch push
+  - k3s deployment with 2 replicas, TLS certificate, ingress
+  - Manual deployment available via `./deploy-stage.sh`
+
 ## Architecture
 - FSD structure: app, entities, features, shared, widgets
 - Client-side components with "use client" directive

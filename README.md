@@ -9,6 +9,106 @@
 | `main`  | https://gyber.org | Prod CD (manual approval) |
 
 ## Local Quick-Start
+# Gybernaty DSP - Decentralized Social Platform
+
+Decentralized Social Platform of the Gybernaty community - a project to unite researchers and enthusiasts interested in Web3 technologies, blockchain, distributed computing, and artificial intelligence.
+
+![Gybernaty Community](public/images/slides/main-slide.jpg)
+
+## 🚀 Live Environments
+
+- **Production**: [DSP Production](https://gyber.org) (from `main` branch)
+- **Stage**: [stage.dsp.build.infra.gyber.org](https://stage.dsp.build.infra.gyber.org) (from `stage` branch)
+
+## ✨ Key Features
+
+### 🤖 AI Chat System
+- **Gybernaty AI Assistant**: Integration with Claude 3.7 Sonnet via Puter.js
+- **Draggable & Resizable**: Desktop chat window with 8 resize handles
+- **Responsive Design**: Full-screen on mobile, windowed on desktop
+- **Markdown Support**: Rich text rendering for AI responses
+- **Custom Icons**: AiIcon for header, AgentIcon for chat messages
+- **Auto-scroll & Performance**: Optimized state management with 60fps smooth operations
+
+### 🎨 Visual & Animation System
+- **Global Animated Icons**: 20+ cryptocurrency and technology icons floating across all pages
+- **Responsive Animation**: Adaptive performance for different devices
+- **Modern UI**: Substrate-style design with gradient borders and glassmorphism
+- **Feature-Sliced Design**: Scalable architecture following FSD principles
+
+### 🏗 Infrastructure & Deployment
+- **Containerized**: Docker with multi-stage builds
+- **Kubernetes Ready**: k3s deployment manifests with auto-scaling
+- **CI/CD Pipeline**: GitHub Actions for stage and production deployments
+- **TLS & Security**: Automatic SSL certificates via Let's Encrypt
+
+## 🛠 Technology Stack
+
+- **Frontend**: Next.js 15.3.2, React 18.2.0, TypeScript 5.1.6
+- **AI Integration**: Puter.js + Claude 3.7 Sonnet
+- **Animations**: Framer Motion 10.16.1
+- **Styling**: SCSS/Sass with responsive design
+- **Architecture**: Feature-Sliced Design (FSD)
+- **Containerization**: Docker + Kubernetes (k3s)
+- **CI/CD**: GitHub Actions
+- **Markdown**: react-markdown with GitHub Flavored Markdown
+
+## 📱 Responsive Design
+
+Comprehensive mobile adaptation with unified breakpoint system:
+
+- **Mobile**: ≤480px (full-screen chat, optimized animations)
+- **Tablet**: 481-767px (hybrid mode with padding)
+- **Desktop**: ≥768px (draggable/resizable chat, full features)
+- **Large Desktop**: >1440px (maximum performance)
+
+**Chat Adaptivity**:
+- Mobile: Full-screen overlay
+- Tablet: Centered with margins
+- Desktop: Draggable window (350x400px to 800x900px)
+
+**Animation Optimization**:
+- Mobile: Maximum 3 icons for performance
+- Desktop: Maximum 15+ icons for visual richness
+- Smart icon generation every 3 seconds
+
+## 🤖 AI Chat Features
+
+### Core Functionality
+- **System Prompt**: Custom Gybernaty AI personality with Web3/blockchain expertise
+- **Multi-language**: Responds in user's language (Russian/English)
+- **Project Knowledge**: Aware of DSP, LQD, SAPP, PowerSwapMeta projects
+- **Community Token**: GBR token integration (0xa970cae9fa1d7cca913b7c19df45bf33d55384a9)
+
+### Technical Implementation
+- **State Management**: Optimized React hooks with batch updates
+- **Performance**: RequestAnimationFrame for smooth resize/drag operations
+- **Error Handling**: Comprehensive retry logic
+- **Auto-scroll**: Smart message scroll management
+- **Memory**: Chat history persistence
+
+### Desktop Features
+- **Drag & Drop**: Moveable chat window
+- **8 Resize Handles**: Corner and edge resizing
+- **Boundary Constraints**: Cannot resize/move outside viewport
+- **Visual Feedback**: Hover effects and cursor changes
+
+## 🎨 Icon System
+
+### Animated Background Icons (20)
+**Cryptocurrencies**: Bitcoin, Ethereum, Cardano, Solana, Polygon, Polkadot, Litecoin, BNB, NEAR, Ethereum Classic, Toncoin, Tron, Internet Computer
+
+**Technologies**: React, Node.js, Next.js, Python, Flutter, Rust, Go
+
+### Chat Icons
+- **AiIcon**: Header avatar (from ai_icon.svg) - complex circuit-board design
+- **AgentIcon**: Message avatars (from ai_agent.svg) - robot character design
+- **SendIcon**: Custom send button replacing rocket emoji
+
+## 📦 Quick Start
+
+### Local Development
+
 ```bash
 pnpm install          # или npm/yarn
 pnpm dev              # http://localhost:3000

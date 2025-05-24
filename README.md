@@ -294,5 +294,5 @@ This project is open source. See [LICENSE](LICENSE) for details.
 
 ---
 
-Built with ❤️ by the Gybernaty Community | Powered by Next.js & Claude AI
+Built with ❤️ by Gybernaty Community 
 

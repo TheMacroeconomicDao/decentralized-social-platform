@@ -6,7 +6,7 @@ Decentralized Social Platform of the Gybernaty community - a project to unite re
 
 ## 🚀 Live Environments
 
-- **Production**: [DSP Production](https://dsp.production.url) (from `main` branch)
+- **Production**: [DSP Production](https://gyber.org) (from `main` branch)
 - **Stage**: [stage.dsp.build.infra.gyber.org](https://stage.dsp.build.infra.gyber.org) (from `stage` branch)
 
 ## ✨ Key Features

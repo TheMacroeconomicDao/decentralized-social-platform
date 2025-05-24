@@ -45,129 +45,132 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
   switch (id) {
     case 1: {
       return (
-        <motion.div
-          initial={'initialLaptop'}
-          whileInView={'viewLaptop'}
-          variants={cardVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          className={cls.RoadmapCard}
-        >
-          {!isCurrent && (
-            <StartItem
-              className={classNames(cls.svgItem, {}, [cls.Start])}
-              color={ItemColor.BLUE}
-            />
-          )}
-          {isCurrent && (
-            <NextYearItem
-              className={classNames(cls.svgItem, {}, [cls.NextYear])}
-              color={ItemColor.YELLOW}
-            />
-          )}
-          {!isCurrent && (
-            <NextPeriodItem
-              className={classNames(cls.svgItem, {}, [cls.Next])}
-              color={ItemColor.BLUE}
-            />
-          )}
-          {isCurrent && (
-            <NextPeriodItem
-              className={classNames(cls.svgItem, {}, [cls.Next])}
-              color={ItemColor.YELLOW}
-            />
-          )}
-          <h3
-            className={classNames(cls.title, {
-              [cls.yellow]: isCurrent,
-            })}
+        <div className={cls.RoadmapCard}>
+          <motion.div
+            initial={'initialLaptop'}
+            whileInView={'viewLaptop'}
+            variants={cardVariants}
+            viewport={{ once: true, amount: 0.5 }}
           >
-            {year}
-          </h3>
-          <span
-            className={classNames(cls.period, {
-              [cls.yellow]: isCurrent,
-            })}
-          >
-            {period}
-          </span>
-          <div className={cls.stages}>
-            {items.map((item, index) => (
-              <RoadmapItem
-                key={index}
-                status={item.status}
-                title={item.title}
+            {!isCurrent && (
+              <StartItem
+                className={classNames(cls.svgItem, {}, [cls.Start])}
+                color={ItemColor.BLUE}
               />
-            ))}
-          </div>
-        </motion.div>
+            )}
+            {isCurrent && (
+              <NextYearItem
+                className={classNames(cls.svgItem, {}, [cls.NextYear])}
+                color={ItemColor.YELLOW}
+              />
+            )}
+            {!isCurrent && (
+              <NextPeriodItem
+                className={classNames(cls.svgItem, {}, [cls.Next])}
+                color={ItemColor.BLUE}
+              />
+            )}
+            {isCurrent && (
+              <NextPeriodItem
+                className={classNames(cls.svgItem, {}, [cls.Next])}
+                color={ItemColor.YELLOW}
+              />
+            )}
+            <h3
+              className={classNames(cls.title, {
+                [cls.yellow]: isCurrent,
+              })}
+            >
+              {year}
+            </h3>
+            <span
+              className={classNames(cls.period, {
+                [cls.yellow]: isCurrent,
+              })}
+            >
+              {period}
+            </span>
+            <div className={cls.stages}>
+              {items.map((item, index) => (
+                <RoadmapItem
+                  key={index}
+                  status={item.status}
+                  title={item.title}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
       )
     }
     case 4: {
       return (
-        <motion.div
-          initial={'initialLaptop'}
-          whileInView={'viewLaptop'}
-          variants={cardVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          className={cls.RoadmapCard}
-        >
-          <span
-            className={classNames(cls.period, {
-              [cls.yellow]: isCurrent,
-            })}
+        <div className={cls.RoadmapCard}>
+          <motion.div
+            initial={'initialLaptop'}
+            whileInView={'viewLaptop'}
+            variants={cardVariants}
+            viewport={{ once: true, amount: 0.5 }}
           >
-            {period}
-          </span>
-          <div className={cls.stages}>
-            {items.map((item, index) => (
-              <RoadmapItem
-                key={index}
-                status={item.status}
-                title={item.title}
-              />
-            ))}
-          </div>
-        </motion.div>
+            <span
+              className={classNames(cls.period, {
+                [cls.yellow]: isCurrent,
+              })}
+            >
+              {period}
+            </span>
+            <div className={cls.stages}>
+              {items.map((item, index) => (
+                <RoadmapItem
+                  key={index}
+                  status={item.status}
+                  title={item.title}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
       )
     }
     default: {
       return (
-        <motion.div
-          initial={'initialLaptop'}
-          whileInView={'viewLaptop'}
-          variants={cardVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          className={cls.RoadmapCard}
-        >
-          {!isCurrent && (
-            <NextPeriodItem
-              className={classNames(cls.svgItem, {}, [cls.Next])}
-              color={ItemColor.BLUE}
-            />
-          )}
-          {isCurrent && (
-            <NextPeriodItem
-              className={classNames(cls.svgItem, {}, [cls.Next])}
-              color={ItemColor.YELLOW}
-            />
-          )}
-          <span
-            className={classNames(cls.period, {
-              [cls.yellow]: isCurrent,
-            })}
+        <div className={cls.RoadmapCard}>
+          <motion.div
+            initial={'initialLaptop'}
+            whileInView={'viewLaptop'}
+            variants={cardVariants}
+            viewport={{ once: true, amount: 0.5 }}
           >
-            {period}
-          </span>
-          <div className={cls.stages}>
-            {items.map((item, index) => (
-              <RoadmapItem
-                key={index}
-                status={item.status}
-                title={item.title}
+            {!isCurrent && (
+              <NextPeriodItem
+                className={classNames(cls.svgItem, {}, [cls.Next])}
+                color={ItemColor.BLUE}
               />
-            ))}
-          </div>
-        </motion.div>
+            )}
+            {isCurrent && (
+              <NextPeriodItem
+                className={classNames(cls.svgItem, {}, [cls.Next])}
+                color={ItemColor.YELLOW}
+              />
+            )}
+            <span
+              className={classNames(cls.period, {
+                [cls.yellow]: isCurrent,
+              })}
+            >
+              {period}
+            </span>
+            <div className={cls.stages}>
+              {items.map((item, index) => (
+                <RoadmapItem
+                  key={index}
+                  status={item.status}
+                  title={item.title}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
       )
     }
   }

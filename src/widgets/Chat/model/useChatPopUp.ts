@@ -85,7 +85,7 @@ export const useChatPopup = (currentUser: string = 'User') => {
     localStorage.removeItem(STORAGE_KEY);
   };
 
-  const retryLastMessage = async (): void => {
+  const retryLastMessage = async (): Promise<void> => {
     if (messages.length < 2) return;
     
     const lastUserMessage = messages[messages.length - 2];

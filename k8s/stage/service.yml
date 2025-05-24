@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dsp-stage-service
+  namespace: default
+  labels:
+    app: dsp-stage
+    environment: stage
+spec:
+  selector:
+    app: dsp-stage
+    environment: stage
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+    protocol: TCP
+  type: ClusterIP 

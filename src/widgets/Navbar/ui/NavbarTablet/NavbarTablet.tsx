@@ -40,25 +40,24 @@ export const NavbarTablet = ({className=""}:NavbarTabletProps) => {
   return (
     <div className={classNames(cls.NavbarTablet, {}, [className])}>
       <BurgerButton isShow={showMenu} close={isShow} />
-      <div className={cls.Dropdown}>
-        <motion.div
-          initial={isShow}
-          animate={isShow ? "visible" : "hidden"}
-          variants={variants}
-        >
-          {navbarItems.map((item) => (
-            <Link
-              key={item.link}
-              className={classNames(cls.item, {
-                [cls.active]: pathName == item.link,
-              })}
-              href={item.link}
-            >
-              {item.title}
-            </Link>
-          ))}
-        </motion.div>
-      </div>
+      <motion.div
+        initial={isShow}
+        animate={isShow ? "visible" : "hidden"}
+        variants={variants}
+        className={cls.Dropdown}
+      >
+        {navbarItems.map((item) => (
+          <Link
+            key={item.link}
+            className={classNames(cls.item, {
+              [cls.active]: pathName == item.link,
+            })}
+            href={item.link}
+          >
+            {item.title}
+          </Link>
+        ))}
+      </motion.div>
     </div>
   );
 };

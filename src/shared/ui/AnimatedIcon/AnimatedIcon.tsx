@@ -35,37 +35,36 @@ export const AnimatedIcon = ({
     const imageSize = getImageSize();
     
     return (
-        <div className={`${cls.icon} ${cls[size]}`}>
-            <motion.div
-                initial={{
-                    x: `${startX}%`,
-                    y: "110%", // всегда начинаем снизу
-                    opacity: 0,
-                    scale: 0.8,
-                }}
-                animate={{
-                    x: `${endX}%`,
-                    y: "-10%", // всегда летим вверх
-                    opacity: [0, 1, 1, 0],
-                    scale: [0.8, 1, 1, 0.8],
-                    rotate: 360,
-                }}
-                transition={{
-                    duration: duration,
-                    delay: delay,
-                    ease: "linear",
-                }}
-                onAnimationComplete={onComplete}
-            >
-                <Image 
-                    src={`/images/icons/${icon}.svg`} 
-                    alt={icon}
-                    width={imageSize}
-                    height={imageSize}
-                    priority={false}
-                    onError={(e) => console.error(`AnimatedIcon ${icon}: image error`, e)}
-                />
-            </motion.div>
-        </div>
+        <motion.div
+            className={`${cls.icon} ${cls[size]}`}
+            initial={{
+                x: `${startX}%`,
+                y: "110%", // всегда начинаем снизу
+                opacity: 0,
+                scale: 0.8,
+            }}
+            animate={{
+                x: `${endX}%`,
+                y: "-10%", // всегда летим вверх
+                opacity: [0, 1, 1, 0],
+                scale: [0.8, 1, 1, 0.8],
+                rotate: 360,
+            }}
+            transition={{
+                duration: duration,
+                delay: delay,
+                ease: "linear",
+            }}
+            onAnimationComplete={onComplete}
+        >
+            <Image 
+                src={`/images/icons/${icon}.svg`} 
+                alt={icon}
+                width={imageSize}
+                height={imageSize}
+                priority={false}
+                onError={(e) => console.error(`AnimatedIcon ${icon}: image error`, e)}
+            />
+        </motion.div>
     );
 }; 

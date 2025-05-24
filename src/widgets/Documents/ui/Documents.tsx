@@ -54,42 +54,40 @@ interface DocumentsProps {
     return (
         <div className={cls.wrapper}>
             {isShow &&
-                <div className={cls.documents}>
-                    <motion.div
-                        initial={"hidden"}
-                        animate={"visible"}
-                        variants={list}
-                    >
-                        <motion.span variants={item}>
-                            <ExternalLink
-                                className={cls.pdf}
-                                href="https://github.com/GyberExperiment/live-papers/wiki"
-                                target="_blank"
-                                theme={ThemeExternalLink.CLEAR}>
-                                White Paper
-                            </ExternalLink>
-                        </motion.span>
-                        {/* <motion.span variants={item}>
-                            <ExternalLink
-                                className={cls.pdf}
-                                href="/documents/gyber_pitch_deck.pdf"
-                                target="_blank"
-                                theme={ThemeExternalLink.CLEAR}>
-                                Pitch Deck
-                            </ExternalLink>
-                        </motion.span> */}
-                    </motion.div>
-                </div>
+                <motion.div
+                    className={cls.documents}
+                    initial={"hidden"}
+                    animate={"visible"}
+                    variants={list}
+                >
+                    <motion.span variants={item}>
+                        <ExternalLink
+                            className={cls.pdf}
+                            href="https://github.com/GyberExperiment/live-papers/wiki"
+                            target="_blank"
+                            theme={ThemeExternalLink.CLEAR}>
+                            White Paper
+                        </ExternalLink>
+                    </motion.span>
+                    {/* <motion.span variants={item}>
+                        <ExternalLink
+                            className={cls.pdf}
+                            href="/documents/gyber_pitch_deck.pdf"
+                            target="_blank"
+                            theme={ThemeExternalLink.CLEAR}>
+                            Pitch Deck
+                        </ExternalLink>
+                    </motion.span> */}
+                </motion.div>
             }
             <Button onClick={handleClick} theme={ThemeButton.CLEAR}>
-                <span className={cls.pdf}>
-                    <motion.span
-                        initial={"visible"}
-                        animate={isShow ? "hidden" : "visible"}
-                        variants={documentsVariants}>
-                        Documents
-                    </motion.span>
-                </span>
+                <motion.span
+                    className={cls.pdf}
+                    initial={"visible"}
+                    animate={isShow ? "hidden" : "visible"}
+                    variants={documentsVariants}>
+                    Documents
+                </motion.span>
                 {isShow
                     ?
                     <motion.div

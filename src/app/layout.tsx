@@ -5,6 +5,7 @@ import { Montserrat, Grape_Nuts } from 'next/font/google'
 import { Header } from '@/widgets/Header/Header'
 import { Navbar, NavbarMobile } from '@/widgets/Navbar'
 import { Footer } from '@/widgets/Footer/Footer'
+import "./globals.css";
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -21,8 +22,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
-  title: 'Gybernaty Community',
-  description: 'Gybernaty Community of advanced enthusiasts and developers',
+  title: 'Gybernaty DSP',
+  description: 'Decentralized Social Platform',
   openGraph: {
     title: 'Gybernaty Community',
     description: 'Gybernaty Community of advanced enthusiasts and developers',
@@ -42,7 +43,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        {/* Стили для подсветки синтаксиса кода в чате */}
+        <link 
+          rel="stylesheet" 
+          href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/vs2015.min.css"
+        />
+      </head>
       <body className={montserrat.className}>
         <Header />
         <Navbar />

@@ -23,6 +23,9 @@ export const Header = ({ className = "" }: HeaderProps) => {
     const handleClickChat = () => {
         setIsShowChat(() => !isShowChat)
     }
+    const handleCloseChat = () => {
+        setIsShowChat(false)
+    }
     return (
         <div className={classNames(cls.Header, {}, [className])}>
             <Link href={'/'}>
@@ -39,8 +42,8 @@ export const Header = ({ className = "" }: HeaderProps) => {
                 <Button theme={ThemeButton.CLEAR} disabled={false} onClick={handleClickChat}>
                     Chat
                 </Button>
-                {!isShowChat &&
-                    <ChatPopup isOpen={isShowChat} onClose={() => null} />
+                {isShowChat &&
+                    <ChatPopup isOpen={isShowChat} onClose={handleCloseChat} />
                 }
                 <NavbarTablet />
             </div>

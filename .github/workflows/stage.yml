@@ -1,0 +1,29 @@
+name: stage deployment
+
+on:
+  push:
+    branches:
+    - stage
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and Deploy to k3s
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.K3S_HOST }}
+          user: ${{ secrets.K3S_USERNAME }}
+          key: ${{ secrets.K3S_SSH_KEY }}
+          port: ${{ secrets.K3S_PORT }}
+          command: |
+              cd ~/dsp-stage
+              git pull origin stage
+              sudo docker build -t dsp-stage:latest .
+              kubectl delete deployment dsp-stage-deployment --ignore-not-found=true
+              kubectl apply -f k8s/stage/
+              kubectl rollout status deployment/dsp-stage-deployment 

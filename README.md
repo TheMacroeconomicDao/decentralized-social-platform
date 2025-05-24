@@ -171,8 +171,7 @@ src/
 ## ☸️ Deployment
 
 ### Stage Environment (k3s)
-- **Domain**: stage.dsp.build.infra.gyber.org
-- **IP**: 31.129.105.180  
+- **Domain**: stage.dsp.gyber.org
 - **Auto-deploy**: On push to `stage` branch
 - **Manual deploy**: `./deploy-stage.sh`
 
@@ -196,7 +195,6 @@ K3S_PORT - SSH port (22)
 ### ✅ Chat System Implementation
 - Complete AI chat integration with Claude 3.7 Sonnet
 - Draggable/resizable popup with performance optimization
-- Custom icon system (AiIcon + AgentIcon)
 - Markdown rendering with GitHub Flavored Markdown
 - Mobile-first responsive design
 
@@ -212,12 +210,6 @@ K3S_PORT - SSH port (22)
 - Stage environment setup
 - Docker multi-stage builds
 
-### ✅ UI/UX Enhancements
-- Global animated background icons
-- Substrate-style design system
-- Banner text positioning improvements
-- Blue gradient chat border
-- Rectangular send button with rounded corners
 
 ## 🛡 Performance & Security
 

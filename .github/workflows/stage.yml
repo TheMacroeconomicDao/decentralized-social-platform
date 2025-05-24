@@ -73,22 +73,5 @@ jobs:
           kubectl get pods -l app=dsp-stage,environment=stage -n default
           kubectl get service dsp-stage-service -n default
           kubectl get ingress dsp-stage-ingress -n default
-
-      - name: Send Telegram notification
-        if: always()
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          format: markdown
-          message: |
-            🚀 *DSP Stage Deployment*
-            
-            📊 *Status*: ${{ job.status }}
-            🌿 *Branch*: `${{ github.ref_name }}`
-            📝 *Commit*: `${{ github.sha }}`
-            👤 *Author*: ${{ github.actor }}
-            
-            🌐 *URL*: https://stage.dsp.build.infra.gyber.org
-            
-            ${{ job.status == 'success' && '✅ Deployment successful!' || '❌ Deployment failed!' }} 
+          echo "✅ Deployment completed!"
+          echo "🌐 Application available at: https://stage.dsp.build.infra.gyber.org" 

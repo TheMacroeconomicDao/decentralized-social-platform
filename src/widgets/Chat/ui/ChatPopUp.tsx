@@ -1,7 +1,7 @@
 'use client'
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './Chatpopup.module.scss';
-import { Logo } from "@/shared/ui/Logo/Logo";
+import { AiIcon } from "@/shared/ui/SvgIcons";
 import { Button, ThemeButton } from "@/shared/ui/Button/Button";
 import { SendIcon } from "@/shared/ui/SvgIcons";
 import { useChatPopup } from '../model/useChatPopUp';
@@ -82,7 +82,7 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
             {/* Header */}
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <Logo />
+                    <AiIcon />
                     <div className={styles.headerInfo}>
                         <span className={styles.botName}>Gybernaty AI</span>
                         <span className={styles.status}>
@@ -112,7 +112,7 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
             <div ref={messagesContainerRef} className={styles.messages}>
                 {messages.length === 0 ? (
                     <div className={styles.welcomeMessage}>
-                        <Logo />
+                        <AiIcon />
                         <h3>Добро пожаловать в Gybernaty AI!</h3>
                         <p>Я ваш AI помощник, специализирующийся на blockchain, Web3 и децентрализованных технологиях. Как я могу помочь вам сегодня?</p>
                     </div>
@@ -126,7 +126,7 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
                             >
                                 {!isUser && (
                                     <div className={styles.avatar}>
-                                        <Logo />
+                                        <AiIcon />
                                     </div>
                                 )}
                                 <div className={styles.messageContent}>
@@ -155,7 +155,7 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
                 {isLoading && (
                     <div className={`${styles.messageItem} ${styles.assistant}`}>
                         <div className={styles.avatar}>
-                            <Logo />
+                            <AiIcon />
                         </div>
                         <div className={styles.messageContent}>
                             <div className={styles.loadingBubble}>

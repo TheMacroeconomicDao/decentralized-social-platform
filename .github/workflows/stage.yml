@@ -1,29 +1,94 @@
-name: stage deployment
+name: Stage Deployment
 
 on:
   push:
     branches:
     - stage
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/dsp-stage
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build and Deploy to k3s
-        uses: fifsky/ssh-action@master
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.K3S_HOST }}
-          user: ${{ secrets.K3S_USERNAME }}
-          key: ${{ secrets.K3S_SSH_KEY }}
-          port: ${{ secrets.K3S_PORT }}
-          command: |
-              cd ~/dsp-stage
-              git pull origin stage
-              sudo docker build -t dsp-stage:latest .
-              kubectl delete deployment dsp-stage-deployment --ignore-not-found=true
-              kubectl apply -f k8s/stage/
-              kubectl rollout status deployment/dsp-stage-deployment 
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Configure kubectl
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Deploy to k3s
+        run: |
+          # Update image in deployment
+          kubectl set image deployment/dsp-stage-deployment dsp-stage=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:stage-${{ github.sha }} -n default
+          
+          # Apply manifests (in case of first deployment)
+          kubectl apply -f k8s/stage/
+          
+          # Wait for rollout
+          kubectl rollout status deployment/dsp-stage-deployment -n default --timeout=300s
+
+      - name: Get deployment status
+        run: |
+          echo "🚀 Deployment Status:"
+          kubectl get pods -l app=dsp-stage,environment=stage -n default
+          kubectl get service dsp-stage-service -n default
+          kubectl get ingress dsp-stage-ingress -n default
+
+      - name: Send Telegram notification
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          message: |
+            🚀 *DSP Stage Deployment*
+            
+            📊 *Status*: ${{ job.status }}
+            🌿 *Branch*: `${{ github.ref_name }}`
+            📝 *Commit*: `${{ github.sha }}`
+            👤 *Author*: ${{ github.actor }}
+            
+            🌐 *URL*: https://stage.dsp.build.infra.gyber.org
+            
+            ${{ job.status == 'success' && '✅ Deployment successful!' || '❌ Deployment failed!' }} 

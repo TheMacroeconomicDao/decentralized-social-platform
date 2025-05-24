@@ -1,0 +1,15 @@
+.buttonWrapper {
+  padding: 40px 46px;
+  border-radius: 20px;
+  font-size: 20px;
+  background: #072b40;
+  box-shadow: 0 0 20px 0 #072b40;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 490px) {
+  .buttonWrapper {
+    padding: 20px 30px;
+  }
+} 

@@ -33,23 +33,19 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest
+      # Устанавливаем нужный тег один раз, чтобы избежать рассинхрона
+      - name: Set image tag
+        id: vars
+        run: echo "TAG=main-${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Configure kubectl
         run: |
@@ -81,7 +77,7 @@ jobs:
 
           # Update image in deployment to the specific new sha
           echo "🔄 Updating deployment image..."
-          kubectl set image deployment/dsp-prod-deployment dsp-prod=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${{ github.sha }} -n default
+          kubectl set image deployment/dsp-prod-deployment dsp-prod=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} -n default
           
           # Wait for rollout with detailed monitoring
           echo "⏳ Waiting for rollout to complete..."

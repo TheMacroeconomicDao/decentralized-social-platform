@@ -145,7 +145,7 @@ const sendMessage = async (message: string): Promise<ClaudeResponse | null> => {
       avatarSrc: '/gybernaty-ai-avatar.png'
     };
 
-  } catch (error) {
+    } catch (error) {
     console.error('Error sending message to Claude:', error);
     
     return {

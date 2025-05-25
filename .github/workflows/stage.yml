@@ -28,23 +28,19 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest
+      # Определяем тег для stage
+      - name: Set image tag
+        id: vars
+        run: echo "TAG=stage-${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
@@ -63,7 +59,7 @@ jobs:
           kubectl apply -f k8s/stage/
 
           # Update image in deployment to the specific new sha
-          kubectl set image deployment/dsp-stage-deployment dsp-stage=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:stage-${{ github.sha }} -n default
+          kubectl set image deployment/dsp-stage-deployment dsp-stage=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} -n default
           
           # Wait for rollout
           kubectl rollout status deployment/dsp-stage-deployment -n default --timeout=300s

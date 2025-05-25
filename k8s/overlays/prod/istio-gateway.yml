@@ -3,14 +3,10 @@ kind: Gateway
 metadata:
   name: dsp-prod-gateway
   namespace: default
-  labels:
-    app: dsp-prod
-    environment: production
 spec:
   selector:
     istio: ingressgateway
   servers:
-  # HTTP (для redirect на HTTPS)
   - port:
       number: 80
       name: http
@@ -20,7 +16,6 @@ spec:
     - www.gyber.org
     tls:
       httpsRedirect: true
-  # HTTPS
   - port:
       number: 443
       name: https

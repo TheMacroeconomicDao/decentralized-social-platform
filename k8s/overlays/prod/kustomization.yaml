@@ -1,0 +1,8 @@
+resources:
+  - ../../addons
+  - ../../cluster
+  - deployment.yml
+  - service.yml
+  - istio-gateway.yml
+  - istio-virtualservice.yml
+  - canary.yml 

@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dsp-prod-istio-tls
+  namespace: istio-system
+  labels:
+    app: dsp-prod
+    environment: production
+spec:
+  secretName: dsp-prod-istio-tls
+  duration: 2160h
+  renewBefore: 720h
+  dnsNames:
+  - gyber.org
+  - www.gyber.org
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+    group: cert-manager.io
+  privateKey:
+    algorithm: RSA
+    size: 2048
+    rotationPolicy: Always
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth 

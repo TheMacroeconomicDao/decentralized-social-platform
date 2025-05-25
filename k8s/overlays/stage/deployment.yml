@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsp-stage-deployment
+  namespace: default
+  labels:
+    app: dsp-stage
+    environment: stage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dsp-stage
+      environment: stage
+  template:
+    metadata:
+      labels:
+        app: dsp-stage
+        environment: stage
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: dsp-stage
+        image: ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000 

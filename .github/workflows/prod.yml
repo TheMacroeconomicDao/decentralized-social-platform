@@ -77,8 +77,8 @@ jobs:
         run: |
           echo "🚀 Starting deployment..."
           
-          # Apply manifests (creates or updates resources)
-          kubectl apply -f k8s/prod/
+          # Apply manifests via Kustomize overlay
+          kubectl apply -k k8s/overlays/prod/
 
           # Update image in deployment to the specific new sha
           echo "🔄 Updating deployment image..."
@@ -109,6 +109,12 @@ jobs:
             exit 1
           fi
           
+          # Дополнительно ждём автом. промоут канареечного релиза (Flagger)
+          # Ожидание максимум 30мин, прерывается при ошибке (Flagger создаёт event canary.failed)
+          # Можно убрать, если не используете Flagger
+          echo "⏳ Waiting Flagger canary promotion (max 30m)..."
+          kubectl -n default wait canary/dsp-prod --for=jsonpath='{.status.phase}'=Succeeded --timeout=1800s || true
+          
           echo "✅ Deployment completed successfully!"
 
       - name: Post-deployment verification
@@ -136,4 +142,43 @@ jobs:
         run: |
           echo "🧹 Cleaning up old ReplicaSets (keeping last 3)..."
           kubectl get rs -n default -l app=dsp-prod --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | head -n -3 | xargs -r kubectl delete rs -n default
+
+      # -------------------------------------------------
+      # Telegram notifications
+      # -------------------------------------------------
+      - name: Notify Telegram success
+        if: success()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="✅ PROD deploy succeeded: $GITHUB_SHA by $GITHUB_ACTOR"
+
+      - name: Notify Telegram failure
+        if: failure()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="❌ PROD deploy FAILED: $GITHUB_SHA. Check Actions logs."
+
+      # -------------------------------------------------
+      # Security scanning — пока выключено, раскомментируйте при необходимости
+      # -------------------------------------------------
+      # - name: Trivy scan
+      #   uses: aquasecurity/trivy-action@v0.19.0
+      #   with:
+      #     image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
+      #     format: table
+      #     exit-code: 0  # не падаем, просто отчёт
+
+      # - name: Grype scan
+      #   uses: anchore/scan-action@v3
+      #   with:
+      #     image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
+      #     fail-build: false
 

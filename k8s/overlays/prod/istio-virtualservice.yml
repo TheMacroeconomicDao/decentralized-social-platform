@@ -3,9 +3,6 @@ kind: VirtualService
 metadata:
   name: dsp-prod-virtualservice
   namespace: default
-  labels:
-    app: dsp-prod
-    environment: production
 spec:
   hosts:
   - gyber.org

@@ -1,5 +1,4 @@
 'use client'
-import DownloadIcon from "@/shared/ui/SvgIcons/DownloadIcon/DownloadIcon";
 import {Button, ThemeButton} from "@/shared/ui/Button/Button";
 import cls from "./Documents.module.scss"
 import {useState} from "react";
@@ -100,7 +99,6 @@ interface DocumentsProps {
                         initial={{opacity: 0}}
                         animate={{opacity: 1}}
                     >
-                        <DownloadIcon/>
                     </motion.div>}
             </Button>
         </div>

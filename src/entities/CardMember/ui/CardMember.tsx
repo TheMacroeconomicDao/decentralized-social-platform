@@ -27,7 +27,7 @@ export const CardMember = (props: CardMemberProps) => {
       whileInView={{scale: 1, transition: { type: "spring", bounce: 0.2, duration: .8}}}
       viewport={{ once: true, amount: 0.5 }}
     >
-      <div className={cls.avatar}>
+      <div className={cls.avatar} style={{ position: 'relative' }}>
         <a href={link}>
           <Image
             fill={true}

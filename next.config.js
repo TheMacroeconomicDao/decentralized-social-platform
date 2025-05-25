@@ -5,6 +5,19 @@ const nextConfig = {
         // Отключаем проблемное кеширование если есть
         webpackBuildWorker: false,
     },
+    async headers() {
+        return [
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
+                    },
+                ],
+            },
+        ];
+    },
     webpack: (config, { isServer, dev }) => {
         if (dev) {
             // Улучшаем стабильность кеширования в dev режиме

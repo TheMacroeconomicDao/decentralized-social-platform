@@ -17,9 +17,9 @@ export const ICON_SIZES = {
 } as const;
 
 export const ICON_SIZES_MOBILE = {
-    small: 14,
-    medium: 20,
-    large: 26,
+    small: 18,
+    medium: 28,
+    large: 38,
 } as const;
 
 export const ANIMATION_CONFIG = {
@@ -32,13 +32,13 @@ export const ANIMATION_CONFIG = {
 } as const;
 
 export const ANIMATION_CONFIG_MOBILE = {
-    intervalMs: 4000, // Реже создаем иконки на мобильных
-    minDuration: 20,  // Медленнее анимация
-    maxDuration: 35,
-    minStartX: 5,     // Меньше отступы
+    intervalMs: 3000, // немного чаще создаём иконки
+    minDuration: 18,  // чуть быстрее, чтобы уменьшить шанс упустить иконку
+    maxDuration: 30,
+    minStartX: 5,
     maxStartX: 95,
-    maxDrift: 20,     // Меньше дрейф
-    maxActiveIcons: 3, // Максимум 3 иконки одновременно
+    maxDrift: 25,     // больше дрейфа для более заметного пути
+    maxActiveIcons: 5, // до 5 иконок одновременно
 } as const;
 
 export const ICON_PATHS = {

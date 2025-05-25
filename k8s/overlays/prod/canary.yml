@@ -11,7 +11,7 @@ spec:
   service:
     port: 80
     targetPort: 3000
-  canaryAnalysis:
+  analysis:
     interval: 1m
     threshold: 5
     maxWeight: 50

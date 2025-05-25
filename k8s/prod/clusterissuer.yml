@@ -1,0 +1,59 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+  labels:
+    app: dsp-prod
+    environment: production
+spec:
+  acme:
+    # Let's Encrypt production server
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: dmitry.a.ovcharov@gmail.com
+    
+    # Secret для хранения приватного ключа ACME аккаунта
+    privateKeySecretRef:
+      name: letsencrypt-production
+    
+    # Solvers для валидации доменов
+    solvers:
+    # HTTP-01 challenge через Istio Gateway
+    - http01:
+        gatewayHTTPRoute:
+          parentRefs:
+          - name: dsp-prod-gateway
+            namespace: default
+            kind: Gateway
+            group: gateway.networking.k8s.io
+      selector:
+        dnsNames:
+        - "gyber.org"
+        - "www.gyber.org"
+    
+    # Fallback HTTP-01 solver для других доменов
+    - http01:
+        ingress:
+          class: istio
+      selector: {}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+  labels:
+    app: dsp-prod
+    environment: staging
+spec:
+  acme:
+    # Let's Encrypt staging server для тестирования
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: dmitry.a.ovcharov@gmail.com
+    
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    
+    solvers:
+    - http01:
+        ingress:
+          class: istio
+      selector: {} 

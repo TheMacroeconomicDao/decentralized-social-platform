@@ -1,0 +1,110 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cert-monitor
+  namespace: default
+  labels:
+    app: dsp-prod
+    component: cert-monitor
+    environment: production
+spec:
+  # Проверяем сертификаты каждый день в 9:00 UTC
+  schedule: "0 9 * * *"
+  timeZone: "UTC"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: dsp-prod
+            component: cert-monitor
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: cert-monitor
+          containers:
+          - name: cert-checker
+            image: bitnami/kubectl:latest
+            command:
+            - /bin/bash
+            - -c
+            - |
+              echo "🔍 Проверка состояния сертификатов..."
+              
+              # Проверяем все сертификаты
+              kubectl get certificates -A -o custom-columns="NAMESPACE:.metadata.namespace,NAME:.metadata.name,READY:.status.conditions[?(@.type=='Ready')].status,EXPIRES:.status.notAfter" | tee /tmp/certs.txt
+              
+              # Проверяем сертификаты, которые истекают в ближайшие 30 дней
+              echo ""
+              echo "⚠️  Сертификаты, истекающие в ближайшие 30 дней:"
+              
+              # Получаем дату через 30 дней
+              THIRTY_DAYS_LATER=$(date -d "+30 days" +%Y-%m-%d)
+              
+              # Проверяем каждый сертификат
+              kubectl get certificates -A -o json | jq -r '.items[] | select(.status.notAfter != null) | "\(.metadata.namespace)/\(.metadata.name) expires \(.status.notAfter)"' | while read line; do
+                CERT_NAME=$(echo $line | cut -d' ' -f1)
+                EXPIRE_DATE=$(echo $line | cut -d' ' -f3 | cut -dT -f1)
+                
+                if [[ "$EXPIRE_DATE" < "$THIRTY_DAYS_LATER" ]]; then
+                  echo "🚨 $CERT_NAME истекает $EXPIRE_DATE"
+                fi
+              done
+              
+              # Проверяем неготовые сертификаты
+              echo ""
+              echo "❌ Неготовые сертификаты:"
+              kubectl get certificates -A -o json | jq -r '.items[] | select(.status.conditions[]?.status != "True") | "\(.metadata.namespace)/\(.metadata.name) - \(.status.conditions[]?.message // "Unknown error")"'
+              
+              echo ""
+              echo "✅ Проверка завершена"
+            resources:
+              requests:
+                memory: "64Mi"
+                cpu: "50m"
+              limits:
+                memory: "128Mi"
+                cpu: "100m"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cert-monitor
+  namespace: default
+  labels:
+    app: dsp-prod
+    component: cert-monitor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cert-monitor
+  labels:
+    app: dsp-prod
+    component: cert-monitor
+rules:
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificates", "certificaterequests", "issuers", "clusterissuers"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cert-monitor
+  labels:
+    app: dsp-prod
+    component: cert-monitor
+subjects:
+- kind: ServiceAccount
+  name: cert-monitor
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: cert-monitor
+  apiGroup: rbac.authorization.k8s.io 

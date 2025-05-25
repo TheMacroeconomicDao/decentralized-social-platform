@@ -112,8 +112,8 @@ jobs:
           # Дополнительно ждём автом. промоут канареечного релиза (Flagger)
           # Ожидание максимум 30мин, прерывается при ошибке (Flagger создаёт event canary.failed)
           # Можно убрать, если не используете Flagger
-          echo "⏳ Waiting Flagger canary promotion (max 30m)..."
-          kubectl -n default wait canary/dsp-prod --for=jsonpath='{.status.phase}'=Succeeded --timeout=1800s || true
+          # echo "⏳ Waiting Flagger canary promotion (max 30m)..."
+          # kubectl -n default wait canary/dsp-prod --for=jsonpath='{.status.phase}'=Succeeded --timeout=1800s || true
           
           echo "✅ Deployment completed successfully!"
 

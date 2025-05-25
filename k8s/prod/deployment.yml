@@ -6,13 +6,15 @@ metadata:
   labels:
     app: dsp-prod
     environment: production
+  annotations:
+    deployment.kubernetes.io/revision-history-limit: "3"
 spec:
   replicas: 3
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-      maxSurge: 1
+      maxSurge: 0
   selector:
     matchLabels:
       app: dsp-prod
@@ -70,4 +72,9 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
-          failureThreshold: 3 
+          failureThreshold: 3
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 10"]
+      terminationGracePeriodSeconds: 30 

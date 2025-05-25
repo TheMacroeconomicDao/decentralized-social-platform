@@ -5,6 +5,11 @@ on:
     branches:
     - main
 
+# Предотвращаем множественные одновременные деплои
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: themacroeconomicdao/decentralized-social-platform/dsp-prod
@@ -52,19 +57,82 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
 
+      - name: Pre-deployment diagnostics
+        run: |
+          echo "🔍 Pre-deployment cluster diagnostics:"
+          echo "📊 Node resources:"
+          kubectl top nodes || echo "⚠️ Metrics server unavailable"
+          
+          echo "📋 Current pods:"
+          kubectl get pods -n default -l app=dsp-prod
+          
+          echo "📈 Current deployment status:"
+          kubectl get deployment dsp-prod-deployment -n default -o wide
+          
+          echo "🔄 ReplicaSets:"
+          kubectl get rs -n default -l app=dsp-prod --sort-by=.metadata.creationTimestamp
+
       - name: Deploy to k3s
         run: |
+          echo "🚀 Starting deployment..."
+          
           # Apply manifests (creates or updates resources)
           kubectl apply -f k8s/prod/
 
           # Update image in deployment to the specific new sha
+          echo "🔄 Updating deployment image..."
           kubectl set image deployment/dsp-prod-deployment dsp-prod=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${{ github.sha }} -n default
           
-          # Wait for rollout
-          kubectl rollout status deployment/dsp-prod-deployment -n default --timeout=600s
+          # Wait for rollout with detailed monitoring
+          echo "⏳ Waiting for rollout to complete..."
+          if ! kubectl rollout status deployment/dsp-prod-deployment -n default --timeout=300s; then
+            echo "❌ Rollout failed! Gathering diagnostics..."
+            
+            echo "📋 Failed pods:"
+            kubectl get pods -n default -l app=dsp-prod
+            
+            echo "📝 Recent events:"
+            kubectl get events -n default --sort-by='.lastTimestamp' | tail -20
+            
+            echo "🔍 Pod details for failed pods:"
+            kubectl get pods -n default -l app=dsp-prod -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\t"}{.status.containerStatuses[0].state}{"\n"}{end}'
+            
+            echo "💾 Describing problematic pods:"
+            for pod in $(kubectl get pods -n default -l app=dsp-prod --field-selector=status.phase!=Running -o jsonpath='{.items[*].metadata.name}'); do
+              echo "--- Pod: $pod ---"
+              kubectl describe pod $pod -n default | tail -20
+            done
+            
+            echo "🔄 Rolling back deployment..."
+            kubectl rollout undo deployment/dsp-prod-deployment -n default
+            exit 1
+          fi
+          
+          echo "✅ Deployment completed successfully!"
 
-      - name: Get deployment status
+      - name: Post-deployment verification
         run: |
-          kubectl get pods -n default -l app=dsp-prod
-          kubectl get svc,ingress -n default | grep prod
+          echo "🔍 Post-deployment verification:"
+          
+          echo "📊 Final pod status:"
+          kubectl get pods -n default -l app=dsp-prod -o wide
+          
+          echo "🌐 Service status:"
+          kubectl get svc dsp-prod-service -n default
+          
+          echo "🔗 Ingress/Gateway status:"
+          kubectl get gateway dsp-prod-gateway -n default || echo "No gateway found"
+          kubectl get virtualservice -n default -l app=dsp-prod
+          
+          echo "🏥 Health check:"
+          for pod in $(kubectl get pods -n default -l app=dsp-prod -o jsonpath='{.items[*].metadata.name}'); do
+            echo "Pod $pod readiness:"
+            kubectl get pod $pod -n default -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}'
+            echo ""
+          done
+
+      - name: Cleanup old ReplicaSets
+        run: |
+          echo "🧹 Cleaning up old ReplicaSets (keeping last 3)..."
+          kubectl get rs -n default -l app=dsp-prod --sort-by=.metadata.creationTimestamp -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | head -n -3 | xargs -r kubectl delete rs -n default
 

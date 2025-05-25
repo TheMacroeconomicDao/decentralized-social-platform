@@ -24,7 +24,7 @@ spec:
           - name: dsp-prod-gateway
             namespace: default
             kind: Gateway
-            group: gateway.networking.k8s.io
+            group: networking.istio.io
       selector:
         dnsNames:
         - "gyber.org"

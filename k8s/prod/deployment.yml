@@ -25,6 +25,18 @@ spec:
     spec:
       imagePullSecrets:
       - name: ghcr-secret
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - dsp-prod
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: dsp-prod
         image: ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest
@@ -38,11 +50,11 @@ spec:
           value: "1"
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "250m"
+            memory: "128Mi"
+            cpu: "100m"
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "256Mi"
+            cpu: "200m"
         livenessProbe:
           httpGet:
             path: /

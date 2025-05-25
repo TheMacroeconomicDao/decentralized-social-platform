@@ -2,13 +2,11 @@ import { Slider } from '@/widgets/Slider/Slider'
 import { Substrate } from '@/shared/ui/Substrate/Substrate'
 import React from 'react'
 import { Team } from '@/widgets/Team'
-// import { JoinSection } from "@/widgets/JoinSection/JoinSection";
 import { PartnerSection } from '@/widgets/PartnerSection/PartnerSection'
 
 import type { Metadata } from 'next'
 import { Banner } from '@/widgets/Banner/Banner'
 import { JoinSection } from '@/widgets/JoinSection/JoinSection'
-import { AnimatedBackground } from '@/features/AnimatedBackground'
 
 export const metadata: Metadata = {
   title: 'Welcome to Future | Gybernaty Community',
@@ -23,10 +21,8 @@ export default function Home() {
         mobilePath={'/images/slides/main-mobile-slide.jpg'}
         title={'Community of Progressive Enthusiasts '}
       />
-      <AnimatedBackground>
       <Substrate {...data} />
       <Team />
-      </AnimatedBackground>
       <Banner />
       <JoinSection />
       <PartnerSection>

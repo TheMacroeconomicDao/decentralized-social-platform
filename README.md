@@ -4,59 +4,95 @@ Decentralized Social Platform of the Gybernaty community - a project to unite re
 
 ![Gybernaty Community](public/images/slides/main-slide.jpg)
 
-## 🚀 Project Features
+## 🚀 Live Environments
 
-- **Full Mobile Adaptation**: Responsive design for all devices with unified breakpoint system
-- **Animated Icons**: Dynamic flying cryptocurrency and technology icons
-- **Modern Architecture**: Feature-Sliced Design (FSD) for scalability
-- **Performance**: Optimized animations considering mobile devices
-- **Docker Ready**: Full containerization support
-- **TypeScript**: Strict typing for code reliability
-- **Decentralization**: Built on decentralized system principles
-- **Open Source**: Open source code for collaborative development
+- **Production**: [DSP Production](https://gyber.org) (from `main` branch)
+- **Stage**: [stage.dsp.build.infra.gyber.org](https://stage.dsp.build.infra.gyber.org) (from `stage` branch)
+
+## ✨ Key Features
+
+### 🤖 AI Chat System
+- **Gybernaty AI Assistant**: Integration with Claude 3.7 Sonnet via Puter.js
+- **Draggable & Resizable**: Desktop chat window with 8 resize handles
+- **Responsive Design**: Full-screen on mobile, windowed on desktop
+- **Markdown Support**: Rich text rendering for AI responses
+- **Custom Icons**: AiIcon for header, AgentIcon for chat messages
+- **Auto-scroll & Performance**: Optimized state management with 60fps smooth operations
+
+### 🎨 Visual & Animation System
+- **Global Animated Icons**: 20+ cryptocurrency and technology icons floating across all pages
+- **Responsive Animation**: Adaptive performance for different devices
+- **Modern UI**: Substrate-style design with gradient borders and glassmorphism
+- **Feature-Sliced Design**: Scalable architecture following FSD principles
+
+### 🏗 Infrastructure & Deployment
+- **Containerized**: Docker with multi-stage builds
+- **Kubernetes Ready**: k3s deployment manifests with auto-scaling
+- **CI/CD Pipeline**: GitHub Actions for stage and production deployments
+- **TLS & Security**: Automatic SSL certificates via Let's Encrypt
 
 ## 🛠 Technology Stack
 
 - **Frontend**: Next.js 15.3.2, React 18.2.0, TypeScript 5.1.6
+- **AI Integration**: Puter.js + Claude 3.7 Sonnet
 - **Animations**: Framer Motion 10.16.1
-- **Styling**: SCSS/Sass with responsive breakpoints
+- **Styling**: SCSS/Sass with responsive design
 - **Architecture**: Feature-Sliced Design (FSD)
-- **Containerization**: Docker with multi-stage build
-- **Responsive**: Responsive design with react-responsive
+- **Containerization**: Docker + Kubernetes (k3s)
 - **CI/CD**: GitHub Actions
-- **Deploy**: Docker-ready production build
+- **Markdown**: react-markdown with GitHub Flavored Markdown
 
-## 📱 Mobile Adaptation
+## 📱 Responsive Design
 
-The project is fully adapted for mobile devices:
+Comprehensive mobile adaptation with unified breakpoint system:
 
-- **Unified Breakpoint System**:
-  - `xs`: 480px and above (mobile)
-  - `sm`: 576px and above 
-  - `md`: 768px and above (tablets)
-  - `lg`: 960px and above
-  - `xl`: 1280px and above (desktop)
+- **Mobile**: ≤480px (full-screen chat, optimized animations)
+- **Tablet**: 481-767px (hybrid mode with padding)
+- **Desktop**: ≥768px (draggable/resizable chat, full features)
+- **Large Desktop**: >1440px (maximum performance)
 
-- **Optimized Animations**:
-  - Maximum 3 icons on mobile devices
-  - Maximum 5 icons on desktop
-  - Adaptive sizes and intervals
+**Chat Adaptivity**:
+- Mobile: Full-screen overlay
+- Tablet: Centered with margins
+- Desktop: Draggable window (350x400px to 800x900px)
 
-- **Fixed hydration mismatch** in useMediaQuery hook
-- **Responsive containers** with proper padding
+**Animation Optimization**:
+- Mobile: Maximum 3 icons for performance
+- Desktop: Maximum 15+ icons for visual richness
+- Smart icon generation every 3 seconds
 
-## 🎨 Animated Icons
+## 🤖 AI Chat Features
 
-21 high-quality SVG icons:
+### Core Functionality
+- **System Prompt**: Custom Gybernaty AI personality with Web3/blockchain expertise
+- **Multi-language**: Responds in user's language (Russian/English)
+- **Project Knowledge**: Aware of DSP, LQD, SAPP, PowerSwapMeta projects
+- **Community Token**: GBR token integration (0xa970cae9fa1d7cca913b7c19df45bf33d55384a9)
 
-**Cryptocurrencies (13)**: Bitcoin, Ethereum, Cardano, Solana, Polygon, Polkadot, Litecoin, BNB, NEAR, Ethereum Classic, Toncoin, Tron, Internet Computer
+### Technical Implementation
+- **State Management**: Optimized React hooks with batch updates
+- **Performance**: RequestAnimationFrame for smooth resize/drag operations
+- **Error Handling**: Comprehensive retry logic
+- **Auto-scroll**: Smart message scroll management
+- **Memory**: Chat history persistence
 
-**Technologies (8)**: React, Node.js, Next.js, Python, Flutter, Rust, Go, **Kubernetes (new)**
+### Desktop Features
+- **Drag & Drop**: Moveable chat window
+- **8 Resize Handles**: Corner and edge resizing
+- **Boundary Constraints**: Cannot resize/move outside viewport
+- **Visual Feedback**: Hover effects and cursor changes
 
-- Smooth animations with Framer Motion
-- Adaptive performance management
-- Automatic generation every 3 seconds
-- Full mobile device support
+## 🎨 Icon System
+
+### Animated Background Icons (20)
+**Cryptocurrencies**: Bitcoin, Ethereum, Cardano, Solana, Polygon, Polkadot, Litecoin, BNB, NEAR, Ethereum Classic, Toncoin, Tron, Internet Computer
+
+**Technologies**: React, Node.js, Next.js, Python, Flutter, Rust, Go
+
+### Chat Icons
+- **AiIcon**: Header avatar (from ai_icon.svg) - complex circuit-board design
+- **AgentIcon**: Message avatars (from ai_agent.svg) - robot character design
+- **SendIcon**: Custom send button replacing rocket emoji
 
 ## 📦 Quick Start
 
@@ -64,115 +100,191 @@ The project is fully adapted for mobile devices:
 
 ```bash
 # Clone repository
-git clone https://github.com/TheMacroeconomicDao/DSP.git
-cd DSP
+git clone https://github.com/TheMacroeconomicDao/decentralized-social-platform.git
+cd decentralized-social-platform
 
 # Install dependencies
 npm install
-# or
-yarn install
 
-# Run in development mode
+# Run development server
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-### Docker (recommended for production)
+### Docker Development
 
 ```bash
-# Build and run with docker-compose
+# Build and run
 docker-compose up --build
 
-# Or separate Docker commands
-docker build -t gybernaty-dsp .
-docker run -p 3000:3000 gybernaty-dsp
+# Or manually
+docker build -t dsp:latest .
+docker run -p 3000:3000 dsp:latest
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
+### Stage Deployment
 
-## 📝 Documentation
+```bash
+# Manual deployment to k3s (stage)
+./deploy-stage.sh
 
-Detailed project documentation is available in the [docs](./docs/) directory:
-
-- [Architecture Overview](./docs/architecture/README.md)
-- [Components](./docs/components/README.md)
-- [Development Guide](./docs/development/README.md)
-- [API Documentation](./docs/api/README.md)
-- [Deployment Guide](./docs/deployment/README.md)
-- [Contribution Guide](./docs/contribution/README.md)
+# Or via GitHub Actions (automatic on push to stage branch)
+git push origin stage
+```
 
 ## 🏗 Project Architecture (FSD)
 
 ```
 src/
-├── app/                 # Application pages (Next.js App Router)
-│   ├── aic/            # AIC page
-│   ├── events/         # Events
-│   ├── experiment/     # Experiments
-│   ├── offering/       # Offerings
-│   └── platform/       # Platform
-├── entities/           # Business entities
-│   ├── CardMember/     # Member card
-│   ├── EventCard/      # Event card
-│   ├── Roadmap/        # Roadmap
-│   └── ...
-├── features/           # Application features
-│   └── AnimatedBackground/ # Animated background
-├── shared/             # Shared components
-│   ├── constants/      # Constants (breakpoints, configuration)
-│   ├── hooks/          # Reusable hooks
-│   ├── ui/             # UI components
-│   └── ...
-└── widgets/            # Composite widgets
-    ├── Header/         # Header
-    ├── Footer/         # Footer
-    ├── Navbar/         # Navigation
+├── app/                    # Next.js App Router pages
+│   ├── aic/               # AI & Creativity page
+│   ├── events/            # Events page
+│   ├── experiment/        # Experiment page
+│   ├── platform/          # Platform page
+│   └── globals.css        # Global styles
+├── entities/              # Business entities
+│   ├── CardMember/        # Team member cards
+│   ├── EventCard/         # Event components
+│   ├── Roadmap/           # Roadmap entities
+│   └── SocialRoadmapCard/ # Social roadmap components
+├── shared/                # Shared components & utilities
+│   ├── constants/         # App constants
+│   ├── hooks/             # Reusable React hooks
+│   ├── ui/                # UI components
+│   │   ├── SvgIcons/      # Icon components (AiIcon, AgentIcon, etc.)
+│   │   ├── Button/        # Button components
+│   │   ├── MarkdownRenderer/ # Markdown rendering
+│   │   └── ...
+│   └── types/             # TypeScript types
+└── widgets/               # Composite widgets
+    ├── Chat/              # AI Chat system
+    │   ├── api/           # Puter.js integration
+    │   ├── model/         # Chat state management
+    │   └── ui/            # Chat UI components
+    ├── Header/            # Site header
+    ├── Footer/            # Site footer
+    ├── Navbar/            # Navigation
     └── ...
 ```
 
-## 🔧 Technical Improvements
+## ☸️ Deployment
 
-### Recent Fixes:
-- ✅ **Fixed hydration mismatch** in useMediaQuery hook
-- ✅ **Solved animation problem** - icons now fly correctly
-- ✅ **TypeScript errors resolved** - export of AnimatedIconsBackgroundProps interfaces
-- ✅ **Docker optimization** - multi-stage build with Node 18 Alpine
-- ✅ **Webpack caching** - disabled problematic options for stability
-- ✅ **Unified breakpoint system** - consistent responsive design
-- ✅ **Added Kubernetes icon** - expanded collection to 21 icons
+### Stage Environment (k3s)
+- **Domain**: stage.dsp.gyber.org
+- **Auto-deploy**: On push to `stage` branch
+- **Manual deploy**: `./deploy-stage.sh`
 
-### Performance Configuration:
-- Optimized animations for mobile devices
-- Lazy loading components
-- Static resource compression
-- Caching in production build
+### Kubernetes Resources
+```yaml
+# Deployment: 2 replicas with health checks
+# Service: ClusterIP on port 80
+# Ingress: Traefik with TLS (Let's Encrypt)
+```
 
-## 🌐 About Gybernaty Project
+### Required GitHub Secrets
+```
+K3S_HOST - k3s cluster IP
+K3S_USERNAME - SSH username
+K3S_SSH_KEY - SSH private key  
+K3S_PORT - SSH port (22)
+```
 
-Gybernaty is a progressive community of researchers and developers. We conduct research in relevant areas of technology and develop innovative prototypes and products in the fields of web3, blockchain, distributed systems, and artificial intelligence.
+## 🔧 Recent Major Updates
 
-Our mission is to realize a large-scale open source ecosystem that is a powerful and user-friendly environment promoting open education, effective experience sharing, and organization of progressive research and development of innovative prototypes and products within GyberExperiment.
+### ✅ Chat System Implementation
+- Complete AI chat integration with Claude 3.7 Sonnet
+- Draggable/resizable popup with performance optimization
+- Markdown rendering with GitHub Flavored Markdown
+- Mobile-first responsive design
 
-## 💪 Contributing to the Project
+### ✅ Performance Optimizations
+- RequestAnimationFrame for smooth animations (60fps)
+- Batch state updates to prevent double re-renders
+- Optimized useEffect dependencies and useCallback memoization
+- Smart auto-scroll management
 
-We welcome community contributions to the project development. Please refer to the [contribution guide](./docs/contribution/README.md).
+### ✅ Infrastructure Improvements
+- k3s deployment configuration
+- GitHub Actions CI/CD pipeline
+- Stage environment setup
+- Docker multi-stage builds
 
-Main steps:
+
+## 🛡 Performance & Security
+
+### Performance Features
+- **Lazy Loading**: Components load on demand
+- **Code Splitting**: Optimized bundle sizes
+- **Image Optimization**: Next.js Image component
+- **Animation Performance**: 60fps smooth operations
+- **Mobile Optimization**: Reduced icon count for performance
+
+### Security Features
+- **TLS Encryption**: Automatic SSL certificates
+- **Container Security**: Non-root user in Docker
+- **Environment Isolation**: Separate stage/production
+- **Secret Management**: GitHub Actions secrets
+
+## 🌐 About Gybernaty Community
+
+Gybernaty is a progressive community of researchers and developers focused on:
+
+- **Web3 Technologies**: Blockchain, DeFi, DAOs
+- **Distributed Systems**: Decentralized architectures
+- **Artificial Intelligence**: AI research and applications
+- **Open Source**: Collaborative development
+
+**Community Token**: GBR (0xa970cae9fa1d7cca913b7c19df45bf33d55384a9)
+
+### Our Projects
+- **DSP**: Decentralized Social Platform
+- **LQD**: Liquidity solutions
+- **SAPP**: Social Application Protocol
+- **PowerSwapMeta**: Metadata exchange
+- **Contact**: Communication tools
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [contribution guide](./docs/contribution/README.md).
+
+### Development Process
 1. Fork the repository
-2. Create a branch for your feature/fix
-3. Follow project code standards
-4. Create a Pull Request
+2. Create feature branch from `stage`
+3. Follow FSD architecture patterns
+4. Test on mobile and desktop
+5. Submit Pull Request to `stage` branch
+
+### Code Standards
+- TypeScript strict mode
+- SCSS modules for styling
+- Feature-Sliced Design architecture
+- Responsive design principles
+- Performance-first approach
+
+## 📖 Documentation
+
+Comprehensive documentation available in [`docs/`](./docs/):
+
+- [Architecture Overview](./docs/architecture/README.md)
+- [Component Library](./docs/components/README.md)
+- [Development Guide](./docs/development/README.md)
+- [API Documentation](./docs/api/README.md)
+- [Deployment Guide](./docs/deployment/README.md)
+- [Contribution Guide](./docs/contribution/README.md)
+
+## 📞 Community & Support
+
+- **Telegram**: [HeadsHub](https://t.me/HeadsHub) - Main community
+- **GitHub**: [TheMacroeconomicDao](https://github.com/TheMacroeconomicDao)
+- **GitHub**: [GyberExperiment](https://github.com/GyberExperiment)
+- **Documentation**: [Live Papers Wiki](https://github.com/GyberExperiment/live-papers/wiki)
 
 ## 📄 License
 
-This project is distributed under an open license. See the [LICENSE](LICENSE) file for additional information.
+This project is open source. See [LICENSE](LICENSE) for details.
 
-## 📞 Contacts
+---
 
-- **Telegram**: [HeadsHub](https://t.me/HeadsHub)
-- **GitHub**: [TheMacroeconomicDao](https://github.com/TheMacroeconomicDao)
-- **GitHub**: [GyberExperiment](https://github.com/GyberExperiment)
+Built with ❤️ by Gybernaty Community 
 

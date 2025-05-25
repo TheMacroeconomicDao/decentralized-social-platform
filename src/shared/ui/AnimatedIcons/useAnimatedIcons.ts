@@ -51,6 +51,43 @@ export const useAnimatedIcons = (icons: readonly string[]) => {
         setActiveIcons(prev => prev.filter(icon => icon.id !== iconId));
     }, []);
 
+    // Функция для сброса анимации (очистка всех иконок и перезапуск)
+    const resetAnimation = useCallback(() => {
+        // Очищаем все активные иконки
+        setActiveIcons([]);
+        
+        // Сбрасываем счётчик
+        counterRef.current = 0;
+
+        // Очищаем текущий интервал
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+
+        // Запускаем заново только если анимация не отключена
+        if (!isReducedMotion) {
+            // Создаем первую иконку
+            const firstIcon = createIcon();
+            setActiveIcons([firstIcon]);
+
+            // Настраиваем интервал
+            const config = isMobile ? ANIMATION_CONFIG_MOBILE : ANIMATION_CONFIG;
+
+            intervalRef.current = setInterval(() => {
+                setActiveIcons(prev => {
+                    // На мобильных ограничиваем количество активных иконок
+                    if (isMobile && 'maxActiveIcons' in config && prev.length >= config.maxActiveIcons) {
+                        return prev;
+                    }
+                    
+                    const newIcon = createIcon();
+                    return [...prev, newIcon];
+                });
+            }, config.intervalMs);
+        }
+    }, [isReducedMotion, isMobile, createIcon]);
+
     useEffect(() => {
         // Отключаем анимацию при prefers-reduced-motion
         if (isReducedMotion) {
@@ -94,6 +131,7 @@ export const useAnimatedIcons = (icons: readonly string[]) => {
     return {
         activeIcons: isReducedMotion ? [] : activeIcons,
         removeIcon,
+        resetAnimation,
         isMobile,
     };
 }; 

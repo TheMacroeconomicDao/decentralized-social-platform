@@ -18,6 +18,7 @@ const GyberExperiment = () => {
         path={'/images/slides/gyber-experiment-slide.jpg'}
         mobilePath={'/images/slides/gyber-experiment-mobile-slide.jpg'}
         title={'Millions are Billionaires'}
+        verticalOffset={30}
       />
       <Substrate {...data} />
       <Container>

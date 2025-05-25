@@ -18,6 +18,7 @@ const SocialPlatform = () => {
                 path={"/images/slides/gyber-social-platform-slide.jpg"}
                 mobilePath={"/images/slides/gyber-social-platform-mobile-slide.jpg"}
                 title={"Be a part of innovation Gyber Social Platform"}
+                verticalOffset={30}
             />
             <Substrate {...data} scrollable={true} />
             <SPRoadmapping />

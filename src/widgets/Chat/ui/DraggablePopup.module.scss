@@ -1,0 +1,261 @@
+// Desktop режим - перетаскиваемое окно
+.desktop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; // Позволяем кликать сквозь overlay
+  z-index: 1000;
+  
+  .popup {
+    position: absolute;
+    pointer-events: all; // Восстанавливаем события для popup
+    width: auto;
+    min-width: 400px;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease;
+    
+    &:hover {
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+// Mobile режим - полноэкранный чат
+.mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  
+  .popup {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+    background: linear-gradient(145deg, rgba(20, 39, 49, 1), rgba(18, 31, 38, 1));
+    border: none;
+    min-height: unset;
+    min-width: unset;
+  }
+}
+
+// Общие стили
+.overlay {
+  backdrop-filter: blur(0px); // Убираем blur на overlay
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid transparent;
+  box-shadow: 32px 32px 32px 0 rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+        53deg,
+        rgb(20, 39, 49),
+        rgb(18, 31, 38),
+        rgb(18, 31, 38),
+        rgb(65, 67, 60)
+      )
+      padding-box,
+    linear-gradient(
+        138deg,
+        rgb(37, 99, 235),
+        rgb(59, 130, 246),
+        rgb(29, 78, 216),
+        rgb(30, 64, 175),
+        rgb(30, 58, 138),
+        rgb(99, 129, 219),
+        rgb(59, 130, 246)
+      )
+      border-box;
+  border-radius: 40px;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  min-height: 400px;
+  min-width: 350px;
+  position: relative;
+}
+
+// Drag handle - невидимая область для перетаскивания
+.dragHandle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 120px; // Исключаем область кнопок (примерно 120px справа)
+  height: 60px; // Высота header'а чата
+  z-index: 1;
+  user-select: none;
+}
+
+// Resize handles - ручки для изменения размера
+.resizeHandle {
+  position: absolute;
+  background: transparent;
+  z-index: 10;
+  
+  &:hover {
+    background: rgba(59, 130, 246, 0.2);
+  }
+}
+
+// Corner handles (угловые ручки)
+.nw {
+  top: -5px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  cursor: nw-resize;
+  border-radius: 2px 0 0 0;
+}
+
+.ne {
+  top: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  cursor: ne-resize;
+  border-radius: 0 2px 0 0;
+}
+
+.sw {
+  bottom: -5px;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  cursor: sw-resize;
+  border-radius: 0 0 0 2px;
+}
+
+.se {
+  bottom: -5px;
+  right: -5px;
+  width: 10px;
+  height: 10px;
+  cursor: se-resize;
+  border-radius: 0 0 2px 0;
+}
+
+// Edge handles (боковые ручки)
+.n {
+  top: -5px;
+  left: 10px;
+  right: 10px;
+  height: 10px;
+  cursor: n-resize;
+}
+
+.e {
+  top: 10px;
+  right: -5px;
+  bottom: 10px;
+  width: 10px;
+  cursor: e-resize;
+}
+
+.s {
+  bottom: -5px;
+  left: 10px;
+  right: 10px;
+  height: 10px;
+  cursor: s-resize;
+}
+
+.w {
+  top: 10px;
+  left: -5px;
+  bottom: 10px;
+  width: 10px;
+  cursor: w-resize;
+}
+
+// Визуальные индикаторы при hover
+.desktop .popup:hover {
+  .resizeHandle {
+    &.nw, &.ne, &.sw, &.se {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 6px;
+        height: 6px;
+        background: rgba(59, 130, 246, 0.6);
+        border-radius: 1px;
+        transition: opacity 0.2s ease;
+      }
+    }
+    
+    &.n, &.s {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 2px;
+        background: rgba(59, 130, 246, 0.6);
+        border-radius: 1px;
+        transition: opacity 0.2s ease;
+      }
+    }
+    
+    &.e, &.w {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2px;
+        height: 20px;
+        background: rgba(59, 130, 246, 0.6);
+        border-radius: 1px;
+        transition: opacity 0.2s ease;
+      }
+    }
+  }
+}
+
+// Планшет вертикальный - hybrid режим
+@media screen and (min-width: 481px) and (max-width: 767px) {
+  .mobile {
+    padding: 1rem;
+    
+    .popup {
+      width: calc(100% - 2rem);
+      height: calc(100% - 2rem);
+      border-radius: 1rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Мобильный стандартный - полный экран
+@media screen and (max-width: 480px) {
+  .mobile {
+    padding: 0;
+    
+    .popup {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+}
+
+// Ландшафтная ориентация на мобильных
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .mobile {
+    .popup {
+      border-radius: 0;
+    }
+  }
+} 

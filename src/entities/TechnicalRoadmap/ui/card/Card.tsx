@@ -42,7 +42,6 @@ export const Card = ({id, items}: CardProps) => {
         whileInView={'viewLaptop'}
         variants={cardVariants}
         viewport={{ once: true, amount: 0.5 }}
-        
         className={cls.Card}>
             <div className={cls.StageWrapper}>
                 <h3>{id}<sup>{suffix.has(id) ? suffix.get(id): 'th'}</sup></h3>

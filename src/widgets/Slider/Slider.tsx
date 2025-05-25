@@ -9,6 +9,7 @@ interface SliderProps {
     path: string;
     mobilePath?: string;
     title?: string;
+    verticalOffset?: number;
 }
 const variants = {
     enter: (direction: number) => {
@@ -32,7 +33,7 @@ const variants = {
 };
 
 export const Slider = (props: SliderProps) => {
-    const { className = "", path, mobilePath, title } = props;
+    const { className = "", path, mobilePath, title, verticalOffset = 0 } = props;
 
     return (
         <AnimatePresence>
@@ -61,17 +62,20 @@ export const Slider = (props: SliderProps) => {
                     <motion.div
                         initial={{
                             opacity: 0,
-                            x: 10,
+                            y: 30,
                         }}
                         animate={{
                             opacity: 1,
-                            x: 0,
+                            y: 0,
                         }}
                         transition={{
-                            duration: 0.5,
-                            ease: 'easeInOut'
+                            duration: 0.8,
+                            ease: 'easeOut'
                         }}
                         className={cls.sliderTitle}
+                        style={{
+                            transform: `translateY(${verticalOffset}px)`
+                        }}
                     >
                         <h1>{title}</h1>
                     </motion.div>

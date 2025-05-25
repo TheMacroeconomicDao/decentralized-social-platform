@@ -1,7 +1,9 @@
 import { Button, ThemeButton } from '../Button/Button'
-import ExternalLink from '../ExternalLink/ExternalLink'
+import ExternalLink, { ThemeExternalLink } from '../ExternalLink/ExternalLink'
+import { JoinButton } from '../JoinButton/JoinButton'
 import cls from './Substrate.module.scss'
 import { classNames } from '@/shared/lib/classNames/classNames'
+
 interface SubstrateProps {
   className?: string
   scrollable?: boolean
@@ -42,11 +44,14 @@ export const Substrate = (props: SubstrateProps) => {
         </div>
       </div>
       {buttonText && buttonLink && (
-        <div className={cls.button_wrapper}>
-          <ExternalLink href={buttonLink}>
-            <Button theme={ThemeButton.GREEN}>{buttonText}</Button>
-          </ExternalLink>
-        </div>
+        <JoinButton 
+          href={buttonLink} 
+          theme={ThemeExternalLink.CLEAR}
+          buttonTheme={ThemeButton.GREEN}
+          className={cls.button_wrapper_spacing}
+        >
+          {buttonText}
+        </JoinButton>
       )}
     </>
   )

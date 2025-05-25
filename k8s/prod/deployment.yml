@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dsp-stage-deployment
+  name: dsp-prod-deployment
   namespace: default
   labels:
-    app: dsp-stage
-    environment: stage
+    app: dsp-prod
+    environment: production
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app: dsp-stage
-      environment: stage
+      app: dsp-prod
+      environment: production
   template:
     metadata:
       labels:
-        app: dsp-stage
-        environment: stage
+        app: dsp-prod
+        environment: production
     spec:
       imagePullSecrets:
       - name: ghcr-secret
       containers:
-      - name: dsp-stage
-        image: ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
+      - name: dsp-prod
+        image: ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
@@ -33,11 +33,11 @@ spec:
           value: "1"
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
             memory: "512Mi"
             cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
         livenessProbe:
           httpGet:
             path: /

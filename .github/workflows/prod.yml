@@ -5,11 +5,14 @@ on:
     branches:
     - main
 
+<<<<<<< HEAD
 # Предотвращаем множественные одновременные деплои
 concurrency:
   group: production-deploy
   cancel-in-progress: true
 
+=======
+>>>>>>> 82ac3e08 (🚀 Add production environment setup with k8s manifests and GitHub Actions workflow)
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: themacroeconomicdao/decentralized-social-platform/dsp-prod
@@ -33,16 +36,29 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+<<<<<<< HEAD
       # Устанавливаем нужный тег один раз, чтобы избежать рассинхрона
       - name: Set image tag
         id: vars
         run: echo "TAG=main-${GITHUB_SHA}" >> $GITHUB_OUTPUT
+=======
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest
+>>>>>>> 82ac3e08 (🚀 Add production environment setup with k8s manifests and GitHub Actions workflow)
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+<<<<<<< HEAD
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
@@ -51,6 +67,10 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y skopeo
           skopeo inspect docker://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} >/dev/null
+=======
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+>>>>>>> 82ac3e08 (🚀 Add production environment setup with k8s manifests and GitHub Actions workflow)
 
       - name: Configure kubectl
         run: |
@@ -58,6 +78,7 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
 
+<<<<<<< HEAD
       - name: Pre-deployment diagnostics
         run: |
           echo "🔍 Pre-deployment cluster diagnostics:"
@@ -181,4 +202,21 @@ jobs:
       #   with:
       #     image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
       #     fail-build: false
+=======
+      - name: Deploy to k3s
+        run: |
+          # Apply manifests (creates or updates resources)
+          kubectl apply -f k8s/prod/
+
+          # Update image in deployment to the specific new sha
+          kubectl set image deployment/dsp-prod-deployment dsp-prod=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${{ github.sha }} -n default
+          
+          # Wait for rollout
+          kubectl rollout status deployment/dsp-prod-deployment -n default --timeout=600s
+
+      - name: Get deployment status
+        run: |
+          kubectl get pods -n default -l app=dsp-prod
+          kubectl get svc,ingress -n default | grep prod
+>>>>>>> 82ac3e08 (🚀 Add production environment setup with k8s manifests and GitHub Actions workflow)
 

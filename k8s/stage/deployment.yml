@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dsp-stage-deployment
+  namespace: default
+  labels:
+    app: dsp-stage
+    environment: stage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dsp-stage
+      environment: stage
+  template:
+    metadata:
+      labels:
+        app: dsp-stage
+        environment: stage
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      containers:
+      - name: dsp-stage
+        image: ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: NEXT_TELEMETRY_DISABLED
+          value: "1"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5 

@@ -22,5 +22,4 @@ spec:
       interval: 1m
     - name: request-duration
       threshold: 500
-      interval: 30s
-    autoPromotionEnabled: true 
+      interval: 30s 

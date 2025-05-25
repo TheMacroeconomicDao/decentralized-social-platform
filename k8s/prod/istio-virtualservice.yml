@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: dsp-prod-virtualservice
+  namespace: default
+  labels:
+    app: dsp-prod
+    environment: production
+spec:
+  hosts:
+  - gyber.org
+  - www.gyber.org
+  gateways:
+  - dsp-prod-gateway
+  http:
+  - route:
+    - destination:
+        host: dsp-prod-service
+        port:
+          number: 80 

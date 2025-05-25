@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: dsp-prod-https-redirect
+  namespace: default
+  labels:
+    app: dsp-prod
+    environment: production
+spec:
+  hosts:
+  - gyber.org
+  - www.gyber.org
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+      headers:
+        x-forwarded-proto:
+          exact: "http"
+    redirect:
+      scheme: https
+      redirectCode: 301
+  - route:
+    - destination:
+        host: dsp-prod-service
+        port:
+          number: 80 

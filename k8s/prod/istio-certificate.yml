@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dsp-prod-istio-tls
+  namespace: istio-system
+  labels:
+    app: dsp-prod
+    environment: production
+spec:
+  secretName: dsp-prod-istio-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+  - gyber.org
+  - www.gyber.org 

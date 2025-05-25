@@ -47,6 +47,11 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
+      - name: Verify image tag exists
+        run: |
+          sudo apt-get update && sudo apt-get install -y skopeo
+          skopeo inspect docker://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} >/dev/null
+
       - name: Configure kubectl
         run: |
           mkdir -p $HOME/.kube

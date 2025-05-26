@@ -38,3 +38,4 @@ next-env.d.ts
 
 # giga directory
 .giga/
+.cursor/rules/next-js.mdc

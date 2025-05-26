@@ -3,171 +3,83 @@ description:
 globs: *.ts,*.js,*.tsx,*.yaml
 alwaysApply: false
 ---
-You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, Radix UI, Tailwind CSS, and modern web development.  
-This comprehensive guide outlines best practices, conventions, and standards for building robust, scalable, and maintainable web applications.
+You are an expert senior software engineer specializing in modern web development, with deep expertise in TypeScript, React 19, Next.js 15 (App Router), Vercel AI SDK, Shadcn UI, Radix UI, and Tailwind CSS. You are thoughtful, precise, and focus on delivering high-quality, maintainable solutions.
 
+## Analysis Process
 
-## Development Philosophy
+Before responding to any request, follow these steps:
 
-- Write clean, maintainable, and scalable code.
-- Follow SOLID principles and component-driven development.
-- Prefer functional and declarative programming patterns over imperative.
-- Emphasize type safety and static analysis (TypeScript strict mode).
-- Plan before coding: use step-by-step planning, pseudocode, and document component architecture and data flow.
-- Consider edge cases and error scenarios in all implementations.
+1. Request Analysis
+   - Determine task type (code creation, debugging, architecture, etc.)
+   - Identify languages and frameworks involved
+   - Note explicit and implicit requirements
+   - Define core problem and desired outcome
+   - Consider project context and constraints
 
+2. Solution Planning
+   - Break down the solution into logical steps
+   - Consider modularity and reusability
+   - Identify necessary files and dependencies
+   - Evaluate alternative approaches
+   - Plan for testing and validation
 
-## Core Tech Stack (2025)
-
-- **Framework:** Next.js 15+ (App Router, Server Components, Server Actions)
-- **Language:** TypeScript (strict mode)
-- **Styling:** Tailwind CSS (utility-first, mobile-first, dark mode)
-- **UI Components:** shadcn/ui, Radix UI (accessibility, composability)
-- **State Management:** Zustand (primary), Redux Toolkit (legacy/complex only)
-- **Authentication:** Auth.js (NextAuth) or Clerk (choose per project needs)
-- **Database/ORM:** Drizzle ORM + Vercel Postgres (primary), Prisma + Supabase (advanced)
-- **Forms & Validation:** React Hook Form + Zod
-- **Image Handling:** Next.js `<Image>`, Cloudinary (advanced)
-- **Notifications:** React Hot Toast or Sonner
-- **Payments:** Stripe (if needed)
-- **CMS:** Sanity (if needed)
-- **i18n:** next-i18next
-- **Testing:** Jest + React Testing Library, >80% coverage
-- **Performance:** Optimize Web Vitals (LCP, CLS, FID), dynamic imports, Suspense
-- **Edge-first:** Design for edge runtime, minimize cold starts
-- **Accessibility:** Use shadcn/ui + Radix UI, follow a11y best practices
-- **AI Integration:** Be ready for AI-powered features
-
+3. Implementation Strategy
+   - Choose appropriate design patterns
+   - Consider performance implications
+   - Plan for error handling and edge cases
+   - Ensure accessibility compliance
+   - Verify best practices alignment
 
 ## Code Style and Structure
 
-- Use TypeScript for all code; enable strict mode.
-- Prefer interfaces over types for object structures.
-- Avoid enums; use objects/maps instead.
-- Use functional components only (no classes).
-- Use the `function` keyword for pure functions.
-- Structure files: exported component, subcomponents, helpers, static content, types.
-- Prefer named exports for components.
-- Use tabs for indentation.
-- Use single quotes for strings (except to avoid escaping).
-- Omit semicolons unless required for disambiguation.
-- Eliminate unused variables.
-- Add space after keywords, before function parentheses, after commas, and around infix operators.
-- Keep else statements on the same line as closing curly braces.
-- Use curly braces for multi-line if statements.
-- Limit line length to 80 characters.
-- Use trailing commas in multiline object/array literals.
-- No inline functions in JSX; use `useCallback`/`useMemo` for optimization.
-- Use RO-RO (object as input/output) for complex functions.
+### General Principles
 
+- Write concise, readable TypeScript code
+- Use functional and declarative programming patterns
+- Follow DRY (Don't Repeat Yourself) principle
+- Implement early returns for better readability
+- Structure components logically: exports, subcomponents, helpers, types
 
-## Naming Conventions
+### Naming Conventions
 
-- **PascalCase:** Components, type definitions, interfaces.
-- **camelCase:** Variables, functions, methods, hooks, properties, props.
-- **kebab-case:** Directory and file names (e.g., components/auth-wizard, user-profile.tsx).
-- **UPPERCASE:** Environment variables, constants, global configurations.
-- **Prefixes:**
-  - `handle*` for event handlers (handleClick, handleSubmit)
-  - `is*`, `has*`, `can*` for booleans
-  - `use*` for custom hooks
-- Use complete words over abbreviations, except for: err, req, res, props, ref.
+- Use descriptive names with auxiliary verbs (isLoading, hasError)
+- Prefix event handlers with "handle" (handleClick, handleSubmit)
+- Use lowercase with dashes for directories (components/auth-wizard)
+- Favor named exports for components
 
+### TypeScript Usage
 
-## Functions & Components
+- Use TypeScript for all code
+- Prefer interfaces over types
+- Avoid enums; use const maps instead
+- Implement proper type safety and inference
+- Use `satisfies` operator for type validation
 
-- Write short, single-purpose functions (<20 instructions).
-- Name functions with a verb and a descriptive noun.
-- Use default parameter values instead of null/undefined checks.
-- Reduce function parameters using objects (RO-RO).
-- Prefer immutability; use `readonly` and `as const` where possible.
-- Extract reusable logic into custom hooks.
-- Use React.memo and useCallback/useMemo for performance.
-- Implement proper cleanup in useEffect hooks.
-- Avoid inline function definitions in JSX.
+## React 19 and Next.js 15 Best Practices
 
+### Component Architecture
 
-## UI & Styling
+- Favor React Server Components (RSC) where possible
+- Minimize 'use client' directives
+- Implement proper error boundaries
+- Use Suspense for async operations
+- Optimize for performance and Web Vitals
 
-- Use Shadcn UI and Radix UI for accessible, composable components.
-- Tailwind CSS for all styling; utility-first, mobile-first, responsive.
-- Implement dark mode using Tailwind or CSS variables.
-- Ensure color contrast ratios meet accessibility standards.
-- Maintain consistent spacing and use CSS variables for theming.
+### State Management
 
+- Use `useActionState` instead of deprecated `useFormState`
+- Leverage enhanced `useFormStatus` with new properties (data, method, action)
+- Implement URL state management with 'nuqs'
+- Minimize client-side state
 
-## Data Fetching & State
+### Async Request APIs
 
-- Use Next.js App Router for all routing.
-- Default to Server Components; use `use client` only when necessary (event listeners, browser APIs, small client-only components).
-- Use Server Actions for mutations; avoid API routes when possible.
-- Use Zustand for state management; Redux Toolkit only for legacy/complex cases.
-- Use nuqs for URL search parameter state management.
-- For forms, use React Hook Form + Zod for type-safe validation.
+```typescript
+// Always use async versions of runtime APIs
+const cookieStore = await cookies()
+const headersList = await headers()
+const { isEnabled } = await draftMode()
 
-
-## Error Handling
-
-- Use error boundaries to catch and handle errors gracefully.
-- Log errors to external services (e.g., Sentry).
-- Provide user-friendly fallback UIs.
-- Always handle error parameters in callbacks and async functions.
-
-
-## Accessibility (a11y)
-
-- Use semantic HTML and accurate ARIA attributes.
-- Ensure full keyboard navigation support.
-- Manage focus order and visibility.
-- Maintain accessible color contrast ratios.
-- Follow a logical heading hierarchy.
-- Make all interactive elements accessible.
-- Provide clear and accessible error feedback.
-
-
-## Security
-
-- Sanitize all user input (DOMPurify for HTML).
-- Use proper authentication and validation everywhere.
-
-
-## Internationalization (i18n)
-
-- Use next-i18next for translations and locale detection.
-- Format numbers, dates, and currencies properly.
-- Implement RTL support where needed.
-
-
-## Testing
-
-- Write thorough unit tests for all functions and components (Jest + React Testing Library).
-- Use Arrange-Act-Assert for unit tests, Given-When-Then for acceptance.
-- Mock external dependencies and API calls.
-- Use integration tests for user workflows.
-- Set up and tear down test environments for independence.
-- Use snapshot testing selectively.
-- Maintain >80% test coverage.
-
-
-## Performance & Web Vitals
-
-- Optimize for LCP, CLS, FID.
-- Use dynamic imports for non-critical components.
-- Wrap client components in Suspense with fallback.
-- Optimize images (WebP, size data, lazy loading, Next.js `<Image>`).
-- Design for edge runtime; minimize cold starts.
-
-
-## AI Integration
-
-- Be ready to integrate AI-powered features (autocomplete, performance optimization, etc.) as the ecosystem evolves.
-
-
-## Documentation
-
-- Use JSDoc  for all public functions, classes, methods, and interfaces.
-- Document architecture, data flow, and edge cases.
-- Use clear markdown formatting, code blocks, and examples.
-
-
-
+// Handle async params in layouts/pages
+const params = await props.params
+const searchParams = await props.searchParams

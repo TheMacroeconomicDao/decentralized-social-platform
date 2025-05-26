@@ -133,9 +133,9 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
             const deltaY = e.clientY - dragStart.y;
 
             if (isDragging) {
-                // ИСПРАВЛЕНО: Используем initialState.size для консистентных границ
-                const newX = Math.max(0, Math.min(window.innerWidth - initialState.size.width, initialState.position.x + deltaX));
-                const newY = Math.max(0, Math.min(window.innerHeight - initialState.size.height, initialState.position.y + deltaY));
+                // ИСПРАВЛЕНО: Используем актуальную ширину для ограничения справа
+                const newX = Math.max(0, Math.min(window.innerWidth - popupState.size.width, initialState.position.x + deltaX));
+                const newY = Math.max(0, Math.min(window.innerHeight - popupState.size.height, initialState.position.y + deltaY));
                 
                 setPopupState(prev => ({
                     ...prev,

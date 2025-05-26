@@ -25,4 +25,12 @@ spec:
         image: ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000 
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_CHAT_MODE
+          value: "openai"
+        - name: NEXT_PUBLIC_OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: api-key 

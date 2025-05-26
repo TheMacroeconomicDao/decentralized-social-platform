@@ -1,11 +1,12 @@
 export const CRYPTO_ICONS = [
     "bitcoin", "ethereum", "cardano", "solana", "polygon", 
     "polkadot", "litecoin", "bnb", "near", "ethereum-classic", 
-    "toncoin", "tron", "internet"
+    "toncoin", "tron", "internet", "1inch", "handshake", "powr", "zrx"
 ] as const;
 
 export const TECH_ICONS = [
-    "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang", "kuber"
+    "react", "nodejs", "nextjs", "python", "flutter", "rust", "golang", "kuber",
+    "elastik", "kibana", "kafka", "debian", "supa", "cisco"
 ] as const;
 
 export const ALL_ICONS = [...CRYPTO_ICONS, ...TECH_ICONS] as const;

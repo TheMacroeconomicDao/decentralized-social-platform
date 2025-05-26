@@ -1,7 +1,7 @@
 "use client"
 import cls from "./CardMember.module.scss";
 import { classNames } from "@/shared/lib/classNames/classNames";
-import Image from "next/image";
+import { SafeImage } from "@/shared/ui/SafeImage";
 import { motion, Variants } from "framer-motion";
 
 interface CardMemberProps {
@@ -29,7 +29,7 @@ export const CardMember = (props: CardMemberProps) => {
     >
       <div className={cls.avatar}>
         <a href={link}>
-          <Image
+          <SafeImage
             fill={true}
             src={avatarSrc}
             alt={fullName} sizes="(max-width: 768px) 100vw"

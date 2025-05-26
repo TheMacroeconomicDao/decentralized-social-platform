@@ -1,6 +1,6 @@
 import { Button, ThemeButton } from "@/shared/ui/Button/Button";
 import cls from "./EventCard.module.scss";
-import Image from "next/image";
+import { SafeImage } from "@/shared/ui/SafeImage";
 
 interface EventCardProps {
   imageSrc: string;
@@ -26,7 +26,7 @@ export const EventCard = (props: EventCardProps) => {
   return (
     <div className={cls.EventCard}>
       <div className={cls.Image}>
-        <Image
+        <SafeImage
           src={imageSrc}
           fill
           alt={title}

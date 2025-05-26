@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+import { SafeImage } from '@/shared/ui/SafeImage'
 import { useIsMobile } from '@/shared/hooks/mediaQuery/useMediaQuery'
 import cls from './Slider.module.scss'
 
@@ -15,7 +15,7 @@ const SlideImage = ({ path, mobilePath, title }: SlideImageProps) => {
   return (
     <>
       {(!isMobile || isMobile === undefined) && (
-        <Image
+        <SafeImage
           fill={true}
           src={path}
           alt={title || 'slide'}
@@ -31,7 +31,7 @@ const SlideImage = ({ path, mobilePath, title }: SlideImageProps) => {
       )}
 
       {(isMobile || isMobile === undefined) && (
-        <Image
+        <SafeImage
           fill={true}
           src={mobilePath}
           alt={title || 'slide'}

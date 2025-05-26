@@ -1,6 +1,6 @@
 import cls from "./Section.module.scss";
 import { classNames } from "@/shared/lib/classNames/classNames";
-import Image from "next/image";
+import { SafeImage } from "@/shared/ui/SafeImage";
 import { ReactNode } from "react";
 
 export enum ThemeBackgroundSection {
@@ -21,13 +21,13 @@ export const Section = (props: SectionProps) => {
       className={classNames(cls.Section, {}, [className])}
     >
       {background &&
-        <Image 
-        fill
-        src={background}
-        alt='bg-section'
-        className={cls.image}
-        quality={70}
-      />
+        <SafeImage 
+          fill
+          src={background}
+          alt='bg-section'
+          className={cls.image}
+          quality={70}
+        />
       }
       {children}
     </div>

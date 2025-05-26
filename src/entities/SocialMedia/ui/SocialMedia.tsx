@@ -3,7 +3,8 @@ import { classNames } from "@/shared/lib/classNames/classNames";
 import ExternalLink, {
   ThemeExternalLink,
 } from "@/shared/ui/ExternalLink/ExternalLink";
-import Image from "next/image";
+import { SafeImage } from "@/shared/ui/SafeImage";
+
 interface SocialMediaProps {
   className?: string;
 }
@@ -35,7 +36,7 @@ export const SocialMedia = ({ className = "" }: SocialMediaProps) => {
           theme={ThemeExternalLink.CLEAR}
           target="_blank"
         >
-          <Image src={item.path} alt={item.title} width={50} height={50} />
+          <SafeImage src={item.path} alt={item.title} width={50} height={50} />
         </ExternalLink>
       ))}
     </div>

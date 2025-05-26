@@ -159,9 +159,9 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
                 }
                 
                 if (resizeDirection.includes('w')) {
-                    newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width - deltaX));
-                    // Правильное вычисление позиции для west resize - прямое смещение на deltaX
-                    newX = initialState.position.x + deltaX;
+                    // West: позиция следует за мышью, ширина изменяется соответственно
+                    newX = Math.max(0, initialState.position.x + deltaX);
+                    newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width + (initialState.position.x - newX)));
                 }
 
                 // Вертикальное изменение размера

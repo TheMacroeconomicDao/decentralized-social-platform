@@ -133,7 +133,7 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
             const deltaY = e.clientY - dragStart.y;
 
             if (isDragging) {
-                // Простая логика перетаскивания
+                // Простая логика перетаскивания с учетом текущего размера
                 const newX = Math.max(0, Math.min(window.innerWidth - popupState.size.width, initialState.position.x + deltaX));
                 const newY = Math.max(0, Math.min(window.innerHeight - popupState.size.height, initialState.position.y + deltaY));
                 
@@ -142,31 +142,55 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
                     position: { x: newX, y: newY }
                 }));
             } else if (isResizing && resizeDirection) {
-                // Исправленная логика resize
+                // Полностью переписанная логика resize для корректной работы
                 let newWidth = initialState.size.width;
                 let newHeight = initialState.size.height;
                 let newX = initialState.position.x;
                 let newY = initialState.position.y;
 
-                // Правильная логика изменения размера
+                // Горизонтальное изменение размера
                 if (resizeDirection.includes('e')) {
-                    newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width + deltaX));
+                    // East: увеличиваем ширину вправо
+                    const proposedWidth = initialState.size.width + deltaX;
+                    newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, proposedWidth));
+                    // Проверяем, чтобы не выходило за границы экрана
+                    const maxAllowedWidth = window.innerWidth - initialState.position.x;
+                    newWidth = Math.min(newWidth, maxAllowedWidth);
                 }
+                
                 if (resizeDirection.includes('w')) {
                     newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width - deltaX));
-                    // Правильное вычисление позиции для west resize
-                    newX = initialState.position.x + (initialState.size.width - newWidth);
-                }
-                if (resizeDirection.includes('s')) {
-                    newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height + deltaY));
-                }
-                if (resizeDirection.includes('n')) {
-                    newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height - deltaY));
-                    // Правильное вычисление позиции для north resize
-                    newY = initialState.position.y + (initialState.size.height - newHeight);
+                    // Правильное вычисление позиции для west resize - прямое смещение на deltaX
+                    newX = initialState.position.x + deltaX;
                 }
 
-                // Проверка границ экрана
+                // Вертикальное изменение размера
+                if (resizeDirection.includes('s')) {
+                    // South: увеличиваем высоту вниз
+                    const proposedHeight = initialState.size.height + deltaY;
+                    newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, proposedHeight));
+                    // Проверяем, чтобы не выходило за границы экрана
+                    const maxAllowedHeight = window.innerHeight - initialState.position.y;
+                    newHeight = Math.min(newHeight, maxAllowedHeight);
+                }
+                
+                if (resizeDirection.includes('n')) {
+                    // North: увеличиваем высоту вверх
+                    const proposedHeight = initialState.size.height - deltaY;
+                    newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, proposedHeight));
+                    
+                    // Вычисляем новую позицию Y
+                    const heightChange = newHeight - initialState.size.height;
+                    newY = initialState.position.y - heightChange;
+                    
+                    // Проверяем границы
+                    if (newY < 0) {
+                        newHeight = initialState.size.height + initialState.position.y;
+                        newY = 0;
+                    }
+                }
+
+                // Финальная проверка границ экрана
                 const finalX = Math.max(0, Math.min(window.innerWidth - newWidth, newX));
                 const finalY = Math.max(0, Math.min(window.innerHeight - newHeight, newY));
 
@@ -177,7 +201,7 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
                 });
             }
         });
-    }, [isMobile, isDragging, isResizing, resizeDirection, dragStart, initialState]);
+    }, [isMobile, isDragging, isResizing, resizeDirection, dragStart, initialState, popupState.size]);
 
     // Завершение операций
     const handleMouseUp = useCallback(() => {

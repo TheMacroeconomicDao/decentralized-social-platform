@@ -27,9 +27,7 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: NEXT_PUBLIC_CHAT_MODE
-          value: "openai"
-        - name: NEXT_PUBLIC_OPENAI_API_KEY
+        - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
               name: openai-secret

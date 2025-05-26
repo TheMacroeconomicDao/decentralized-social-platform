@@ -1,8 +1,13 @@
-// Конфиг для режима чата и ключа OpenAI
-// CHAT_MODE: 'puter' (по умолчанию) или 'openai' (для OpenAI API)
-// OPENAI_API_KEY: хранится в GitHub secrets как NEXT_PUBLIC_OPENAI_API_KEY
-// OPENAI_MODEL: используем gpt-4
+// Конфигурация чата для новой безопасной архитектуры
+// Теперь все API вызовы идут через серверный endpoint /api/chat
+// OpenAI API ключ хранится только на сервере как OPENAI_API_KEY (без NEXT_PUBLIC_)
 
-export const CHAT_MODE = process.env.NEXT_PUBLIC_CHAT_MODE || 'openai'; // 'puter' | 'openai'
-export const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY || '';
-export const OPENAI_MODEL = 'gpt-4'; 
+// Режим работы чата (для будущих расширений)
+export const CHAT_MODE = 'server'; // Всегда используем серверный API
+
+// Настройки для клиента
+export const CHAT_CONFIG = {
+  maxMessageLength: 4000,
+  apiEndpoint: '/api/chat',
+  fallbackProvider: 'puter', // Fallback если сервер недоступен
+} as const; 

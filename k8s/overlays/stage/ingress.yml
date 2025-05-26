@@ -3,9 +3,6 @@ kind: Ingress
 metadata:
   name: dsp-stage-ingress
   namespace: default
-  labels:
-    app: dsp-stage
-    environment: stage
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure

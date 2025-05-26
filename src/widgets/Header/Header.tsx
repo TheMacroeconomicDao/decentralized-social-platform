@@ -37,19 +37,19 @@ export const Header = ({className = ""}: HeaderProps) => {
             </Link>
 
             <div className={cls.btnGroup}>
-                {/* Временно скрыта кнопка Chat */}
-                {/* <Button theme={ThemeButton.CLEAR} disabled={false} onClick={handleClickChat}>
+                
+                <Button theme={ThemeButton.CLEAR} disabled={false} onClick={handleClickChat}>
                     Chat
-                </Button> */}
+                </Button>
                 <Documents handleClick={handleClick} isShow={isShow} />
                 {!isShow &&
                     <Button theme={ThemeButton.ORANGE} disabled={false}>
                         Dapp
                     </Button>
                 }
-                {/* {isShowChat &&
+                {isShowChat &&
                     <ChatPopup isOpen={isShowChat} onClose={handleCloseChat} />
-                } */}
+                }
                 <NavbarTablet/>
             </div>
         </div>

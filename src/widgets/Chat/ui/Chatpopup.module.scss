@@ -79,6 +79,9 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   
   &::-webkit-scrollbar {
     width: 6px;
@@ -265,6 +268,7 @@
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
   border-top: 1px solid rgba(130, 133, 140, 0.2);
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
 }
 
 .input {
@@ -346,5 +350,6 @@
   font-size: 0.7rem;
   color: #94a3b8;
   background: rgba(255, 255, 255, 0.02);
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
 }
   

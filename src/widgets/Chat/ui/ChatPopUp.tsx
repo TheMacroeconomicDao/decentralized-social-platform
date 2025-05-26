@@ -74,6 +74,37 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
         });
     };
 
+    // --- scroll lock logic ---
+    let lastY = 0;
+    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+        const el = messagesContainerRef.current;
+        if (!el) return;
+        const { scrollTop, scrollHeight, clientHeight } = el;
+        const isAtTop = scrollTop === 0;
+        const isAtBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 1;
+        if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    };
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+        lastY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+        const el = messagesContainerRef.current;
+        if (!el) return;
+        const { scrollTop, scrollHeight, clientHeight } = el;
+        const isAtTop = scrollTop === 0;
+        const isAtBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 1;
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - lastY;
+        if ((diff > 0 && isAtTop) || (diff < 0 && isAtBottom)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        lastY = currentY;
+    };
+
     return (
         <DraggablePopup isOpen={isOpen} onClose={onClose}>
             {/* Индикатор перетаскивания для десктопа */}
@@ -109,7 +140,13 @@ export const ChatPopup: React.FC<ChatProps> = ({ isOpen, onClose, isMobile = fal
             </div>
 
             {/* Messages */}
-            <div ref={messagesContainerRef} className={styles.messages}>
+            <div
+                ref={messagesContainerRef}
+                className={styles.messages}
+                onWheel={handleWheel}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+            >
                 {messages.length === 0 ? (
                     <div className={styles.welcomeMessage}>
                         <AgentIcon />

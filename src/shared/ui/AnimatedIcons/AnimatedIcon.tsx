@@ -7,6 +7,7 @@ import { ICON_SIZES, ICON_SIZES_MOBILE } from './constants';
 import { getIconPath } from './utils';
 import { useIsMobile } from '@/shared/hooks/mediaQuery/useMediaQuery';
 import { IconInstance } from './useAnimatedIcons';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 interface AnimatedIconProps {
     iconData: IconInstance;
@@ -49,7 +50,7 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ iconData, onAnimatio
             }}
             onAnimationComplete={() => onAnimationEnd(iconData.id)}
         >
-            <img
+            <SafeImage
                 src={iconPath}
                 alt={iconData.icon}
                 width={sizeValue}

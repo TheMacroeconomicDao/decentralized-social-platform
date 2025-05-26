@@ -1,5 +1,5 @@
 import Image, { ImageProps } from "next/image";
 
-export const SafeImage = (props: ImageProps) => (
-  <Image {...props} draggable={false} />
+export const SafeImage = ({ alt = "", ...props }: ImageProps) => (
+  <Image {...props} alt={alt} draggable={false} />
 ); 

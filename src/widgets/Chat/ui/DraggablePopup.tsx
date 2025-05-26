@@ -26,6 +26,9 @@ interface PopupState {
 
 type ResizeDirection = 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w' | 'nw' | null;
 
+// добавим длительность анимации закрытия
+const TRANSITION_MS = 250; // должен совпадать с transition в SCSS
+
 export const DraggablePopup: React.FC<DraggablePopupProps> = ({
     isOpen,
     onClose,
@@ -62,6 +65,10 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
     const MAX_WIDTH = 600;
     const MIN_HEIGHT = 400;
     const MAX_HEIGHT = 900;
+
+    // Состояния управления анимацией появления/скрытия
+    const [renderPopup, setRenderPopup] = useState(isOpen);
+    const [animationClass, setAnimationClass] = useState<string>('');
 
     // Оптимизированная проверка мобильного устройства
     const checkMobile = useCallback(() => {
@@ -135,44 +142,42 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
                     position: { x: newX, y: newY }
                 }));
             } else if (isResizing && resizeDirection) {
-                // Упрощенная логика resize без сложных пересчетов
+                // Исправленная логика resize
                 let newWidth = initialState.size.width;
                 let newHeight = initialState.size.height;
                 let newX = initialState.position.x;
                 let newY = initialState.position.y;
 
-                // Простая логика изменения размера
+                // Правильная логика изменения размера
                 if (resizeDirection.includes('e')) {
                     newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width + deltaX));
                 }
                 if (resizeDirection.includes('w')) {
-                    const proposedWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width - deltaX));
-                    const widthDelta = proposedWidth - newWidth;
-                    newWidth = proposedWidth;
-                    newX = initialState.position.x - widthDelta;
+                    newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width - deltaX));
+                    // Правильное вычисление позиции для west resize
+                    newX = initialState.position.x + (initialState.size.width - newWidth);
                 }
                 if (resizeDirection.includes('s')) {
                     newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height + deltaY));
                 }
                 if (resizeDirection.includes('n')) {
-                    const proposedHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height - deltaY));
-                    const heightDelta = proposedHeight - newHeight;
-                    newHeight = proposedHeight;
-                    newY = initialState.position.y - heightDelta;
+                    newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height - deltaY));
+                    // Правильное вычисление позиции для north resize
+                    newY = initialState.position.y + (initialState.size.height - newHeight);
                 }
 
-                // Простая проверка границ без сложной логики
+                // Проверка границ экрана
                 const finalX = Math.max(0, Math.min(window.innerWidth - newWidth, newX));
                 const finalY = Math.max(0, Math.min(window.innerHeight - newHeight, newY));
 
-                // Одно обновление состояния вместо двух
+                // Одно обновление состояния
                 setPopupState({
                     position: { x: finalX, y: finalY },
                     size: { width: newWidth, height: newHeight }
                 });
             }
         });
-    }, [isMobile, isDragging, isResizing, resizeDirection, dragStart, initialState, popupState.size]);
+    }, [isMobile, isDragging, isResizing, resizeDirection, dragStart, initialState]);
 
     // Завершение операций
     const handleMouseUp = useCallback(() => {
@@ -201,6 +206,30 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         }
     }, [isMobile, onClose]);
 
+    // Управление отображением с анимацией
+    useEffect(() => {
+        if (isOpen) {
+            setRenderPopup(true);
+            // старт анимации появления
+            setAnimationClass(styles.popupEnter);
+            // переключаем во второй кадр, чтобы сработал transition
+            requestAnimationFrame(() => {
+                setAnimationClass(`${styles.popupEnter} ${styles.popupEnterActive}`);
+            });
+        } else if (renderPopup) {
+            // старт анимации скрытия
+            setAnimationClass(`${styles.popupExit}`);
+            requestAnimationFrame(() => {
+                setAnimationClass(`${styles.popupExit} ${styles.popupExitActive}`);
+            });
+            const timer = setTimeout(() => {
+                setRenderPopup(false);
+                setAnimationClass('');
+            }, TRANSITION_MS);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen, renderPopup]);
+
     if (!isOpen) return null;
 
     const popupStyle = isMobile ? {} : {
@@ -217,7 +246,7 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         >
             <div
                 ref={popupRef}
-                className={`${styles.popup} ${isMobile ? styles.mobilePopup : styles.desktopPopup}`}
+                className={`${styles.popup} ${isMobile ? styles.mobilePopup : styles.desktopPopup} ${animationClass}`}
                 style={popupStyle}
                 onClick={(e) => e.stopPropagation()}
             >

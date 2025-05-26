@@ -3,7 +3,8 @@ import { classNames } from "@/shared/lib/classNames/classNames";
 import { SocialMedia } from "@/entities/SocialMedia";
 import { Logo } from "@/shared/ui/Logo/Logo";
 import React from "react";
-import { grape_nuts } from "@/app/layout";
+import { grape_nuts } from "@/shared/lib/fonts";
+
 interface FooterProps {
   className?: string;
 }

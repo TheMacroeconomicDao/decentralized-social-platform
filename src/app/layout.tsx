@@ -12,7 +12,7 @@ const montserrat = Montserrat({
   weight: ['300', '400', '500', '600', '700', '800'],
 })
 
-export const grape_nuts = Grape_Nuts({
+const grape_nuts = Grape_Nuts({
   subsets: ['latin'],
   weight: ['400'],
 })

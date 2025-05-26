@@ -230,7 +230,7 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         }
     }, [isOpen, renderPopup]);
 
-    if (!isOpen) return null;
+    if (!renderPopup) return null;
 
     const popupStyle = isMobile ? {} : {
         transform: `translate(${popupState.position.x}px, ${popupState.position.y}px)`,

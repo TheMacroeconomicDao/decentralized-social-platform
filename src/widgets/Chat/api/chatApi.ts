@@ -203,7 +203,9 @@ const sendMessageStream = async (
   }
 };
 
-export default { 
+const chatApi = { 
   sendMessage, 
   sendMessageStream
 };
+
+export default chatApi;

@@ -44,7 +44,12 @@
 }
 
 .hatLink {
+    top: -9px; /* Размещаем сверху линии: линия на -3px, hatLink высота 5px, значит top: -9px чтобы низ hatLink был на -4px, отступ 1px от линии на -3px */
     position: absolute;
     background: var(--c-orange);
     width: 100%;
+    height: 5px; /* Явно задаём высоту для консистентности */
+    border-radius: 0 !important; /* Принудительно убираем все скругления */
+    border: none; /* Убираем все границы */
+    z-index: 2; /* Выше градиентной линии (z-index: 1) */
 }

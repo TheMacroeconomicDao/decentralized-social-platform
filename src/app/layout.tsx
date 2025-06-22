@@ -1,9 +1,10 @@
 import './styles/reset.scss'
 import './styles/global.scss'
+import './styles/global-enhanced.scss'
 import type { Metadata } from 'next'
 import { Montserrat, Grape_Nuts } from 'next/font/google'
-import { Header } from '@/widgets/Header/Header'
-import { Navbar, NavbarMobile } from '@/widgets/Navbar'
+import { HeaderEnhanced } from '@/widgets/Header/Header-Enhanced'
+import { NavbarEnhanced, NavbarMobile } from '@/widgets/Navbar'
 import { Footer } from '@/widgets/Footer/Footer'
 import { GlobalAnimatedBackground } from '@/shared/ui/AnimatedIcons/GlobalAnimatedBackground'
 
@@ -46,8 +47,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={montserrat.className}>
         <GlobalAnimatedBackground />
-        <Header />
-        <Navbar />
+        <HeaderEnhanced />
+        <NavbarEnhanced />
         {children}
         <Footer />
         <NavbarMobile />

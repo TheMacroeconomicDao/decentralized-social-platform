@@ -1,0 +1,189 @@
+.Navbar {
+    position: relative;
+    width: 100%;
+    max-width: 1250px;
+    margin-top: var(--space-lg);
+    padding: var(--space-md) var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    
+    /* ДОБАВЛЯЕМ: Modern Glassmorphism 2025 */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 16px; /* Добавляем округлые углы контейнеру */
+    box-shadow: var(--shadow-soft);
+    
+    /* ДОБАВЛЯЕМ: Subtle animation */
+    transition: var(--transition-smooth);
+    
+    &:hover {
+        background: var(--glass-bg-strong);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-8px);
+        
+        /* ДОБАВЛЯЕМ: Дополнительные эффекты при hover */
+        box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.25),
+            0 8px 24px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    
+    /* СОХРАНЯЕМ: Уникальную градиентную границу (перенесенную в отдельный элемент) */
+    .gradientLine {
+        position: absolute;
+        background: linear-gradient(
+            270deg,
+            rgba(56, 34, 5, 0) 0%,
+            #965e15 13.59%,
+            #0e5e84 50.98%,
+            #638917 78.07%,
+            rgba(30, 19, 7, 0) 100%
+        );
+        height: 4px; /* Слегка увеличиваем для лучшего эффекта */
+        width: 100%;
+        top: -2px;
+        z-index: 1;
+        border-radius: 0; /* Убираем скругления линии */
+        
+        /* ДОБАВЛЯЕМ: Subtle glow */
+        box-shadow: 0 0 10px rgba(150, 94, 21, 0.3);
+    }
+    
+    .item {
+        position: relative;
+        min-width: 80px;
+        padding: 0 var(--space-sm);
+        font-size: var(--fs-fluid-base);
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        user-select: none;
+        cursor: pointer;
+        
+        /* ДОБАВЛЯЕМ: Premium transitions */
+        transition: var(--transition-smooth);
+        border-radius: 0; /* Убираем скругления у item */
+        
+        /* ДОБАВЛЯЕМ: Subtle hover effects */
+        &:hover {
+            background: rgba(225, 225, 225, 0.05);
+            backdrop-filter: blur(10px);
+            
+            .itemText {
+                color: rgba(225, 225, 225, 0.9);
+                text-shadow: 0 0 10px rgba(225, 225, 225, 0.3);
+            }
+        }
+        
+        &.active {
+            .itemText {
+                color: var(--c-orange);
+                font-weight: 600;
+                text-shadow: 0 0 15px rgba(212, 157, 50, 0.4);
+            }
+        }
+    }
+    
+    .itemText {
+        transition: var(--transition-smooth);
+        position: relative;
+        z-index: 2;
+    }
+}
+
+/* СОХРАНЯЕМ: Мобильную адаптивность */
+@media screen and (max-width: 900px) {
+    .Navbar {
+        display: none;
+    }
+}
+
+/* СОХРАНЯЕМ: Уникальный hatLink с улучшениями */
+.hatLink {
+    position: absolute;
+    background: var(--c-orange);
+    width: 100%;
+    height: 5px; /* Явно задаём высоту для консистентности */
+    top: -8px; /* gradientLine: top -2px до 2px, hatLink должен заканчиваться на -3px (1px сверху от -2px), с высотой 5px начинается на -8px */
+    border-radius: 0 !important; /* Принудительно убираем все скругления */
+    border: none; /* Убираем все границы */
+    z-index: 3; /* Выше gradientLine (z-index: 1) и itemText (z-index: 2) */
+    
+    /* ДОБАВЛЯЕМ: Enhanced glow effects */
+    box-shadow: var(--glow-orange);
+    
+    /* ДОБАВЛЯЕМ: Subtle gradient overlay */
+    background: linear-gradient(
+        135deg,
+        var(--c-orange) 0%,
+        rgba(212, 157, 50, 0.8) 50%,
+        var(--c-orange) 100%
+    );
+    
+    /* Убираем псевдоэлемент который создаёт наложение */
+}
+
+/* ДОБАВЛЯЕМ: Tablet optimizations */
+@media screen and (max-width: 1024px) and (min-width: 901px) {
+    .Navbar {
+        max-width: 100%;
+        margin-top: var(--space-md);
+        padding: var(--space-sm) var(--space-md);
+        
+        .item {
+            min-width: 70px;
+            padding: 0 var(--space-xs);
+            font-size: var(--fs-fluid-sm);
+        }
+    }
+}
+
+/* ДОБАВЛЯЕМ: High-resolution display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .Navbar {
+        border-width: 0.25px;
+    }
+    
+    .gradientLine {
+        height: 2px;
+    }
+}
+
+/* ДОБАВЛЯЕМ: Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .Navbar {
+        transition: none;
+        
+        &:hover {
+            transform: none;
+        }
+    }
+    
+    .item {
+        transition: none;
+    }
+    
+    .itemText {
+        transition: none;
+    }
+}
+
+/* ДОБАВЛЯЕМ: Focus accessibility */
+.item:focus-visible {
+    outline: 2px solid var(--c-orange);
+    outline-offset: 2px;
+    border-radius: 0; /* Убираем скругления */
+}
+
+/* ДОБАВЛЯЕМ: Dark mode enhancements (если потребуется) */
+@media (prefers-color-scheme: dark) {
+    .Navbar {
+        background: rgba(7, 43, 64, 0.35);
+        
+        .item:hover {
+            background: rgba(225, 225, 225, 0.08);
+        }
+    }
+} 

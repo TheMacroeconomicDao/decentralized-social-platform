@@ -8,6 +8,11 @@
     align-items: center;
     justify-content: space-around;
     
+    /* ПО УМОЛЧАНИЮ ПОЛУПРОЗРАЧНЫЙ */
+    opacity: 0.3;
+    visibility: visible;
+    transform: translateY(0px); /* Нормальная позиция */
+    
     /* ОТКЛЮЧАЕМ: Оригинальную градиентную линию */
     &::before {
         display: none !important;
@@ -21,13 +26,16 @@
     border-radius: 16px; /* Добавляем округлые углы контейнеру */
     box-shadow: var(--shadow-soft);
     
-    /* ДОБАВЛЯЕМ: Subtle animation */
-    transition: var(--transition-smooth);
+    /* ДОБАВЛЯЕМ: Плавная анимация появления */
+    transition: all 0.4s ease-out;
     
+    /* HOVER ЭФФЕКТ - выезжает вверх и становится полностью видимым */
     &:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-8px); /* Выезжает вверх */
         background: var(--glass-bg-strong);
         box-shadow: var(--shadow-medium);
-        transform: translateY(-8px);
         
         /* ДОБАВЛЯЕМ: Дополнительные эффекты при hover */
         box-shadow: 
@@ -36,7 +44,7 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     
-    /* СОХРАНЯЕМ: Уникальную градиентную границу (перенесенную в отдельный элемент) */
+    /* ГРАДИЕНТНАЯ ЛИНИЯ - 2px как запрошено */
     .gradientLine {
         position: absolute !important;
         background: linear-gradient(
@@ -47,7 +55,7 @@
             #638917 78.07%,
             rgba(30, 19, 7, 0) 100%
         ) !important;
-        height: 3px !important; /* Как в оригинале */
+        height: 2px !important; /* Уменьшил до 2px */
         width: 100% !important;
         top: -3px !important; /* Как в оригинале */
         left: 0 !important;
@@ -55,6 +63,20 @@
         border-radius: 0 !important;
         display: block !important;
         box-shadow: 0 0 15px rgba(150, 94, 21, 0.5) !important;
+    }
+    
+    /* ЗОЛОТОЙ ИНДИКАТОР - используем оригинальные значения из main */
+    .indicator {
+        position: absolute !important;
+        top: -36px !important; /* Как в оригинале */
+        left: 0 !important;
+        width: 100% !important;
+        height: 5px !important;
+        background: var(--c-orange) !important;
+        border-radius: 0 !important;
+        z-index: 10 !important;
+        box-shadow: var(--glow-orange) !important;
+        border: none !important;
     }
     
     .item {
@@ -106,26 +128,18 @@
     }
 }
 
-/* ПРОСТОЙ КЛАСС ДЛЯ ЗОЛОТОГО ИНДИКАТОРА */
-.indicator {
-    position: absolute !important;
-    top: -36px !important; /* Как в оригинале */
-    left: 0 !important;
-    width: 100% !important;
-    height: 5px !important;
-    background: var(--c-orange) !important;
-    border-radius: 0 !important;
-    z-index: 10 !important;
-    box-shadow: var(--glow-orange) !important;
-    border: none !important;
-}
-
 /* ДОБАВЛЯЕМ: Tablet optimizations */
 @media screen and (max-width: 1024px) and (min-width: 901px) {
     .Navbar {
         max-width: 100%;
         margin-top: var(--space-md);
         padding: var(--space-sm) var(--space-md);
+        
+        /* Сохраняем hover эффекты на планшетах */
+        &:hover {
+            opacity: 1;
+            transform: translateY(-4px); /* Меньше подъём на планшетах */
+        }
         
         .item {
             min-width: 70px;
@@ -149,10 +163,11 @@
 /* ДОБАВЛЯЕМ: Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
     .Navbar {
-        transition: none;
+        transition: opacity 0.3s ease-out; /* Только opacity анимация */
         
         &:hover {
-            transform: none;
+            transform: none; /* Убираем движение */
+            opacity: 1; /* Сохраняем смену прозрачности */
         }
     }
     

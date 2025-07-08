@@ -118,13 +118,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.8);
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+            animation: pulse 4s ease-in-out infinite;
         }
     }
     

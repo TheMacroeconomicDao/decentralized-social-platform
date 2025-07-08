@@ -4,7 +4,7 @@ import './styles/global-enhanced.scss'
 import type { Metadata } from 'next'
 import { Montserrat, Grape_Nuts } from 'next/font/google'
 import { HeaderEnhanced } from '@/widgets/Header/Header-Enhanced'
-import { NavbarEnhanced, NavbarMobile } from '@/widgets/Navbar'
+import { Navbar, NavbarMobile } from '@/widgets/Navbar'
 import { Footer } from '@/widgets/Footer/Footer'
 import { GlobalAnimatedBackground } from '@/shared/ui/AnimatedIcons/GlobalAnimatedBackground'
 
@@ -48,7 +48,7 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <GlobalAnimatedBackground />
         <HeaderEnhanced />
-        <NavbarEnhanced />
+        <Navbar />
         {children}
         <Footer />
         <NavbarMobile />

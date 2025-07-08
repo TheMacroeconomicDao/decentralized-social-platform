@@ -14,18 +14,17 @@ interface NavbarProps {
 const elementVariants: Variants = {
     start: {
         height: "15px",
-        top: "-18px",
         transformPerspective: '50px',
         rotateX: '50deg',
-        // ДОБАВЛЯЕМ: премиум glow эффект
+        zIndex: 999,
         boxShadow: "0 0 20px rgba(212, 157, 50, 0.4), 0 0 40px rgba(212, 157, 50, 0.2)",
         borderRadius: "0px"
     },
     end: {
         height: "5px", 
-        top: "-8px",
         transformPerspective: '50px',
         rotateX: '50deg',
+        zIndex: 999,
         boxShadow: "0 0 15px rgba(212, 157, 50, 0.3)",
         borderRadius: "0px"
     },
@@ -67,7 +66,7 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
             initial="hidden"
             animate="visible"
         >
-            {/* СОХРАНЯЕМ: Уникальную градиентную линию */}
+            {/* ГРАДИЕНТНАЯ ЛИНИЯ между двумя индикаторами */}
             <div className={cls.gradientLine} />
             
             {navbarItems.map((item) => (
@@ -88,11 +87,21 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                         )}
                         href={item.link}
                     >
-                        {/* СОХРАНЯЕМ: Уникальный layoutId="bow" анимированный элемент */}
+                        {/* ВЕРХНИЙ ИНДИКАТОР (красный) - ВЫШЕ линии */}
                         {pathName === item.link && (
                             <motion.div
-                                layoutId="bow"
+                                layoutId="topIndicator"
                                 className={cls.hatLink}
+                                style={{
+                                    position: 'absolute',
+                                    top: '-50px',
+                                    zIndex: 999,
+                                    width: '100%',
+                                    height: '5px',
+                                    background: 'red', // КРАСНЫЙ для отладки
+                                    borderRadius: '0px',
+                                    border: '2px solid #ff0000'
+                                }}
                                 variants={elementVariants}
                                 animate="start"
                                 initial="end"
@@ -100,7 +109,33 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                                     type: 'spring',
                                     bounce: 0.2,
                                     duration: 1,
-                                    // ДОБАВЛЯЕМ: более плавный easing
+                                    ease: "easeInOut"
+                                }}
+                            />
+                        )}
+
+                        {/* НИЖНИЙ ИНДИКАТОР (синий) - НИЖЕ линии */}
+                        {pathName === item.link && (
+                            <motion.div
+                                layoutId="bottomIndicator"
+                                className={cls.hatLink}
+                                style={{
+                                    position: 'absolute',
+                                    top: '-10px',
+                                    zIndex: 999,
+                                    width: '100%',
+                                    height: '5px',
+                                    background: 'blue', // СИНИЙ для отладки
+                                    borderRadius: '0px',
+                                    border: '2px solid #0000ff'
+                                }}
+                                variants={elementVariants}
+                                animate="start"
+                                initial="end"
+                                transition={{
+                                    type: 'spring',
+                                    bounce: 0.2,
+                                    duration: 1,
                                     ease: "easeInOut"
                                 }}
                             />

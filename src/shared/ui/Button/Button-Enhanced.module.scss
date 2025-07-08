@@ -1,0 +1,322 @@
+/* БАЗОВЫЕ СТИЛИ - СОХРАНЯЕМ с улучшениями */
+.Button {
+  background: none;
+  border: none;
+  user-select: none;
+  border-radius: 12px; /* Увеличиваем для более современного вида */
+  padding: clamp(12px, 2vw, 14px) clamp(30px, 8vw, 60px);
+  font-family: inherit;
+  font-size: var(--fs-fluid-base);
+  font-weight: 500;
+  color: var(--c-white);
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  
+  /* ДОБАВЛЯЕМ: Premium transitions */
+  transition: var(--transition-smooth);
+  
+  /* ДОБАВЛЯЕМ: Base neomorphic effects */
+  box-shadow: var(--shadow-soft);
+  
+  /* ДОБАВЛЯЕМ: Premium hover effects */
+  &:hover {
+    transform: translateY(-3px) scale(1.03);
+    filter: brightness(110%);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: var(--shadow-soft);
+  }
+  
+  /* ДОБАВЛЯЕМ: Ripple effect */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+  }
+  
+  &:active::after {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* СОХРАНЯЕМ: Существующие темы с улучшениями */
+.default {
+  border-radius: 26px;
+  background: linear-gradient(135deg, #4a4b08 0%, #6b6b08 100%);
+  box-shadow: var(--shadow-soft), var(--shadow-inset);
+  
+  &:hover {
+    background: linear-gradient(135deg, #5a5b08 0%, #7b7b08 100%);
+    box-shadow: var(--shadow-medium), var(--shadow-inset), var(--glow-orange);
+  }
+}
+
+.orange {
+  background: linear-gradient(161deg, #4a4b08 0%, #a46b17 100%);
+  box-shadow: 
+    var(--shadow-soft),
+    var(--shadow-inset),
+    0 0 0 1px rgba(212, 157, 50, 0.2);
+  
+  /* ДОБАВЛЯЕМ: Enhanced orange glow */
+  &:hover {
+    background: linear-gradient(161deg, #5a5b08 0%, #b47b27 100%);
+    box-shadow: 
+      var(--shadow-medium),
+      var(--shadow-inset),
+      var(--glow-orange),
+      0 0 0 1px rgba(212, 157, 50, 0.4);
+  }
+  
+  &:active {
+    background: linear-gradient(161deg, #3a3b08 0%, #946b17 100%);
+  }
+}
+
+.blue {
+  background: linear-gradient(161deg, #105390 0%, #4d7da9 100%);
+  box-shadow: 
+    var(--shadow-soft),
+    var(--shadow-inset),
+    0 0 0 1px rgba(66, 184, 243, 0.2);
+  
+  /* ДОБАВЛЯЕМ: Enhanced blue glow */
+  &:hover {
+    background: linear-gradient(161deg, #206390 0%, #5d8da9 100%);
+    box-shadow: 
+      var(--shadow-medium),
+      var(--shadow-inset),
+      var(--glow-blue),
+      0 0 0 1px rgba(66, 184, 243, 0.4);
+  }
+  
+  &:active {
+    background: linear-gradient(161deg, #004380 0%, #3d6da9 100%);
+  }
+}
+
+.fire {
+  background: linear-gradient(97deg, #907C10 0.89%, #A53434 90.47%);
+  box-shadow: 
+    var(--shadow-soft),
+    var(--shadow-inset),
+    0 0 0 1px rgba(165, 52, 52, 0.2);
+  
+  /* ДОБАВЛЯЕМ: Fire glow effect */
+  &:hover {
+    background: linear-gradient(97deg, #A08C20 0.89%, #B54444 90.47%);
+    box-shadow: 
+      var(--shadow-medium),
+      var(--shadow-inset),
+      0 0 20px rgba(165, 52, 52, 0.4),
+      0 0 0 1px rgba(165, 52, 52, 0.4);
+  }
+  
+  &:active {
+    background: linear-gradient(97deg, #806C10 0.89%, #953434 90.47%);
+  }
+}
+
+.green_blue {
+  background: linear-gradient(161deg, #109034 0%, #4d7da9 91.23%);
+  box-shadow: 
+    var(--shadow-soft),
+    var(--shadow-inset),
+    0 0 0 1px rgba(16, 144, 52, 0.2);
+  
+  /* ДОБАВЛЯЕМ: Green-blue glow */
+  &:hover {
+    background: linear-gradient(161deg, #20A044 0%, #5d8da9 91.23%);
+    box-shadow: 
+      var(--shadow-medium),
+      var(--shadow-inset),
+      0 0 20px rgba(16, 144, 52, 0.4),
+      0 0 0 1px rgba(16, 144, 52, 0.4);
+  }
+  
+  &:active {
+    background: linear-gradient(161deg, #008024 0%, #3d6da9 91.23%);
+  }
+}
+
+.clear {
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  
+  &:hover {
+    transform: none;
+    filter: brightness(110%);
+    box-shadow: none;
+  }
+  
+  &:active {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  &::after {
+    display: none;
+  }
+}
+
+.disabled {
+  background: linear-gradient(161deg, #4e4e4e 0%, #10436d 100%);
+  cursor: not-allowed;
+  
+  &:hover {
+    transform: none;
+    filter: none;
+    box-shadow: var(--shadow-soft);
+  }
+  
+  &:active {
+    transform: none;
+  }
+  
+  &::after {
+    display: none;
+  }
+}
+
+/* МОБИЛЬНАЯ АДАПТАЦИЯ */
+@media screen and (max-width: 490px) {
+  .Button {
+    padding: clamp(12px, 3vw, 14px) clamp(20px, 6vw, 30px);
+    width: 100%;
+    font-size: var(--fs-fluid-sm);
+    
+    /* ДОБАВЛЯЕМ: Touch-friendly improvements */
+    min-height: 44px; /* Apple guidelines */
+    border-radius: 10px;
+    
+    &:hover {
+      /* Уменьшаем hover эффекты на мобильных */
+      transform: translateY(-1px) scale(1.01);
+    }
+  }
+  
+  .clear {
+    padding: 0;
+    border-radius: 0;
+    min-height: auto;
+  }
+}
+
+/* ПЛАНШЕТНАЯ АДАПТАЦИЯ */
+@media screen and (min-width: 491px) and (max-width: 768px) {
+  .Button {
+    padding: clamp(12px, 2.5vw, 14px) clamp(25px, 7vw, 50px);
+    font-size: var(--fs-fluid-base);
+    
+    &:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+  }
+}
+
+/* DESKTOP ENHANCEMENTS */
+@media screen and (min-width: 769px) {
+  .Button {
+    /* ДОБАВЛЯЕМ: Shine effect для desktop */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: left 0.6s ease;
+    }
+    
+    &:hover::before {
+      left: 100%;
+    }
+    
+    &.clear::before {
+      display: none;
+    }
+  }
+}
+
+/* ACCESSIBILITY */
+.Button:focus-visible {
+  outline: 2px solid var(--c-orange);
+  outline-offset: 2px;
+}
+
+/* HIGH DPI OPTIMIZATIONS */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .Button {
+    border: 0.25px solid transparent;
+  }
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .Button {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+      animation: none;
+    }
+    
+    &:active {
+      transform: none;
+    }
+    
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+/* DARK MODE ENHANCEMENTS */
+@media (prefers-color-scheme: dark) {
+  .Button {
+    /* Дополнительные улучшения для темной темы */
+    box-shadow: 
+      var(--shadow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* PRINT STYLES */
+@media print {
+  .Button {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 1px solid #333 !important;
+    color: #333 !important;
+    
+    &::before,
+    &::after {
+      display: none !important;
+    }
+  }
+} 

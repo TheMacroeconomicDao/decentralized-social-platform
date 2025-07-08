@@ -1,0 +1,349 @@
+.interactiveCard {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  
+  /* 3D transforms */
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  
+  /* Performance optimizations */
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  
+  /* Base interaction styles */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Focus states for accessibility */
+  &:focus {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+  
+  /* Touch-friendly sizing */
+  min-height: 120px;
+  min-width: 200px;
+}
+
+.shineEffect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  
+  /* Smooth shine animation */
+  transition: opacity 0.3s ease;
+  
+  /* Performance */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  padding: var(--spacing-lg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  /* Preserve content readability */
+  color: var(--text-primary);
+  
+  /* Performance */
+  will-change: transform;
+  transform: translateZ(20px); /* Slight 3D lift */
+}
+
+.swipeIndicators {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 3;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  
+  .interactiveCard:hover & {
+    opacity: 1;
+  }
+}
+
+.swipeHint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  backdrop-filter: blur(10px);
+  
+  span:first-child {
+    font-size: 0.875rem;
+    animation: swipe-hint 2s ease-in-out infinite;
+  }
+}
+
+.glowEffect {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    var(--accent-primary) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  z-index: 0;
+  
+  /* Performance */
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+/* Hover enhancements */
+.interactiveCard:hover {
+  .cardContent {
+    transform: translateZ(30px); /* Enhanced 3D effect */
+  }
+  
+  .swipeIndicators {
+    opacity: 1;
+    transform: translateZ(10px);
+  }
+}
+
+/* Active/Tap state */
+.interactiveCard:active {
+  .cardContent {
+    transform: translateZ(10px); /* Pressed effect */
+  }
+}
+
+/* Animations */
+@keyframes swipe-hint {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Responsive optimizations */
+@media screen and (max-width: 768px) {
+  .interactiveCard {
+    /* Simplify effects on mobile */
+    transform-style: flat;
+    perspective: none;
+    
+    .cardContent {
+      padding: var(--spacing-md);
+      transform: none !important;
+    }
+    
+    .shineEffect {
+      display: none; /* Disable shine on mobile for performance */
+    }
+    
+    .glowEffect {
+      display: none; /* Disable glow on mobile */
+    }
+  }
+  
+  .swipeIndicators {
+    display: block; /* Show swipe hints on mobile */
+    opacity: 0.8;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .interactiveCard {
+    /* Touch-optimized interactions */
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
+  }
+  
+  .shineEffect,
+  .glowEffect {
+    display: none;
+  }
+}
+
+/* High performance mode */
+@media (prefers-reduced-motion: reduce) {
+  .interactiveCard {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    
+    .cardContent {
+      transform: none !important;
+    }
+    
+    .shineEffect,
+    .glowEffect {
+      display: none !important;
+    }
+  }
+  
+  .swipeHint span:first-child {
+    animation: none !important;
+  }
+}
+
+/* Dark theme enhancements */
+@media (prefers-color-scheme: dark) {
+  .interactiveCard {
+    background: rgba(0, 16, 25, 0.9);
+    border-color: rgba(255, 255, 255, 0.05);
+    
+    .cardContent {
+      color: var(--text-primary-dark);
+    }
+    
+    .glowEffect {
+      background: radial-gradient(
+        circle,
+        rgba(66, 184, 243, 0.3) 0%,
+        transparent 70%
+      );
+    }
+  }
+}
+
+/* Accessibility enhancements */
+.interactiveCard {
+  /* Ensure sufficient contrast */
+  @media (prefers-contrast: high) {
+    border: 2px solid var(--accent-primary);
+    background: var(--surface-primary);
+    
+    .cardContent {
+      color: var(--text-primary);
+    }
+  }
+  
+  /* Large text support */
+  @media (prefers-reduced-motion: no-preference) {
+    .cardContent {
+      font-size: clamp(0.875rem, 2vw, 1.125rem);
+    }
+  }
+}
+
+/* Custom variants */
+.interactiveCard {
+  /* Glassmorphism variant */
+  &[data-variant="glass"] {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    .cardContent {
+      backdrop-filter: blur(5px);
+    }
+  }
+  
+  /* Neomorphism variant */
+  &[data-variant="neomorphic"] {
+    background: var(--surface-primary);
+    box-shadow: 
+      8px 8px 16px rgba(0, 0, 0, 0.2),
+      -8px -8px 16px rgba(255, 255, 255, 0.1);
+    border: none;
+    
+    &:hover {
+      box-shadow: 
+        12px 12px 24px rgba(0, 0, 0, 0.3),
+        -12px -12px 24px rgba(255, 255, 255, 0.15);
+    }
+  }
+  
+  /* Minimal variant */
+  &[data-variant="minimal"] {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    backdrop-filter: none;
+    
+    .shineEffect,
+    .glowEffect {
+      display: none;
+    }
+    
+    &:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 4px 20px rgba(var(--accent-primary-rgb), 0.1);
+    }
+  }
+}
+
+/* Size variants */
+.interactiveCard {
+  &[data-size="small"] {
+    min-height: 80px;
+    min-width: 150px;
+    
+    .cardContent {
+      padding: var(--spacing-sm);
+      font-size: 0.875rem;
+    }
+  }
+  
+  &[data-size="large"] {
+    min-height: 200px;
+    min-width: 300px;
+    
+    .cardContent {
+      padding: var(--spacing-xl);
+      font-size: 1.125rem;
+    }
+  }
+}
+
+/* Battery saving mode */
+@media (prefers-reduced-data: reduce) {
+  .interactiveCard {
+    .shineEffect,
+    .glowEffect {
+      display: none;
+    }
+    
+    backdrop-filter: none;
+    
+    .cardContent {
+      backdrop-filter: none;
+    }
+  }
+} 

@@ -1,0 +1,435 @@
+// GYBERNATY COMMUNITY: CYBER FRONTIER EVOLUTION 2025
+// Эволюционные стили, дополняющие global.scss
+// Подход: "Эволюция, не революция"
+
+// ========================================
+// CYBER EVOLUTION CSS VARIABLES
+// ========================================
+
+:root {
+  // ✅ Original Identity (СОХРАНЯЕТСЯ НЕПРИКОСНОВЕННО)
+  // Эти переменные дублируют существующие в global.scss для совместимости
+  --cyber-dark-primary: #001019;
+  --cyber-dark-secondary: #072b40;
+  --cyber-gold: #d49d32;
+  --cyber-blue: #42b8f3;
+  --cyber-white: #e1e1e1;
+  --cyber-grey: #b8b8b8;
+  
+  // 🚀 Evolution Extensions - Усиления оригинальных цветов
+  --cyber-gold-bright: #ff6b35;      // Усиленный золотой для акцентов
+  --cyber-blue-bright: #00d4ff;      // Неоновый синий для свечений
+  --cyber-accent-purple: #7c3aed;    // Нейронный фиолетовый для инноваций
+  --cyber-accent-green: #10b981;     // Квантовый зеленый для успеха
+  
+  // 🌟 Glassmorphism Palette
+  --cyber-glass-gold: rgba(212, 157, 50, 0.15);
+  --cyber-glass-blue: rgba(66, 184, 243, 0.15);
+  --cyber-glass-dark: rgba(7, 43, 64, 0.25);
+  --cyber-glass-darker: rgba(0, 16, 25, 0.35);
+  --cyber-glass-border: rgba(255, 255, 255, 0.1);
+  --cyber-glass-border-bright: rgba(255, 255, 255, 0.2);
+  
+  // 🔮 Neomorphism Shadows (на основе существующих)
+  --cyber-shadow-dark: rgba(4, 28, 48, 0.8);
+  --cyber-shadow-light: rgba(16, 67, 109, 0.3);
+  --cyber-shadow-inset-light: rgba(255, 255, 255, 0.05);
+  --cyber-shadow-inset-dark: rgba(0, 0, 0, 0.5);
+  
+  // ⚡ Fluid Typography (эволюция существующих --fs-*)
+  --fs-fluid-small: clamp(0.75rem, 0.5rem + 1vw, 0.875rem);
+  --fs-fluid-body: clamp(1rem, 0.875rem + 0.5vw, 1.25rem);
+  --fs-fluid-h3: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  --fs-fluid-h2: clamp(2rem, 1.5rem + 2vw, 2.5rem);
+  --fs-fluid-h1: clamp(2.5rem, 2rem + 2.5vw, 3.5rem);
+  
+  // 🎯 Interactive States
+  --cyber-transition-smooth: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --cyber-transition-fast: all 0.2s ease-out;
+  --cyber-transition-slow: all 0.5s ease-in-out;
+  
+  // 📱 Responsive Glassmorphism
+  --cyber-blur-desktop: blur(25px) saturate(1.1);
+  --cyber-blur-tablet: blur(15px) saturate(1.05);
+  --cyber-blur-mobile: blur(10px) saturate(1.0);
+}
+
+// ========================================
+// CYBER GLASSMORPHISM SYSTEM
+// ========================================
+
+// Базовый кибер-glassmorphism (эволюция существующего backdrop-filter)
+.cyber-glass-base {
+  background: linear-gradient(
+    135deg,
+    var(--cyber-glass-dark) 0%,
+    var(--cyber-glass-darker) 100%
+  );
+  backdrop-filter: var(--cyber-blur-desktop);
+  -webkit-backdrop-filter: var(--cyber-blur-desktop);
+  border: 0.5px solid var(--cyber-glass-border);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 var(--cyber-glass-border);
+}
+
+// Премиум кибер-glassmorphism для ключевых элементов
+.cyber-glass-premium {
+  background: linear-gradient(
+    135deg,
+    var(--cyber-glass-dark) 0%,
+    var(--cyber-glass-darker) 50%,
+    var(--cyber-glass-blue) 100%
+  );
+  backdrop-filter: blur(35px) saturate(1.2) brightness(1.1);
+  -webkit-backdrop-filter: blur(35px) saturate(1.2) brightness(1.1);
+  border: 0.5px solid var(--cyber-gold);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.4),
+    0 4px 24px var(--cyber-glass-blue),
+    inset 0 1px 0 var(--cyber-glass-border-bright);
+}
+
+// Кибер-glassmorphism для карточек
+.cyber-glass-card {
+  background: linear-gradient(
+    145deg,
+    var(--cyber-glass-dark) 0%,
+    rgba(0, 16, 25, 0.2) 100%
+  );
+  backdrop-filter: var(--cyber-blur-desktop);
+  -webkit-backdrop-filter: var(--cyber-blur-desktop);
+  border: 0.5px solid rgba(66, 184, 243, 0.2);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+// ========================================
+// CYBER NEOMORPHISM SYSTEM
+// ========================================
+
+// Мягкие кибер-неоморфные эффекты (на основе существующих теней)
+.cyber-neo-soft {
+  background: linear-gradient(145deg, var(--cyber-dark-secondary) 0%, var(--cyber-dark-primary) 100%);
+  box-shadow: 
+    8px 8px 20px var(--cyber-shadow-dark),
+    -8px -8px 20px var(--cyber-shadow-light),
+    inset 2px 2px 4px var(--cyber-shadow-inset-light),
+    inset -2px -2px 4px var(--cyber-shadow-inset-dark);
+  border-radius: 16px;
+}
+
+// Нажатое состояние для интерактивных элементов
+.cyber-neo-pressed {
+  box-shadow: 
+    inset 6px 6px 16px var(--cyber-shadow-dark),
+    inset -6px -6px 16px var(--cyber-shadow-light),
+    2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+// Парящие элементы (эволюция существующих hover эффектов)
+.cyber-neo-floating {
+  background: linear-gradient(145deg, var(--cyber-dark-secondary) 0%, var(--cyber-dark-primary) 100%);
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.4),
+    0 6px 15px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+// ========================================
+// PREMIUM CYBER INTERACTIONS
+// ========================================
+
+// Эволюция существующих hover эффектов
+.cyber-hover-evolution {
+  transition: var(--cyber-transition-smooth);
+  position: relative;
+  
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.3),
+      0 4px 15px var(--cyber-glass-blue),
+      0 0 0 1px var(--cyber-glass-gold);
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+}
+
+// Кибер-свечения для акцентных элементов
+.cyber-glow-blue {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, transparent, var(--cyber-blue), transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(8px);
+  }
+  
+  &:hover::before {
+    opacity: 0.6;
+  }
+}
+
+.cyber-glow-gold {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, transparent, var(--cyber-gold), transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(8px);
+  }
+  
+  &:hover::before {
+    opacity: 0.7;
+  }
+}
+
+// Пульсирующие кибер-эффекты для важных элементов
+.cyber-pulse {
+  animation: cyberPulse 2s ease-in-out infinite;
+}
+
+@keyframes cyberPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(66, 184, 243, 0.3),
+      0 0 40px rgba(66, 184, 243, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(66, 184, 243, 0.5),
+      0 0 60px rgba(66, 184, 243, 0.2);
+  }
+}
+
+// ========================================
+// UTILITY CLASSES
+// ========================================
+
+// Типографика
+.cyber-text-fluid-h1 { font-size: var(--fs-fluid-h1); }
+.cyber-text-fluid-h2 { font-size: var(--fs-fluid-h2); }
+.cyber-text-fluid-h3 { font-size: var(--fs-fluid-h3); }
+.cyber-text-fluid-body { font-size: var(--fs-fluid-body); }
+.cyber-text-fluid-small { font-size: var(--fs-fluid-small); }
+
+// Градиентные тексты (сохраняют оригинальные цвета)
+.cyber-text-gradient-primary {
+  background: linear-gradient(135deg, var(--cyber-blue) 0%, var(--cyber-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cyber-text-gradient-accent {
+  background: linear-gradient(135deg, var(--cyber-blue-bright) 0%, var(--cyber-gold-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Переходы
+.cyber-transition-smooth { transition: var(--cyber-transition-smooth); }
+.cyber-transition-fast { transition: var(--cyber-transition-fast); }
+.cyber-transition-slow { transition: var(--cyber-transition-slow); }
+
+// Borders
+.cyber-border-gradient {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-gold));
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+  }
+}
+
+// ========================================
+// RESPONSIVE ADAPTATIONS
+// ========================================
+
+// Tablet adaptations
+@media screen and (max-width: 768px) {
+  .cyber-glass-base,
+  .cyber-glass-premium,
+  .cyber-glass-card {
+    backdrop-filter: var(--cyber-blur-tablet);
+    -webkit-backdrop-filter: var(--cyber-blur-tablet);
+  }
+  
+  .cyber-hover-evolution:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+}
+
+// Mobile adaptations
+@media screen and (max-width: 480px) {
+  .cyber-glass-base,
+  .cyber-glass-premium,
+  .cyber-glass-card {
+    backdrop-filter: var(--cyber-blur-mobile);
+    -webkit-backdrop-filter: var(--cyber-blur-mobile);
+    background: linear-gradient(
+      135deg,
+      rgba(7, 43, 64, 0.3) 0%,
+      rgba(0, 16, 25, 0.4) 100%
+    );
+  }
+  
+  .cyber-neo-soft {
+    box-shadow: 
+      4px 4px 12px var(--cyber-shadow-dark),
+      -4px -4px 12px var(--cyber-shadow-light),
+      inset 1px 1px 2px var(--cyber-shadow-inset-light);
+  }
+  
+  .cyber-hover-evolution:hover {
+    transform: translateY(-1px);
+  }
+  
+  // Отключение сложных эффектов на слабых устройствах
+  .cyber-glow-blue::before,
+  .cyber-glow-gold::before {
+    display: none;
+  }
+}
+
+// ========================================
+// ACCESSIBILITY & PERFORMANCE
+// ========================================
+
+// Уважение к предпочтениям пользователей
+@media (prefers-reduced-motion: reduce) {
+  .cyber-hover-evolution,
+  .cyber-transition-smooth,
+  .cyber-transition-fast,
+  .cyber-transition-slow {
+    transition: none;
+  }
+  
+  .cyber-pulse {
+    animation: none;
+  }
+}
+
+// Оптимизация для высокой плотности пикселей
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .cyber-glass-base,
+  .cyber-glass-premium,
+  .cyber-glass-card {
+    border-width: 0.5px;
+  }
+}
+
+// Fallback для браузеров без поддержки backdrop-filter
+@supports not (backdrop-filter: blur(10px)) {
+  .cyber-glass-base,
+  .cyber-glass-premium,
+  .cyber-glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(7, 43, 64, 0.9) 0%,
+      rgba(0, 16, 25, 0.95) 100%
+    );
+  }
+}
+
+// ========================================
+// COMPONENT ENHANCEMENT MIXINS
+// ========================================
+
+// Миксин для улучшения существующих компонентов
+%cyber-component-enhancement {
+  position: relative;
+  transition: var(--cyber-transition-smooth);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(66, 184, 243, 0.03) 50%,
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+// Cyber glow effect для аватаров и изображений
+%cyber-image-enhancement {
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(66, 184, 243, 0.1) 50%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+// ========================================
+// CYBER EVOLUTION COMPLETE
+// ========================================
+
+/* 
+🚀 CYBER FRONTIER EVOLUTION 2025 - ГОТОВО!
+
+Этот файл дополняет существующий global.scss, 
+сохраняя всю оригинальную стилистику проекта 
+и добавляя современные эффекты 2025 года.
+
+Использование:
+1. Импортировать после global.scss в layout.tsx
+2. Применять классы .cyber-* к компонентам
+3. Использовать CSS переменные --cyber-* 
+4. Постепенно мигрировать компоненты на Evolution версии
+
+Результат: Gybernaty Community становится ещё более 
+впечатляющим, сохраняя свою уникальную кибер-идентичность.
+*/ 

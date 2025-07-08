@@ -1,1 +1,1 @@
-export { SafeImage } from "./SafeImage"; 
+export { SafeImage } from './SafeImage';

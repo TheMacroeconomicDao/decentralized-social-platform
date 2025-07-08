@@ -1,0 +1,237 @@
+.particleSystem {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particleCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+
+.particleContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 10px currentColor;
+  filter: drop-shadow(0 0 8px currentColor);
+  
+  /* Performance optimizations */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  
+  /* Smooth transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Glowing effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, currentColor 0%, transparent 70%);
+    opacity: 0.2;
+    z-index: -1;
+    animation: particle-glow 3s ease-in-out infinite;
+  }
+}
+
+.particleStar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 15px currentColor;
+  filter: drop-shadow(0 0 12px currentColor);
+  
+  /* Enhanced glow for stars */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, currentColor 0%, transparent 60%);
+    opacity: 0.3;
+    z-index: -1;
+    animation: star-twinkle 2s ease-in-out infinite alternate;
+  }
+  
+  /* Performance */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.particleDot {
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 
+    0 0 10px currentColor,
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+  
+  /* Performance */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  
+  /* Subtle pulsing */
+  animation: dot-pulse 4s ease-in-out infinite;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background: radial-gradient(circle, currentColor 0%, transparent 70%);
+    opacity: 0.4;
+    z-index: -1;
+  }
+}
+
+/* Animations */
+@keyframes particle-glow {
+  0%, 100% { 
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.4;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes star-twinkle {
+  0% { 
+    opacity: 0.3;
+    filter: brightness(1);
+  }
+  100% { 
+    opacity: 0.6;
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive optimizations */
+@media screen and (max-width: 768px) {
+  .particleIcon,
+  .particleStar,
+  .particleDot {
+    /* Reduce complexity on mobile */
+    &::before {
+      display: none;
+    }
+    
+    /* Simplify animations */
+    animation: none;
+    filter: none;
+    text-shadow: none;
+    box-shadow: none;
+  }
+  
+  .particleSystem {
+    /* Reduce particle count effect via opacity */
+    opacity: 0.6;
+  }
+}
+
+/* Performance mode for low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .particleIcon,
+  .particleStar,
+  .particleDot {
+    animation: none !important;
+    transition: none !important;
+    
+    &::before {
+      display: none !important;
+    }
+  }
+  
+  .particleSystem {
+    /* Static particles only */
+    opacity: 0.3;
+  }
+}
+
+/* High DPI optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .particleIcon,
+  .particleStar {
+    /* Sharper text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Dark theme enhancements */
+@media (prefers-color-scheme: dark) {
+  .particleIcon,
+  .particleStar,
+  .particleDot {
+    filter: brightness(1.2) saturate(1.1);
+    
+    &::before {
+      opacity: 0.4;
+    }
+  }
+}
+
+/* Focus states for accessibility */
+.particleSystem:focus-within {
+  .particleIcon,
+  .particleStar,
+  .particleDot {
+    opacity: 1 !important;
+    filter: brightness(1.3);
+  }
+}
+
+/* Battery saving mode */
+@media (prefers-reduced-data: reduce) {
+  .particleSystem {
+    display: none;
+  }
+} 

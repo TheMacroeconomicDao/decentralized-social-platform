@@ -1,0 +1,349 @@
+// HeaderEvolution.module.scss
+// Эволюционные стили Header с сохранением оригинальной структуры
+
+.HeaderEvolution {
+  // ✅ Базовая структура СОХРАНЯЕТСЯ
+  width: 1280px;
+  max-width: 100%;
+  padding: 30px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  
+  // 🚀 CYBER EVOLUTION ENHANCEMENTS
+  transition: var(--cyber-transition-smooth);
+  
+  // Кибер-glow эффект для desktop версии
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(66, 184, 243, 0.1) 25%,
+      rgba(212, 157, 50, 0.1) 75%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+    filter: blur(1px);
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  .logoContainer {
+    position: relative;
+    transition: var(--cyber-transition-fast);
+    
+    &:hover {
+      transform: translateY(-1px);
+    }
+    
+    // Кибер-glow для логотипа при hover
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(66, 184, 243, 0.2),
+        transparent
+      );
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+      filter: blur(4px);
+    }
+    
+    &:hover::after {
+      opacity: 1;
+    }
+  }
+  
+  .logo {
+    position: relative;
+    z-index: 1;
+    
+    // Усиленный текстовый градиент для логотипа
+    background: linear-gradient(
+      135deg,
+      var(--cyber-blue) 0%,
+      var(--cyber-blue-bright) 50%,
+      var(--cyber-gold) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    
+    transition: all 0.3s ease;
+    
+    &:hover {
+      filter: drop-shadow(0 0 8px rgba(66, 184, 243, 0.5));
+    }
+  }
+  
+  .btnGroup {
+    display: flex;
+    gap: 2rem;
+    
+    // Эволюция hover эффектов для кнопок
+    button {
+      position: relative;
+      transition: var(--cyber-transition-smooth);
+      
+      &:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 
+          0 8px 20px rgba(0, 0, 0, 0.3),
+          0 4px 12px rgba(66, 184, 243, 0.2);
+      }
+      
+      &:active {
+        transform: translateY(-1px) scale(1.01);
+      }
+    }
+    
+    .dappButton {
+      position: relative;
+      overflow: hidden;
+      
+      // Дополнительный glow эффект для Dapp кнопки
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent 0%,
+          rgba(212, 157, 50, 0.1) 50%,
+          transparent 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      &:hover::before {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// ========================================
+// RESPONSIVE ADAPTATIONS
+// ========================================
+
+@media screen and (max-width: 490px) {
+  .HeaderEvolution {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    // Усиленный glassmorphism для мобильных
+    background: linear-gradient(
+      318deg,
+      rgba(9, 21, 26, 0.9) 0%,
+      rgba(7, 46, 63, 0.9) 100%
+    );
+    backdrop-filter: blur(15px) saturate(1.1);
+    -webkit-backdrop-filter: blur(15px) saturate(1.1);
+    
+    // Улучшенные тени с кибер-акцентами
+    box-shadow: 
+      0 4px 10px rgba(0, 0, 0, 0.5),
+      0 2px 20px rgba(66, 184, 243, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    
+    border: 0.5px solid rgba(66, 184, 243, 0.15);
+    
+    .btnGroup {
+      gap: 1rem;
+      
+      button:hover {
+        transform: translateY(-1px);
+      }
+    }
+    
+    // Упростить эффекты для мобильных
+    &::before {
+      display: none;
+    }
+    
+    .logoContainer::after {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .HeaderEvolution {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 20px 20px;
+    
+    // Премиум glassmorphism для планшетов
+    background: linear-gradient(
+      318deg,
+      rgba(9, 21, 26, 0.85) 0%,
+      rgba(7, 46, 63, 0.85) 100%
+    );
+    backdrop-filter: blur(20px) saturate(1.15);
+    -webkit-backdrop-filter: blur(20px) saturate(1.15);
+    
+    // Усиленные тени с кибер-glow
+    box-shadow: 
+      0 8px 20px rgba(0, 0, 0, 0.3),
+      0 4px 40px rgba(66, 184, 243, 0.08),
+      0 2px 20px rgba(212, 157, 50, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    
+    // Тонкая кибер-граница
+    border: 0.5px solid rgba(66, 184, 243, 0.2);
+    border-top: none;
+    
+    // Кибер-glow эффект снизу
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(66, 184, 243, 0.5) 50%,
+        transparent 100%
+      );
+      filter: blur(1px);
+    }
+    
+    .btnGroup {
+      button {
+        max-width: 135px;
+        width: 100%;
+        
+        // Адаптивные hover эффекты
+        &:hover {
+          transform: translateY(-1px) scale(1.01);
+          box-shadow: 
+            0 6px 16px rgba(0, 0, 0, 0.3),
+            0 3px 8px rgba(66, 184, 243, 0.15);
+        }
+      }
+    }
+    
+    .logo {
+      font-size: 1.1em;
+    }
+  }
+}
+
+// ========================================
+// DESKTOP ENHANCEMENTS
+// ========================================
+
+@media screen and (min-width: 901px) {
+  .HeaderEvolution {
+    // Полный спектр desktop эффектов
+    &:hover {
+      .logoContainer {
+        .logo {
+          background: linear-gradient(
+            135deg,
+            var(--cyber-blue-bright) 0%,
+            var(--cyber-gold-bright) 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+      
+      .btnGroup button {
+        box-shadow: 
+          0 0 20px rgba(66, 184, 243, 0.2),
+          0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    // Парящий эффект при скролле
+    &.scrolled {
+      background: rgba(7, 43, 64, 0.95);
+      backdrop-filter: blur(30px) saturate(1.2);
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        0 5px 15px rgba(66, 184, 243, 0.1);
+    }
+  }
+}
+
+// ========================================
+// ACCESSIBILITY & PERFORMANCE
+// ========================================
+
+// Уважение к предпочтениям пользователей
+@media (prefers-reduced-motion: reduce) {
+  .HeaderEvolution {
+    &::before,
+    &::after,
+    .logoContainer::after,
+    .dappButton::before {
+      display: none;
+    }
+    
+    .btnGroup button,
+    .logoContainer,
+    .logo {
+      transition: none;
+    }
+    
+    &:hover,
+    .btnGroup button:hover,
+    .logoContainer:hover {
+      transform: none;
+    }
+  }
+}
+
+// Высокая плотность пикселей
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .HeaderEvolution {
+    border-width: 0.5px;
+  }
+}
+
+// ========================================
+// CYBER EVOLUTION COMPLETE
+// ========================================
+
+/* 
+🚀 HeaderEvolution готов!
+
+Особенности эволюционной версии:
+✅ Сохранена ВСЯ оригинальная структура и функциональность
+✅ Добавлены premium glassmorphism эффекты
+✅ Кибер-glow для логотипа и кнопок
+✅ Улучшенные micro-interactions
+✅ Адаптивные эффекты для всех устройств
+✅ Accessibility support
+✅ Сохранены оригинальные цвета и градиенты
+
+Результат: Header выглядит значительно более современным и премиальным,
+но остается полностью функциональным и узнаваемым.
+*/ 

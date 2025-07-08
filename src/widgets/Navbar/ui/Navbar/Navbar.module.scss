@@ -2,7 +2,7 @@
     position: relative;
     width: 100%;
     max-width: 1250px;
-    margin-top: 30px;
+    margin-top: 80px; // Ещё больше отступ сверху для размещения линии и индикатора
     padding: 20px 20px;
     display: flex;
     align-items: center;
@@ -20,7 +20,7 @@
         );
         height: 3px;
         width: 100%;
-        top: -3px;
+        top: -50px; // Выношу линию намного выше за пределы прямоугольника
         z-index: 1;
     }
     .item {
@@ -44,7 +44,12 @@
 }
 
 .hatLink {
+    top: -56px; // Размещаю выше новой позиции линии: линия на -50px, индикатор на -56px чтобы быть над ней
     position: absolute;
     background: var(--c-orange);
     width: 100%;
+    height: 5px; /* Явно задаём высоту для консистентности */
+    border-radius: 0 !important; /* Принудительно убираем все скругления */
+    border: none; /* Убираем все границы */
+    z-index: 2; /* Выше градиентной линии (z-index: 1) */
 }

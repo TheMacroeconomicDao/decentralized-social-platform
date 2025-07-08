@@ -10,27 +10,20 @@ interface NavbarProps {
     className?: string;
 }
 
-// СОХРАНЯЕМ уникальную анимацию "bow" с улучшениями
-const elementVariants: Variants = {
-    start: {
-        height: "15px",
-        transformPerspective: '50px',
-        rotateX: '50deg',
-        zIndex: 999,
-        boxShadow: "0 0 20px rgba(212, 157, 50, 0.4), 0 0 40px rgba(212, 157, 50, 0.2)",
-        borderRadius: "0px"
-    },
-    end: {
-        height: "5px", 
-        transformPerspective: '50px',
-        rotateX: '50deg',
-        zIndex: 999,
-        boxShadow: "0 0 15px rgba(212, 157, 50, 0.3)",
-        borderRadius: "0px"
-    },
+// Простая анимация только для opacity/scale - НЕ для позиционирования
+const indicatorVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
+        opacity: 1, 
+        scale: 1,
+        transition: { 
+            type: 'spring',
+            bounce: 0.3,
+            duration: 0.6
+        }
+    }
 };
 
-// Новая анимация для container
 const containerVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -49,10 +42,7 @@ const itemVariants: Variants = {
     visible: { 
         opacity: 1, 
         y: 0,
-        transition: {
-            duration: 0.4,
-            ease: "easeOut"
-        }
+        transition: { duration: 0.4, ease: "easeOut" }
     }
 };
 
@@ -66,17 +56,14 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
             initial="hidden"
             animate="visible"
         >
-            {/* ГРАДИЕНТНАЯ ЛИНИЯ между двумя индикаторами */}
+            {/* Градиентная линия - позиционирование только через CSS */}
             <div className={cls.gradientLine} />
             
             {navbarItems.map((item) => (
                 <motion.div
                     key={item.link}
                     variants={itemVariants}
-                    whileHover={{ 
-                        scale: 1.05,
-                        transition: { duration: 0.2 }
-                    }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                 >
                     <Link
@@ -87,61 +74,18 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                         )}
                         href={item.link}
                     >
-                        {/* ВЕРХНИЙ ИНДИКАТОР (красный) - ВЫШЕ линии */}
+                        {/* Один индикатор - позиционирование только через CSS класс */}
                         {pathName === item.link && (
                             <motion.div
-                                layoutId="topIndicator"
-                                className={cls.hatLink}
-                                style={{
-                                    position: 'absolute',
-                                    top: '-50px',
-                                    zIndex: 999,
-                                    width: '100%',
-                                    height: '5px',
-                                    background: 'red', // КРАСНЫЙ для отладки
-                                    borderRadius: '0px',
-                                    border: '2px solid #ff0000'
-                                }}
-                                variants={elementVariants}
-                                animate="start"
-                                initial="end"
-                                transition={{
-                                    type: 'spring',
-                                    bounce: 0.2,
-                                    duration: 1,
-                                    ease: "easeInOut"
-                                }}
-                            />
-                        )}
-
-                        {/* НИЖНИЙ ИНДИКАТОР (синий) - НИЖЕ линии */}
-                        {pathName === item.link && (
-                            <motion.div
-                                layoutId="bottomIndicator"
-                                className={cls.hatLink}
-                                style={{
-                                    position: 'absolute',
-                                    top: '-10px',
-                                    zIndex: 999,
-                                    width: '100%',
-                                    height: '5px',
-                                    background: 'blue', // СИНИЙ для отладки
-                                    borderRadius: '0px',
-                                    border: '2px solid #0000ff'
-                                }}
-                                variants={elementVariants}
-                                animate="start"
-                                initial="end"
-                                transition={{
-                                    type: 'spring',
-                                    bounce: 0.2,
-                                    duration: 1,
-                                    ease: "easeInOut"
-                                }}
+                                layoutId="activeIndicator"
+                                className={cls.indicator}
+                                variants={indicatorVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
                             />
                         )}
                         
-                        {/* ДОБАВЛЯЕМ: Subtle hover glow для текста */}
                         <motion.span
                             className={cls.itemText}
                             animate={pathName === item.link ? {

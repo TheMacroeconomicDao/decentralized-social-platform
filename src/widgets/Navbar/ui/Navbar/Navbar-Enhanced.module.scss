@@ -108,29 +108,18 @@
     }
 }
 
-/* СОХРАНЯЕМ: Уникальный hatLink с улучшениями */
-.hatLink {
+/* ПРОСТОЙ КЛАСС ДЛЯ ЗОЛОТОГО ИНДИКАТОРА */
+.indicator {
     position: absolute !important;
-    background: var(--c-orange);
-    width: 100%;
-    height: 5px; /* Явно задаём высоту для консистентности */
-    top: -50px !important; /* Намного выше gradientLine который на -35px */
-    border-radius: 0; /* Убираем скругления */
-    border: none; /* Убираем все границы */
-    z-index: 999 !important; /* Максимальный приоритет над всеми элементами */
-    
-    /* ДОБАВЛЯЕМ: Enhanced glow effects */
-    box-shadow: var(--glow-orange);
-    
-    /* ДОБАВЛЯЕМ: Subtle gradient overlay */
-    background: linear-gradient(
-        135deg,
-        var(--c-orange) 0%,
-        rgba(212, 157, 50, 0.8) 50%,
-        var(--c-orange) 100%
-    );
-    
-    /* Убираем псевдоэлемент который создаёт наложение */
+    top: -45px !important; /* Выше градиентной линии (-35px) */
+    left: 0 !important;
+    width: 100% !important;
+    height: 5px !important;
+    background: var(--c-orange) !important;
+    border-radius: 0 !important;
+    z-index: 10 !important; /* Выше градиентной линии */
+    box-shadow: var(--glow-orange) !important;
+    border: none !important;
 }
 
 /* ДОБАВЛЯЕМ: Tablet optimizations */

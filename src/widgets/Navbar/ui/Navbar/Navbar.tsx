@@ -12,13 +12,13 @@ interface NavbarProps {
 const elementVariants: Variants = {
     start: {
         height: "15px",
-        top: "-36px",
+        top: "-45px", // Выше новой позиции линии на -30px
         transformPerspective: '50px',
         rotateX: '50deg'
     },
     end: {
         height: "5px",
-        top: "-27px",
+        top: "-36px", // Соответствует CSS стилю для новой позиции
         transformPerspective: '50px',
         rotateX: '50deg'
     },

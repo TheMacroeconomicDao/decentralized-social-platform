@@ -106,3 +106,5 @@ export const useChatPopup = (currentUser: string = 'User') => {
     streamingMessage
   };
 };
+
+// Режим работы чата (puter/openai) выбирается автоматически через chatConfig.ts

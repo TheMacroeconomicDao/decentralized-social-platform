@@ -60,6 +60,11 @@ jobs:
 
       - name: Deploy to k3s
         run: |
+          # Create or update OpenAI secret
+          kubectl create secret generic openai-secret \
+            --from-literal=api-key="${{ secrets.OPENAI_API_KEY }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+          
           # Apply manifests via Kustomize overlay
           kubectl apply -k k8s/overlays/stage/
 

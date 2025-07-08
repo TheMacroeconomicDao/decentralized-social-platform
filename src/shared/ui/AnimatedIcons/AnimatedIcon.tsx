@@ -2,11 +2,12 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
+// import Image from "next/image";
 import { ICON_SIZES, ICON_SIZES_MOBILE } from './constants';
 import { getIconPath } from './utils';
 import { useIsMobile } from '@/shared/hooks/mediaQuery/useMediaQuery';
 import { IconInstance } from './useAnimatedIcons';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 interface AnimatedIconProps {
     iconData: IconInstance;
@@ -49,16 +50,17 @@ export const AnimatedIcon: React.FC<AnimatedIconProps> = ({ iconData, onAnimatio
             }}
             onAnimationComplete={() => onAnimationEnd(iconData.id)}
         >
-            <Image
+            <SafeImage
                 src={iconPath}
                 alt={iconData.icon}
                 width={sizeValue}
                 height={sizeValue}
-                unoptimized
+                draggable={false}
                 style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
+                    display: 'block',
                 }}
             />
         </motion.div>

@@ -1,0 +1,229 @@
+.Header {
+  width: 1280px;
+  max-width: 100%;
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  
+  /* ДОБАВЛЯЕМ: Subtle glassmorphism для desktop */
+  transition: var(--transition-smooth);
+  
+  .btnGroup {
+    display: flex;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+  
+  .dappButton {
+    /* Дополнительные стили для Dapp кнопки при необходимости */
+    position: relative;
+    overflow: hidden;
+    
+    /* ДОБАВЛЯЕМ: Subtle shine effect */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: left 0.6s ease;
+    }
+    
+    &:hover::after {
+      left: 100%;
+    }
+  }
+}
+
+/* Mobile - УСИЛИВАЕМ существующий glassmorphism */
+@media screen and (max-width: 490px) {
+  .Header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: var(--space-md) var(--space-md);
+    
+    /* УСИЛИВАЕМ: Существующий градиентный фон с glassmorphism */
+    background: rgba(7, 43, 64, 0.4);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-strong);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    
+    /* ДОБАВЛЯЕМ: Subtle top glow */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(212, 157, 50, 0.5),
+        rgba(66, 184, 243, 0.5),
+        transparent
+      );
+    }
+    
+    .btnGroup {
+      gap: var(--space-md);
+      
+      button {
+        max-width: 135px;
+        width: 100%;
+        font-size: var(--fs-fluid-sm);
+      }
+    }
+  }
+}
+
+/* Tablet - УСИЛИВАЕМ существующий дизайн */
+@media screen and (max-width: 900px) and (min-width: 491px) {
+  .Header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: var(--space-md) var(--space-md);
+    
+    /* УСИЛИВАЕМ: Существующий градиентный фон */
+    background: linear-gradient(
+      318deg,
+      rgba(9, 21, 26, 0.85) 0%,
+      rgba(7, 46, 63, 0.85) 100%
+    );
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-medium);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    
+    /* ДОБАВЛЯЕМ: Enhanced glow effect */
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(66, 184, 243, 0.4),
+        rgba(212, 157, 50, 0.4),
+        transparent
+      );
+    }
+    
+    .btnGroup {
+      gap: var(--space-lg);
+      
+      button {
+        max-width: 135px;
+        width: 100%;
+        font-size: var(--fs-fluid-sm);
+        
+        /* ДОБАВЛЯЕМ: Enhanced hover для tablet */
+        &:hover {
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: var(--shadow-medium), var(--glow-orange);
+        }
+      }
+    }
+  }
+}
+
+/* Desktop - ДОБАВЛЯЕМ subtle enhancements */
+@media screen and (min-width: 901px) {
+  .Header {
+    /* ДОБАВЛЯЕМ: Subtle desktop effects на hover */
+    &:hover {
+      .btnGroup {
+        transform: translateX(2px);
+      }
+    }
+    
+    .btnGroup {
+      transition: var(--transition-smooth);
+      
+      /* Improved spacing for larger screens */
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+}
+
+/* ДОБАВЛЯЕМ: Focus accessibility для всех размеров */
+.Header button:focus-visible,
+.Header a:focus-visible {
+  outline: 2px solid var(--c-orange);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ДОБАВЛЯЕМ: High DPI optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .Header {
+    &::before,
+    &::after {
+      height: 0.5px;
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .Header {
+      border-width: 0.25px;
+    }
+  }
+}
+
+/* ДОБАВЛЯЕМ: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .Header {
+    transition: none;
+    
+    &:hover {
+      .btnGroup {
+        transform: none;
+      }
+    }
+    
+    .btnGroup {
+      transition: none;
+      
+      button:hover {
+        transform: none;
+      }
+    }
+    
+    .dappButton::after {
+      display: none;
+    }
+  }
+}
+
+/* ДОБАВЛЯЕМ: Print styles */
+@media print {
+  .Header {
+    position: static;
+    background: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    border: none;
+    
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+} 

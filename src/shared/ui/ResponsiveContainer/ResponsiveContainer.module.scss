@@ -1,0 +1,297 @@
+.responsiveContainer {
+  /* Modern container queries support */
+  container-type: var(--container-type, inline-size);
+  container-name: responsive-container;
+  
+  width: 100%;
+  position: relative;
+  
+  /* Default responsive behavior */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 1rem);
+  padding: var(--spacing-md, 1rem);
+  
+  /* Performance optimizations */
+  will-change: padding, gap;
+  contain: layout style;
+}
+
+/* Container Query Breakpoints */
+/* Small containers (< 768px) */
+@container responsive-container (max-width: 767px) {
+  .responsiveContainer {
+    --local-font-size: clamp(0.875rem, 2vw, 1rem);
+    --local-spacing: clamp(0.5rem, 2vw, 0.75rem);
+    --local-columns: 1;
+    
+    font-size: var(--local-font-size);
+    gap: var(--local-spacing);
+    padding: var(--local-spacing);
+    
+    /* Single column layout */
+    grid-template-columns: 1fr;
+    
+    /* Compact navigation */
+    .navbar {
+      padding: 0.5rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    /* Stacked elements */
+    .content {
+      flex-direction: column;
+      gap: var(--local-spacing);
+    }
+  }
+}
+
+/* Medium containers (768px - 1023px) */
+@container responsive-container (min-width: 768px) and (max-width: 1023px) {
+  .responsiveContainer {
+    --local-font-size: clamp(1rem, 1.5vw, 1.125rem);
+    --local-spacing: clamp(0.75rem, 2vw, 1rem);
+    --local-columns: 2;
+    
+    font-size: var(--local-font-size);
+    gap: var(--local-spacing);
+    padding: var(--local-spacing);
+    
+    /* Two column layout */
+    grid-template-columns: repeat(2, 1fr);
+    
+    /* Flexible navigation */
+    .navbar {
+      padding: 0.75rem 1rem;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    
+    /* Side-by-side elements */
+    .content {
+      flex-direction: row;
+      gap: var(--local-spacing);
+    }
+  }
+}
+
+/* Large containers (1024px - 1439px) */
+@container responsive-container (min-width: 1024px) and (max-width: 1439px) {
+  .responsiveContainer {
+    --local-font-size: clamp(1.125rem, 1.2vw, 1.25rem);
+    --local-spacing: clamp(1rem, 2vw, 1.5rem);
+    --local-columns: 3;
+    
+    font-size: var(--local-font-size);
+    gap: var(--local-spacing);
+    padding: var(--local-spacing);
+    
+    /* Three column layout */
+    grid-template-columns: repeat(3, 1fr);
+    
+    /* Expanded navigation */
+    .navbar {
+      padding: 1rem 1.5rem;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
+
+/* XLarge containers (>= 1440px) */
+@container responsive-container (min-width: 1440px) {
+  .responsiveContainer {
+    --local-font-size: clamp(1.25rem, 1vw, 1.5rem);
+    --local-spacing: clamp(1.5rem, 2vw, 2rem);
+    --local-columns: 4;
+    
+    font-size: var(--local-font-size);
+    gap: var(--local-spacing);
+    padding: var(--local-spacing);
+    
+    /* Four column layout */
+    grid-template-columns: repeat(4, 1fr);
+    
+    /* Full-width navigation */
+    .navbar {
+      padding: 1.5rem 2rem;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
+
+/* Adaptive Layout Enhancements */
+.adaptiveLayout {
+  /* Fluid grid system based on container size */
+  display: grid;
+  grid-template-columns: repeat(var(--local-columns, 1), 1fr);
+  gap: var(--local-spacing, 1rem);
+  
+  /* Auto-fit columns for better space utilization */
+  @container responsive-container (min-width: 480px) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  
+  @container responsive-container (min-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  @container responsive-container (min-width: 1024px) {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* Animation Support */
+.animated {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Smooth container resizing */
+  @container responsive-container (min-width: 0px) {
+    transition: 
+      padding 0.3s ease,
+      gap 0.3s ease,
+      font-size 0.3s ease,
+      grid-template-columns 0.3s ease;
+  }
+}
+
+/* Breakpoint-specific Classes */
+.breakpoint-small {
+  /* Compact mobile layout */
+  --spacing-multiplier: 0.75;
+  --font-scale: 0.875;
+  
+  .card {
+    padding: calc(var(--spacing-sm) * var(--spacing-multiplier));
+    border-radius: var(--border-radius-sm);
+  }
+  
+  .button {
+    padding: 0.5rem 0.75rem;
+    font-size: calc(1rem * var(--font-scale));
+  }
+}
+
+.breakpoint-medium {
+  /* Tablet layout */
+  --spacing-multiplier: 1;
+  --font-scale: 1;
+  
+  .card {
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+  }
+  
+  .button {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+.breakpoint-large {
+  /* Desktop layout */
+  --spacing-multiplier: 1.25;
+  --font-scale: 1.125;
+  
+  .card {
+    padding: calc(var(--spacing-lg) * var(--spacing-multiplier));
+    border-radius: var(--border-radius-lg);
+  }
+  
+  .button {
+    padding: 1rem 1.5rem;
+    font-size: calc(1rem * var(--font-scale));
+  }
+}
+
+.breakpoint-xlarge {
+  /* Large desktop layout */
+  --spacing-multiplier: 1.5;
+  --font-scale: 1.25;
+  
+  .card {
+    padding: calc(var(--spacing-xl) * var(--spacing-multiplier));
+    border-radius: var(--border-radius-xl);
+  }
+  
+  .button {
+    padding: 1.25rem 2rem;
+    font-size: calc(1rem * var(--font-scale));
+  }
+}
+
+/* Fallback for browsers without container query support */
+@supports not (container-type: inline-size) {
+  .responsiveContainer {
+    /* Traditional media queries fallback */
+    @media (max-width: 767px) {
+      padding: 0.5rem;
+      gap: 0.5rem;
+      grid-template-columns: 1fr;
+    }
+    
+    @media (min-width: 768px) and (max-width: 1023px) {
+      padding: 0.75rem;
+      gap: 0.75rem;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (min-width: 1024px) and (max-width: 1439px) {
+      padding: 1rem;
+      gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    @media (min-width: 1440px) {
+      padding: 1.5rem;
+      gap: 1.5rem;
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .animated {
+    transition: none !important;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .responsiveContainer {
+    /* Enhanced contrast for dark mode */
+    --local-contrast: 1.1;
+  }
+}
+
+/* Container height-based queries for vertical layouts */
+@container responsive-container (min-height: 600px) {
+  .responsiveContainer {
+    /* Vertical spacing optimization for tall containers */
+    --vertical-spacing: clamp(1rem, 3vh, 2rem);
+    padding-top: var(--vertical-spacing);
+    padding-bottom: var(--vertical-spacing);
+  }
+}
+
+/* Aspect ratio containers */
+.responsiveContainer[data-aspect-ratio="16:9"] {
+  aspect-ratio: 16 / 9;
+  
+  @container responsive-container (max-width: 600px) {
+    aspect-ratio: 4 / 3; /* Better for mobile */
+  }
+}
+
+.responsiveContainer[data-aspect-ratio="1:1"] {
+  aspect-ratio: 1 / 1;
+  
+  @container responsive-container (max-width: 400px) {
+    aspect-ratio: auto; /* Allow natural height on very small containers */
+  }
+} 

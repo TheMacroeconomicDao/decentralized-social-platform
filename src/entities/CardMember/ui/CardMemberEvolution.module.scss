@@ -1,0 +1,399 @@
+// CardMemberEvolution.module.scss
+// Эволюционные стили карточки команды с премиум кибер-эффектами
+
+.CardMemberEvolution {
+  // ✅ Базовая структура СОХРАНЯЕТСЯ
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px; // Немного увеличен для лучшего визуального баланса
+  width: 180px;
+  text-align: center;
+  
+  // 🚀 CYBER EVOLUTION ENHANCEMENTS
+  position: relative;
+  padding: 25px 20px;
+  border-radius: 24px; // Более современные rounded corners
+  transition: var(--cyber-transition-smooth);
+  
+  // Базовый glassmorphism уже применен через класс 'cyber-glass-card'
+  // Дополнительные кибер-эффекты
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(66, 184, 243, 0.03) 30%,
+      rgba(212, 157, 50, 0.02) 70%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  .avatar {
+    // ✅ Сохранение оригинальной структуры
+    position: relative !important;
+    overflow: hidden;
+    border-radius: 26px;
+    width: 100%;
+    height: 180px;
+    cursor: pointer;
+    
+    // 🚀 Кибер-эволюция
+    transition: var(--cyber-transition-smooth);
+    
+    // Дополнительная граница с кибер-glow
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(
+        45deg,
+        rgba(66, 184, 243, 0.3) 0%,
+        rgba(212, 157, 50, 0.3) 50%,
+        rgba(66, 184, 243, 0.3) 100%
+      );
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    &:hover {
+      // Эволюция оригинального scale эффекта
+      transform: scale(1.05) translateY(-2px);
+      
+      &::before {
+        opacity: 1;
+      }
+    }
+    
+    .avatarImage {
+      position: relative;
+      z-index: 1;
+      transition: var(--cyber-transition-smooth);
+      
+      &:hover {
+        filter: brightness(1.1) contrast(1.05);
+      }
+    }
+    
+    .avatarGlow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        45deg,
+        transparent 20%,
+        rgba(66, 184, 243, 0.1) 50%,
+        transparent 80%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    
+    &:hover .avatarGlow {
+      opacity: 1;
+    }
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .name {
+    // ✅ Сохранение базовых стилей
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    
+    // 🚀 Кибер-эволюция
+    color: var(--cyber-white);
+    transition: var(--cyber-transition-fast);
+    
+    // Тонкий текстовый glow
+    text-shadow: 
+      1px 1px 2px rgba(0, 0, 0, 0.5),
+      0 0 8px rgba(66, 184, 243, 0.1);
+  }
+  
+  .skills {
+    // ✅ Сохранение базовых стилей
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    
+    // 🚀 Кибер-эволюция
+    color: rgba(225, 225, 225, 0.85);
+    transition: var(--cyber-transition-fast);
+    
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .cyberOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(66, 184, 243, 0.02) 50%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  
+  // Состояние при hover всей карточки
+  &:hover {
+    // Усиление glassmorphism эффекта
+    background: linear-gradient(
+      145deg,
+      rgba(7, 43, 64, 0.3) 0%,
+      rgba(0, 16, 25, 0.25) 100%
+    );
+    
+    border-color: rgba(66, 184, 243, 0.4);
+    
+    // Улучшенные тени
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.3),
+      0 6px 20px rgba(0, 0, 0, 0.15),
+      0 2px 30px rgba(66, 184, 243, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    
+    .name {
+      color: var(--cyber-blue-bright);
+      text-shadow: 
+        0 0 12px rgba(66, 184, 243, 0.4),
+        1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    .skills {
+      color: rgba(225, 225, 225, 0.95);
+    }
+    
+    .cyberOverlay {
+      opacity: 1;
+    }
+  }
+  
+  // Active состояние
+  &:active {
+    transform: translateY(-6px) scale(0.98);
+    
+    .avatar {
+      transform: scale(1.02);
+    }
+  }
+}
+
+// ========================================
+// RESPONSIVE ADAPTATIONS
+// ========================================
+
+@media screen and (max-width: 768px) {
+  .CardMemberEvolution {
+    // Оптимизация эффектов для планшетов
+    &:hover {
+      transform: translateY(-4px);
+      
+      .avatar {
+        transform: scale(1.03);
+      }
+    }
+    
+    .name {
+      font-size: 15px;
+    }
+    
+    .skills {
+      font-size: 13px;
+      line-height: 22px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .CardMemberEvolution {
+    // ✅ Сохранение оригинальных размеров
+    width: 145px;
+    padding: 20px 15px;
+    gap: 12px;
+    
+    .avatar {
+      height: 145px;
+      
+      // Упрощение эффектов для мобильных
+      &:hover {
+        transform: scale(1.03);
+      }
+      
+      &::before {
+        display: none; // Убираем сложные glow эффекты
+      }
+      
+      .avatarGlow {
+        display: none;
+      }
+    }
+    
+    .name {
+      font-size: 14px;
+    }
+    
+    .skills {
+      font-size: 12px;
+      line-height: 20px;
+    }
+    
+    // Упрощение hover эффектов для мобильных
+    &:hover {
+      transform: translateY(-2px);
+      
+      .name {
+        text-shadow: 
+          0 0 8px rgba(66, 184, 243, 0.3),
+          1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+    }
+    
+    .cyberOverlay {
+      display: none;
+    }
+  }
+}
+
+// ========================================
+// PERFORMANCE OPTIMIZATIONS
+// ========================================
+
+// Отключение сложных эффектов для слабых устройств
+@media (max-width: 480px) and (max-device-width: 480px) {
+  .CardMemberEvolution {
+    &::before,
+    .avatar::before,
+    .avatarGlow,
+    .cyberOverlay {
+      display: none;
+    }
+    
+    .name,
+    .skills {
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+// ========================================
+// ACCESSIBILITY
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .CardMemberEvolution {
+    transition: none;
+    
+    &:hover,
+    &:active {
+      transform: none;
+    }
+    
+    .avatar,
+    .avatarImage,
+    .name,
+    .skills {
+      transition: none;
+    }
+    
+    .avatar:hover {
+      transform: none;
+    }
+    
+    &::before,
+    .avatar::before,
+    .avatarGlow,
+    .cyberOverlay {
+      display: none;
+    }
+  }
+}
+
+// Высокий контраст
+@media (prefers-contrast: high) {
+  .CardMemberEvolution {
+    border: 1px solid var(--cyber-blue);
+    
+    .name {
+      color: #ffffff;
+    }
+    
+    .skills {
+      color: #cccccc;
+    }
+  }
+}
+
+// ========================================
+// HOVER STATES FOR TOUCH DEVICES
+// ========================================
+
+// Оптимизация для touch устройств
+@media (hover: none) and (pointer: coarse) {
+  .CardMemberEvolution {
+    &:hover {
+      transform: none;
+    }
+    
+    &:active {
+      transform: translateY(-2px) scale(0.98);
+      transition: transform 0.1s ease;
+    }
+    
+    .avatar:hover {
+      transform: none;
+    }
+    
+    .avatar:active {
+      transform: scale(1.02);
+    }
+  }
+}
+
+// ========================================
+// CYBER EVOLUTION COMPLETE
+// ========================================
+
+/* 
+🚀 CardMemberEvolution готов!
+
+Особенности эволюционной версии:
+✅ Полное сохранение оригинальной структуры и размеров
+✅ Glassmorphism фон с кибер-акцентами
+✅ Улучшенные hover эффекты для аватаров
+✅ Кибер-glow эффекты при взаимодействии
+✅ Сохранена анимация scale(1.1) в улучшенном виде
+✅ Адаптивные эффекты для всех устройств
+✅ Performance optimization для слабых устройств
+✅ Полная accessibility поддержка
+
+Результат: Карточки команды выглядят значительно более премиальными
+и современными, но сохраняют всю оригинальную функциональность и узнаваемость.
+*/ 

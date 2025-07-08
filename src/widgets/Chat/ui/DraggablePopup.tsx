@@ -13,18 +13,13 @@ interface Position {
     y: number;
 }
 
-interface Size {
-    width: number;
-    height: number;
-}
-
-// Объединяю position и size в одно состояние для batch updates
+// Убираю Size и ResizeDirection - только позиция
 interface PopupState {
     position: Position;
-    size: Size;
 }
 
-type ResizeDirection = 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w' | 'nw' | null;
+// добавим длительность анимации закрытия
+const TRANSITION_MS = 250; // должен совпадать с transition в SCSS
 
 export const DraggablePopup: React.FC<DraggablePopupProps> = ({
     isOpen,
@@ -35,33 +30,29 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
     const headerRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
     
-    // Объединенное состояние для избежания множественных ре-рендеров
+    // Упрощенное состояние - только позиция
     const [popupState, setPopupState] = useState<PopupState>(() => {
-        // Сразу вычисляем центрированную позицию при инициализации
-        const defaultWidth = 420;
-        const defaultHeight = 650;
-        const centerX = typeof window !== 'undefined' ? Math.max(0, (window.innerWidth - defaultWidth) / 2) : 100;
-        const centerY = typeof window !== 'undefined' ? Math.max(50, (window.innerHeight - defaultHeight) / 2) : 100;
+        const centerX = typeof window !== 'undefined' ? Math.max(0, (window.innerWidth - 420) / 2) : 100;
+        const centerY = typeof window !== 'undefined' ? Math.max(50, (window.innerHeight - 650) / 2) : 100;
         
         return {
-            position: { x: centerX, y: centerY },
-            size: { width: defaultWidth, height: defaultHeight }
+            position: { x: centerX, y: centerY }
         };
     });
     
     const [isDragging, setIsDragging] = useState(false);
-    const [isResizing, setIsResizing] = useState(false);
-    const [resizeDirection, setResizeDirection] = useState<ResizeDirection>(null);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
     const [initialState, setInitialState] = useState<PopupState>({
-        position: { x: 0, y: 0 },
-        size: { width: 0, height: 0 }
+        position: { x: 0, y: 0 }
     });
 
-    const MIN_WIDTH = 320;
-    const MAX_WIDTH = 600;
-    const MIN_HEIGHT = 400;
-    const MAX_HEIGHT = 900;
+    // Фиксированные размеры чата
+    const CHAT_WIDTH = 420;
+    const CHAT_HEIGHT = 650;
+
+    // Состояния управления анимацией появления/скрытия
+    const [renderPopup, setRenderPopup] = useState(isOpen);
+    const [animationClass, setAnimationClass] = useState<string>('');
 
     // Оптимизированная проверка мобильного устройства
     const checkMobile = useCallback(() => {
@@ -78,19 +69,18 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
     useEffect(() => {
         if (!isMobile) {
             const handleResize = () => {
-                const centerX = Math.max(0, (window.innerWidth - popupState.size.width) / 2);
-                const centerY = Math.max(50, (window.innerHeight - popupState.size.height) / 2);
+                const centerX = Math.max(0, (window.innerWidth - CHAT_WIDTH) / 2);
+                const centerY = Math.max(50, (window.innerHeight - CHAT_HEIGHT) / 2);
                 
-                setPopupState(prev => ({
-                    ...prev,
+                setPopupState({
                     position: { x: centerX, y: centerY }
-                }));
+                });
             };
             
             window.addEventListener('resize', handleResize);
             return () => window.removeEventListener('resize', handleResize);
         }
-    }, [isMobile, popupState.size]);
+    }, [isMobile]);
 
     // Обработка начала перетаскивания
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -103,87 +93,31 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         e.preventDefault();
     }, [isMobile, popupState]);
 
-    // Обработка начала изменения размера
-    const handleResizeStart = useCallback((e: React.MouseEvent, direction: ResizeDirection) => {
-        if (isMobile) return;
-        
-        setIsResizing(true);
-        setResizeDirection(direction);
-        setDragStart({ x: e.clientX, y: e.clientY });
-        setInitialState(popupState);
-        
-        e.preventDefault();
-        e.stopPropagation();
-    }, [isMobile, popupState]);
-
-    // Упрощенная и оптимизированная логика движения мыши с requestAnimationFrame
+    // Упрощенная логика движения мыши - только драг
     const handleMouseMove = useCallback((e: MouseEvent) => {
-        if (isMobile) return;
+        if (isMobile || !isDragging) return;
 
-        // Используем requestAnimationFrame для плавности
         requestAnimationFrame(() => {
             const deltaX = e.clientX - dragStart.x;
             const deltaY = e.clientY - dragStart.y;
 
-            if (isDragging) {
-                // Простая логика перетаскивания
-                const newX = Math.max(0, Math.min(window.innerWidth - popupState.size.width, initialState.position.x + deltaX));
-                const newY = Math.max(0, Math.min(window.innerHeight - popupState.size.height, initialState.position.y + deltaY));
-                
-                setPopupState(prev => ({
-                    ...prev,
-                    position: { x: newX, y: newY }
-                }));
-            } else if (isResizing && resizeDirection) {
-                // Упрощенная логика resize без сложных пересчетов
-                let newWidth = initialState.size.width;
-                let newHeight = initialState.size.height;
-                let newX = initialState.position.x;
-                let newY = initialState.position.y;
-
-                // Простая логика изменения размера
-                if (resizeDirection.includes('e')) {
-                    newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width + deltaX));
-                }
-                if (resizeDirection.includes('w')) {
-                    const proposedWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, initialState.size.width - deltaX));
-                    const widthDelta = proposedWidth - newWidth;
-                    newWidth = proposedWidth;
-                    newX = initialState.position.x - widthDelta;
-                }
-                if (resizeDirection.includes('s')) {
-                    newHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height + deltaY));
-                }
-                if (resizeDirection.includes('n')) {
-                    const proposedHeight = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, initialState.size.height - deltaY));
-                    const heightDelta = proposedHeight - newHeight;
-                    newHeight = proposedHeight;
-                    newY = initialState.position.y - heightDelta;
-                }
-
-                // Простая проверка границ без сложной логики
-                const finalX = Math.max(0, Math.min(window.innerWidth - newWidth, newX));
-                const finalY = Math.max(0, Math.min(window.innerHeight - newHeight, newY));
-
-                // Одно обновление состояния вместо двух
-                setPopupState({
-                    position: { x: finalX, y: finalY },
-                    size: { width: newWidth, height: newHeight }
-                });
-            }
+            const newX = Math.max(0, Math.min(window.innerWidth - CHAT_WIDTH, initialState.position.x + deltaX));
+            const newY = Math.max(0, Math.min(window.innerHeight - CHAT_HEIGHT, initialState.position.y + deltaY));
+            
+            setPopupState({
+                position: { x: newX, y: newY }
+            });
         });
-    }, [isMobile, isDragging, isResizing, resizeDirection, dragStart, initialState, popupState.size]);
+    }, [isMobile, isDragging, dragStart, initialState]);
 
     // Завершение операций
     const handleMouseUp = useCallback(() => {
         setIsDragging(false);
-        setIsResizing(false);
-        setResizeDirection(null);
     }, []);
 
     // Оптимизированный useEffect с правильными зависимостями
     useEffect(() => {
-        if (isDragging || isResizing) {
+        if (isDragging) {
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
             
@@ -192,7 +126,7 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
                 document.removeEventListener('mouseup', handleMouseUp);
             };
         }
-    }, [isDragging, isResizing, handleMouseMove, handleMouseUp]);
+    }, [isDragging, handleMouseMove, handleMouseUp]);
 
     // Обработка overlay клика
     const handleOverlayClick = useCallback((e: React.MouseEvent) => {
@@ -201,12 +135,36 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         }
     }, [isMobile, onClose]);
 
-    if (!isOpen) return null;
+    // Управление отображением с анимацией
+    useEffect(() => {
+        if (isOpen) {
+            setRenderPopup(true);
+            // старт анимации появления
+            setAnimationClass(styles.popupEnter);
+            // переключаем во второй кадр, чтобы сработал transition
+            requestAnimationFrame(() => {
+                setAnimationClass(`${styles.popupEnter} ${styles.popupEnterActive}`);
+            });
+        } else if (renderPopup) {
+            // старт анимации скрытия
+            setAnimationClass(`${styles.popupExit}`);
+            requestAnimationFrame(() => {
+                setAnimationClass(`${styles.popupExit} ${styles.popupExitActive}`);
+            });
+            const timer = setTimeout(() => {
+                setRenderPopup(false);
+                setAnimationClass('');
+            }, TRANSITION_MS);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen, renderPopup]);
+
+    if (!renderPopup) return null;
 
     const popupStyle = isMobile ? {} : {
         transform: `translate(${popupState.position.x}px, ${popupState.position.y}px)`,
-        width: `${popupState.size.width}px`,
-        height: `${popupState.size.height}px`,
+        width: `${CHAT_WIDTH}px`,
+        height: `${CHAT_HEIGHT}px`,
         cursor: isDragging ? 'grabbing' : 'default'
     };
 
@@ -217,51 +175,10 @@ export const DraggablePopup: React.FC<DraggablePopupProps> = ({
         >
             <div
                 ref={popupRef}
-                className={`${styles.popup} ${isMobile ? styles.mobilePopup : styles.desktopPopup}`}
+                className={`${styles.popup} ${isMobile ? styles.mobilePopup : styles.desktopPopup} ${animationClass}`}
                 style={popupStyle}
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Resize handles - только для десктопа */}
-                {!isMobile && (
-                    <>
-                        {/* Corner handles */}
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.nw}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'nw')}
-                        />
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.ne}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'ne')}
-                        />
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.sw}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'sw')}
-                        />
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.se}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'se')}
-                        />
-                        
-                        {/* Edge handles */}
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.n}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'n')}
-                        />
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.e}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'e')}
-                        />
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.s}`}
-                            onMouseDown={(e) => handleResizeStart(e, 's')}
-                        />
-                        <div 
-                            className={`${styles.resizeHandle} ${styles.w}`}
-                            onMouseDown={(e) => handleResizeStart(e, 'w')}
-                        />
-                    </>
-                )}
-                
                 {/* Drag handle для перетаскивания */}
                 <div 
                     ref={headerRef}

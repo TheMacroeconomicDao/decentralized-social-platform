@@ -35,7 +35,7 @@
   
   .popup {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 70px);
     border-radius: 0;
     margin: 0;
     box-shadow: none;
@@ -43,12 +43,14 @@
     border: none;
     min-height: unset;
     min-width: unset;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
 // Общие стили
 .overlay {
   backdrop-filter: blur(0px); // Убираем blur на overlay
+  transition: backdrop-filter 0.25s ease;
 }
 
 .popup {
@@ -81,6 +83,39 @@
   min-height: 400px;
   min-width: 350px;
   position: relative;
+  
+  // Базовое состояние - видимый чат
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Анимации появления
+.popupEnter {
+  opacity: 0;
+  transform: scale(0.92) translateY(30px);
+  filter: blur(4px);
+}
+
+.popupEnterActive {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0px);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+// Анимации скрытия
+.popupExit {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0px);
+}
+
+.popupExitActive {
+  opacity: 0;
+  transform: scale(0.95) translateY(-15px);
+  filter: blur(2px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 1, 1);
 }
 
 // Drag handle - невидимая область для перетаскивания
@@ -90,7 +125,7 @@
   left: 0;
   right: 120px; // Исключаем область кнопок (примерно 120px справа)
   height: 60px; // Высота header'а чата
-  z-index: 1;
+  z-index: 5;
   user-select: none;
 }
 
@@ -99,79 +134,84 @@
   position: absolute;
   background: transparent;
   z-index: 10;
+  transition: background-color 0.2s ease;
   
   &:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(59, 130, 246, 0.3);
+  }
+  
+  &:active {
+    background: rgba(59, 130, 246, 0.4);
   }
 }
 
 // Corner handles (угловые ручки)
 .nw {
-  top: -5px;
-  left: -5px;
-  width: 10px;
-  height: 10px;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
   cursor: nw-resize;
-  border-radius: 2px 0 0 0;
+  border-radius: 3px 0 0 0;
 }
 
 .ne {
-  top: -5px;
-  right: -5px;
-  width: 10px;
-  height: 10px;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
   cursor: ne-resize;
-  border-radius: 0 2px 0 0;
+  border-radius: 0 3px 0 0;
 }
 
 .sw {
-  bottom: -5px;
-  left: -5px;
-  width: 10px;
-  height: 10px;
+  bottom: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
   cursor: sw-resize;
-  border-radius: 0 0 0 2px;
+  border-radius: 0 0 0 3px;
 }
 
 .se {
-  bottom: -5px;
-  right: -5px;
-  width: 10px;
-  height: 10px;
+  bottom: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
   cursor: se-resize;
-  border-radius: 0 0 2px 0;
+  border-radius: 0 0 3px 0;
 }
 
 // Edge handles (боковые ручки)
 .n {
-  top: -5px;
-  left: 10px;
-  right: 10px;
-  height: 10px;
+  top: -8px;
+  left: 15px;
+  right: 15px;
+  height: 16px;
   cursor: n-resize;
 }
 
 .e {
-  top: 10px;
-  right: -5px;
-  bottom: 10px;
-  width: 10px;
+  top: 15px;
+  right: -8px;
+  bottom: 15px;
+  width: 16px;
   cursor: e-resize;
 }
 
 .s {
-  bottom: -5px;
-  left: 10px;
-  right: 10px;
-  height: 10px;
+  bottom: -8px;
+  left: 15px;
+  right: 15px;
+  height: 16px;
   cursor: s-resize;
 }
 
 .w {
-  top: 10px;
-  left: -5px;
-  bottom: 10px;
-  width: 10px;
+  top: 15px;
+  left: -8px;
+  bottom: 15px;
+  width: 16px;
   cursor: w-resize;
 }
 
@@ -245,7 +285,7 @@
     
     .popup {
       width: 100%;
-      height: 100%;
+      height: calc(100vh - 70px);
       border-radius: 0;
     }
   }
@@ -258,4 +298,4 @@
       border-radius: 0;
     }
   }
-} 
+}

@@ -75,28 +75,43 @@
 .messages {
   flex: 1;
   overflow-y: auto;
+  scroll-behavior: smooth;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
   
   &::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    border-radius: 4px;
+    margin: 4px 0;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(130, 133, 140, 0.5);
-    border-radius: 3px;
+    background: rgba(130, 133, 140, 0.6);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    min-height: 20px;
     
     &:hover {
-      background: rgba(130, 133, 140, 0.7);
+      background: rgba(130, 133, 140, 0.8);
+    }
+    
+    &:active {
+      background: rgba(59, 130, 246, 0.8);
     }
   }
+  
+  // Для Firefox
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 133, 140, 0.6) rgba(255, 255, 255, 0.1);
 }
 
 // Welcome Message
@@ -265,6 +280,7 @@
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
   border-top: 1px solid rgba(130, 133, 140, 0.2);
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
 }
 
 .input {
@@ -346,5 +362,6 @@
   font-size: 0.7rem;
   color: #94a3b8;
   background: rgba(255, 255, 255, 0.02);
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
 }
   

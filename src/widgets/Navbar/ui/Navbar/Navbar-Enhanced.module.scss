@@ -47,15 +47,13 @@
             #638917 78.07%,
             rgba(30, 19, 7, 0) 100%
         ) !important;
-        height: 6px !important; /* Увеличиваю высоту для лучшей видимости */
+        height: 3px !important; /* Как в оригинале */
         width: 100% !important;
-        top: -35px !important; /* Под золотым индикатором */
+        top: -3px !important; /* Как в оригинале */
         left: 0 !important;
-        z-index: -10 !important; /* ОТРИЦАТЕЛЬНЫЙ z-index - за всеми элементами */
-        border-radius: 0 !important; /* Убираем скругления линии */
+        z-index: 1 !important; /* Как в оригинале */
+        border-radius: 0 !important;
         display: block !important;
-        
-        /* ДОБАВЛЯЕМ: Subtle glow */
         box-shadow: 0 0 15px rgba(150, 94, 21, 0.5) !important;
     }
     
@@ -111,13 +109,13 @@
 /* ПРОСТОЙ КЛАСС ДЛЯ ЗОЛОТОГО ИНДИКАТОРА */
 .indicator {
     position: absolute !important;
-    top: -45px !important; /* Выше градиентной линии (-35px) */
+    top: -36px !important; /* Как в оригинале */
     left: 0 !important;
     width: 100% !important;
     height: 5px !important;
     background: var(--c-orange) !important;
     border-radius: 0 !important;
-    z-index: 10 !important; /* Выше градиентной линии */
+    z-index: 10 !important;
     box-shadow: var(--glow-orange) !important;
     border: none !important;
 }

@@ -1,0 +1,64 @@
+.ToastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 500px;
+  pointer-events: none;
+  
+  > * {
+    pointer-events: auto;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .ToastContainer {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    max-width: none;
+    
+    > * {
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .ToastContainer {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    gap: 8px;
+  }
+}
+
+// Landscape mobile
+@media (max-width: 768px) and (orientation: landscape) {
+  .ToastContainer {
+    top: 10px;
+    right: 10px;
+    left: auto;
+    max-width: 400px;
+  }
+}
+
+// Tablet specific
+@media (min-width: 769px) and (max-width: 1024px) {
+  .ToastContainer {
+    top: 25px;
+    right: 25px;
+    max-width: 450px;
+  }
+}
+
+// High DPI displays
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .ToastContainer {
+    transform: translateZ(0);
+  }
+} 

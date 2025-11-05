@@ -2,8 +2,8 @@
   background: rgba(0, 37, 58, 0.5);
   border-top: 2px solid #113d5a;
   width: 100%;
-  padding: 20px 0;
-  margin-top: 100px;
+  padding: clamp(16px, 3vw, 20px) 0;
+  margin-top: clamp(50px, 8vw, 100px);
 
   .wrapper {
     margin: 0 auto;
@@ -14,37 +14,193 @@
     justify-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas: 'logo social copyright';
-    gap: 1rem;
+    gap: clamp(0.5rem, 2vw, 1rem);
+    padding: 0 clamp(12px, 3vw, 40px);
 
     .logo {
       grid-area: logo;
+      justify-self: start;
+      
+      @media (max-width: 768px) {
+        justify-self: center;
+      }
     }
 
     .social {
       grid-area: social;
+      justify-self: center;
     }
 
     .Copyright {
       grid-area: copyright;
       color: var(--c-white);
+      justify-self: end;
+      font-size: clamp(12px, 2.5vw, 14px);
+      text-align: center;
+      
+      @media (max-width: 768px) {
+        justify-self: center;
+      }
     }
   }
 }
 
-@media screen and (max-width: 1280px) {
+// Tablet размеры (новый медиа-запрос)
+@media (min-width: 481px) and (max-width: 768px) {
   .Footer {
-    padding: 20px 40px;
+    .wrapper {
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 1rem;
+      
+      .logo {
+        justify-self: start;
+      }
+      
+      .social {
+        justify-self: center;
+      }
+      
+      .Copyright {
+        justify-self: end;
+        font-size: 12px;
+      }
+    }
   }
 }
 
-@media screen and (max-width: 480px) {
+// Средние планшеты
+@media (min-width: 769px) and (max-width: 1024px) {
   .Footer {
-    margin-bottom: 70px;
+    padding: 24px 0;
+    
     .wrapper {
-      grid-template-columns: 30px 1fr;
+      padding: 0 32px;
+      gap: 1.5rem;
+      
+      .Copyright {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Большие экраны
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .Footer {
+    .wrapper {
+      padding: 0 40px;
+    }
+  }
+}
+
+@media (min-width: 1281px) {
+  .Footer {
+    .wrapper {
+      padding: 0 40px;
+    }
+  }
+}
+
+// Мобильные устройства
+@media (max-width: 480px) {
+  .Footer {
+    margin-bottom: clamp(60px, 15vw, 70px); // Учитываем мобильные навигации
+    padding: 16px 0;
+    
+    .wrapper {
+      grid-template-columns: auto 1fr;
       grid-template-areas: 
-      'logo social '
-       '. copyright';
+        'logo social'
+        'copyright copyright';
+      gap: 0.75rem;
+      padding: 0 12px;
+      
+      .logo {
+        justify-self: start;
+      }
+      
+      .social {
+        justify-self: end;
+      }
+      
+      .Copyright {
+        justify-self: center;
+        grid-area: copyright;
+        margin-top: 8px;
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+// Очень маленькие экраны
+@media (max-width: 320px) {
+  .Footer {
+    .wrapper {
+      grid-template-columns: 1fr;
+      grid-template-areas: 
+        'logo'
+        'social'
+        'copyright';
+      gap: 12px;
+      text-align: center;
+      
+      .logo,
+      .social,
+      .Copyright {
+        justify-self: center;
+      }
+    }
+  }
+}
+
+// Landscape мобильные
+@media (max-width: 768px) and (orientation: landscape) {
+  .Footer {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 12px 0;
+    
+    .wrapper {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-areas: 'logo social copyright';
+      gap: 0.5rem;
+      
+      .logo {
+        justify-self: start;
+      }
+      
+      .social {
+        justify-self: center;
+      }
+      
+      .Copyright {
+        justify-self: end;
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+// High DPI
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .Footer {
+    border-top-width: 1px;
+  }
+}
+
+// Print styles
+@media print {
+  .Footer {
+    background: #f8f9fa !important;
+    border-top: 1px solid #dee2e6 !important;
+    color: #000 !important;
+    margin-top: 40px;
+    
+    .wrapper {
+      .Copyright {
+        color: #000 !important;
+      }
     }
   }
 }

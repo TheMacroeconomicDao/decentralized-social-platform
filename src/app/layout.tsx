@@ -3,10 +3,26 @@ import './styles/global.scss'
 import './styles/global-enhanced.scss'
 import type { Metadata } from 'next'
 import { Montserrat, Grape_Nuts } from 'next/font/google'
-import { HeaderEnhanced } from '@/widgets/Header/Header-Enhanced'
+import { ClientHeader } from '@/widgets/Header/ClientHeader'
 import { Navbar, NavbarMobile } from '@/widgets/Navbar'
 import { Footer } from '@/widgets/Footer/Footer'
 import { GlobalAnimatedBackground } from '@/shared/ui/AnimatedIcons/GlobalAnimatedBackground'
+import { Web3Provider } from '@/app/providers/Web3Provider'
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary/ErrorBoundary'
+
+// App content component that will be rendered inside Web3Provider
+function AppContent({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <GlobalAnimatedBackground />
+      <ClientHeader />
+      <Navbar />
+      {children}
+      <Footer />
+      <NavbarMobile />
+    </>
+  );
+}
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -45,13 +61,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={montserrat.className}>
-        <GlobalAnimatedBackground />
-        <HeaderEnhanced />
-        <Navbar />
-        {children}
-        <Footer />
-        <NavbarMobile />
+      <body className={montserrat.className} suppressHydrationWarning>
+        <ErrorBoundary>
+          <Web3Provider>
+            <AppContent>{children}</AppContent>
+          </Web3Provider>
+        </ErrorBoundary>
       </body>
     </html>
   )

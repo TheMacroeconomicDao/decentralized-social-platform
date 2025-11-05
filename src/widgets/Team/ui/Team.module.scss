@@ -1,16 +1,137 @@
 .Team {
-  margin-top: 50px;
+  margin-top: clamp(30px, 6vw, 50px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 clamp(16px, 4vw, 32px);
+  width: 100%;
+
+  h2 {
+    font-size: clamp(24px, 6vw, 48px);
+    font-weight: 700;
+    color: #d49d32;
+    margin-bottom: clamp(24px, 4vw, 32px);
+    text-align: center;
+    background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+  }
+
   .wrapper {
-    padding: 50px 0;
-    display: flex;
-    flex-wrap: wrap;
+    padding: clamp(24px, 4vw, 50px) 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     justify-content: center;
     align-items: flex-start;
     width: 100%;
-    max-width: 1100px;
-    gap: 50px;
+    max-width: 1400px;
+    gap: clamp(20px, 4vw, 50px);
+    
+    // Для очень маленьких карточек на мобильных
+    @media (max-width: 320px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+}
+
+// Mobile First подход
+@media (max-width: 480px) {
+  .Team {
+    margin-top: 24px;
+    padding: 0 12px;
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .wrapper {
+      padding: 20px 0;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .Team {
+    .wrapper {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .Team {
+    .wrapper {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      max-width: 1200px;
+    }
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .Team {
+    .wrapper {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+    }
+  }
+}
+
+// Large desktop
+@media (min-width: 1441px) {
+  .Team {
+    .wrapper {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 50px;
+      max-width: 1600px;
+    }
+  }
+}
+
+// High DPI displays
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .Team {
+    h2 {
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .Team {
+    .wrapper {
+      // Убираем анимации если пользователь предпочитает reduced motion
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .Team {
+    margin-top: 20px;
+    
+    h2 {
+      color: #000 !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
+    }
+    
+    .wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px 0;
+    }
   }
 }

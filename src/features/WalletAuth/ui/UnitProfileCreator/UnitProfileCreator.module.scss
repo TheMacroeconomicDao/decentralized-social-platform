@@ -1,0 +1,211 @@
+.UnitProfileCreator {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #d49d32;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.5;
+    }
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    
+    .inputGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      
+      .label {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      
+      .input {
+        padding: 12px 16px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        
+        &:focus {
+          outline: none;
+          border-color: #d49d32;
+          box-shadow: 0 0 0 3px rgba(212, 157, 50, 0.2);
+        }
+        
+        &.valid {
+          border-color: #4ade80;
+          box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+        }
+        
+        &.error {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        &.checking {
+          border-color: #d49d32;
+          box-shadow: 0 0 0 3px rgba(212, 157, 50, 0.2);
+          position: relative;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid #d49d32;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+          }
+        }
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+      
+      .errorMessage {
+        font-size: 14px;
+        color: #ef4444;
+        margin-top: 4px;
+      }
+    }
+    
+    .infoBox {
+      padding: 20px;
+      background: rgba(212, 157, 50, 0.1);
+      border: 1px solid rgba(212, 157, 50, 0.3);
+      border-radius: 12px;
+      
+      .infoTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: #d49d32;
+        margin-bottom: 12px;
+      }
+      
+      .infoList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        li {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.8);
+          margin-bottom: 8px;
+          position: relative;
+          padding-left: 20px;
+          
+          &:before {
+            content: "•";
+            color: #d49d32;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+          }
+          
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      
+      .createButton {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 160px;
+        justify-content: center;
+        
+        .spinner {
+          width: 16px;
+          height: 16px;
+          border: 2px solid transparent;
+          border-top: 2px solid currentColor;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .UnitProfileCreator {
+    padding: 24px;
+    margin: 16px;
+    
+    .header {
+      margin-bottom: 24px;
+      
+      .title {
+        font-size: 24px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+      }
+    }
+    
+    .form {
+      gap: 20px;
+      
+      .actions {
+        flex-direction: column;
+        
+        .createButton {
+          width: 100%;
+        }
+      }
+    }
+  }
+} 

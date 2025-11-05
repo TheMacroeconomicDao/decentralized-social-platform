@@ -16,4 +16,9 @@ export { ResponsiveContainer } from './ResponsiveContainer/ResponsiveContainer';
 export { InteractiveCard } from './InteractiveCard/InteractiveCard';
 
 // 🔧 Enhanced Existing Components
-export { ButtonEnhanced } from './Button/Button-Enhanced'; 
+export { ButtonEnhanced } from './Button/Button-Enhanced';
+
+// 🔔 Notifications
+export { Toast, ToastContainer } from './Toast';
+export type { ToastType, ToastData } from './Toast';
+export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary'; 

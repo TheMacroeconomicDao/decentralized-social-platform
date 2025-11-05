@@ -1,0 +1,314 @@
+.UnitProfileEditor {
+  max-width: 700px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  
+  .header {
+    padding: 32px 40px 24px;
+    background: linear-gradient(135deg, rgba(212, 157, 50, 0.1) 0%, rgba(212, 157, 50, 0.05) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #d49d32;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.5;
+    }
+  }
+  
+  .form {
+    padding: 32px 40px;
+    
+    .section {
+      margin-bottom: 32px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .sectionTitle {
+        font-size: 20px;
+        font-weight: 600;
+        color: #d49d32;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(212, 157, 50, 0.3);
+      }
+    }
+    
+    .inputGroup {
+      margin-bottom: 20px;
+      
+      .label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 8px;
+        
+        .socialIcon {
+          font-size: 16px;
+        }
+      }
+      
+      .input,
+      .textarea,
+      .select {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 14px;
+        transition: all 0.3s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: #d49d32;
+          box-shadow: 0 0 0 2px rgba(212, 157, 50, 0.2);
+          background: rgba(255, 255, 255, 0.08);
+        }
+        
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        
+        &.error {
+          border-color: #ef4444;
+          box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+        }
+      }
+      
+      .textarea {
+        resize: vertical;
+        min-height: 100px;
+        font-family: inherit;
+      }
+      
+      .select {
+        cursor: pointer;
+        
+        option {
+          background: #1a1a1a;
+          color: rgba(255, 255, 255, 0.9);
+        }
+      }
+      
+      .errorMessage {
+        display: block;
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 4px;
+        font-weight: 500;
+      }
+      
+      .helpText {
+        display: block;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+      
+      .charCount {
+        display: block;
+        text-align: right;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+    
+    .socialGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .preferencesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      
+      .checkboxGroup {
+        margin-bottom: 0;
+        
+        .checkboxLabel {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+          padding: 12px 16px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+          }
+          
+          .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #d49d32;
+            cursor: pointer;
+          }
+          
+          .checkboxText {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+          }
+        }
+      }
+    }
+    
+    .actions {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-end;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      
+      .cancelButton {
+        min-width: 120px;
+        padding: 12px 24px;
+        
+        &:hover {
+          color: #ef4444;
+          border-color: #ef4444;
+        }
+      }
+      
+      .saveButton {
+        min-width: 140px;
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        
+        .spinner {
+          width: 16px;
+          height: 16px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top: 2px solid #fff;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .UnitProfileEditor {
+    margin: 16px;
+    border-radius: 16px;
+    
+    .header {
+      padding: 24px;
+      
+      .title {
+        font-size: 24px;
+      }
+    }
+    
+    .form {
+      padding: 24px;
+      
+      .section {
+        margin-bottom: 24px;
+        
+        .sectionTitle {
+          font-size: 18px;
+        }
+      }
+      
+      .socialGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .preferencesGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .actions {
+        flex-direction: column-reverse;
+        gap: 12px;
+        
+        .cancelButton,
+        .saveButton {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .UnitProfileEditor {
+    .header {
+      padding: 20px;
+      
+      .title {
+        font-size: 20px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+      }
+    }
+    
+    .form {
+      padding: 20px;
+      
+      .inputGroup {
+        margin-bottom: 16px;
+        
+        .input,
+        .textarea,
+        .select {
+          padding: 10px 12px;
+          font-size: 14px;
+        }
+      }
+      
+      .actions {
+        margin-top: 24px;
+        padding-top: 20px;
+      }
+    }
+  }
+} 

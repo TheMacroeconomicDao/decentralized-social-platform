@@ -1,0 +1,95 @@
+.WalletConnectButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  .connectButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+    
+    &:hover {
+      transform: translateY(-2px);
+      transition: transform 0.2s ease;
+    }
+  }
+  
+  .errorButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+  }
+  
+  .connectedState {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    .chainButton {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      
+      .chainIcon {
+        display: flex;
+        align-items: center;
+        
+        img {
+          border-radius: 50%;
+        }
+      }
+    }
+    
+    .accountButton {
+      display: flex;
+      align-items: center;
+      min-width: 120px;
+      
+      .accountInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        
+        .accountName {
+          font-weight: 600;
+          font-size: 14px;
+        }
+        
+        .accountBalance {
+          font-size: 12px;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .WalletConnectButton {
+    .connectedState {
+      flex-direction: column;
+      gap: 4px;
+      
+      .chainButton,
+      .accountButton {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+} 

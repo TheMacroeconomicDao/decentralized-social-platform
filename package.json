@@ -6,17 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@helia/http": "^2.1.2",
+    "@helia/json": "^4.0.6",
+    "@helia/unixfs": "^5.0.3",
+    "@noble/hashes": "^1.8.0",
+    "@noble/secp256k1": "^2.3.0",
+    "@rainbow-me/rainbowkit": "^2.2.8",
     "@swc/helpers": "^0.5.2",
+    "@tanstack/react-query": "^5.81.5",
     "@types/node": "^22.15.21",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "crypto-js": "^4.2.0",
     "eslint": "^9.27.0",
     "eslint-config-next": "^15.1.8",
     "framer-motion": "^10.16.1",
     "giga-manager": "^1.1.0",
+    "helia": "^5.4.2",
+    "ipfs-http-client": "^60.0.1",
     "next": "^15.1.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -25,9 +36,12 @@
     "rehype-highlight": "^7.0.2",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.32.5",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "viem": "^2.31.7",
+    "wagmi": "^2.15.6"
   },
   "devDependencies": {
+    "pino-pretty": "^13.0.0",
     "sass": "^1.63.6"
   }
 }

@@ -1,0 +1,290 @@
+.WalletAuthModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-out;
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  }
+  
+  .modal {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.95) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.3s ease-out;
+    
+    @keyframes slideIn {
+      from { 
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .closeButton {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 18px;
+      transition: all 0.2s ease;
+      z-index: 10;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        transform: scale(1.1);
+      }
+    }
+  }
+  
+  .connectContainer {
+    padding: 40px;
+    text-align: center;
+    
+    .header {
+      margin-bottom: 32px;
+      
+      .title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #d49d32;
+        margin-bottom: 12px;
+        background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      .subtitle {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+    
+    .walletConnect {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 300px;
+      margin: 0 auto;
+      
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .icon {
+          font-size: 20px;
+        }
+        
+        span:last-child {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+      }
+    }
+  }
+  
+  .createProfilePrompt {
+    padding: 40px;
+    text-align: center;
+    
+    .header {
+      margin-bottom: 32px;
+      
+      .title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #4ade80;
+        margin-bottom: 12px;
+      }
+      
+      .subtitle {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+      }
+    }
+    
+    .actions {
+      .createButton {
+        background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 16px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(212, 157, 50, 0.4);
+        }
+      }
+    }
+  }
+  
+  .profileContainer {
+    padding: 20px;
+    
+    .profileActions {
+      margin-top: 20px;
+      text-align: center;
+      
+      .viewProfileButton {
+        background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(212, 157, 50, 0.4);
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .WalletAuthModal {
+    .overlay {
+      padding: 10px;
+    }
+    
+    .modal {
+      max-height: 95vh;
+      border-radius: 16px;
+      
+      .closeButton {
+        top: 15px;
+        right: 15px;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+    }
+    
+    .connectContainer {
+      padding: 30px 20px;
+      
+      .header {
+        margin-bottom: 24px;
+        
+        .title {
+          font-size: 24px;
+        }
+        
+        .subtitle {
+          font-size: 14px;
+        }
+      }
+      
+      .walletConnect {
+        margin-bottom: 24px;
+      }
+      
+      .features {
+        gap: 12px;
+        
+        .feature {
+          padding: 10px 12px;
+          
+          .icon {
+            font-size: 18px;
+          }
+          
+          span:last-child {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+    
+    .createProfilePrompt {
+      padding: 30px 20px;
+      
+      .header {
+        margin-bottom: 24px;
+        
+        .title {
+          font-size: 24px;
+        }
+        
+        .subtitle {
+          font-size: 14px;
+        }
+      }
+      
+      .actions {
+        .createButton {
+          padding: 14px 28px;
+          font-size: 15px;
+        }
+      }
+    }
+    
+    .profileContainer {
+      padding: 15px;
+    }
+  }
+} 

@@ -135,7 +135,7 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                         {/* СОВРЕМЕННЫЙ ЗОЛОТОЙ ИНДИКАТОР */}
                         {pathName === item.link && (
                             <motion.div
-                                layoutId="modernIndicator" // Для плавных переходов между позициями
+                                layoutId="bow" // Сохраняем уникальную анимацию проекта
                                 className={cls.indicator}
                                 variants={indicatorVariants}
                                 initial="hidden"

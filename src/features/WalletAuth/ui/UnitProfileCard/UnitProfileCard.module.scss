@@ -1,0 +1,310 @@
+.UnitProfileCard {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(40, 40, 40, 0.95) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  &.compact {
+    padding: 12px;
+    border-radius: 12px;
+    
+    .header {
+      .avatar {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .info {
+        .unitname {
+          font-size: 14px;
+        }
+        
+        .address {
+          font-size: 12px;
+        }
+      }
+    }
+    
+    .details {
+      display: none;
+    }
+    
+    .actions {
+      gap: 8px;
+      
+      button {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    
+    .avatar {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #d49d32;
+      
+      .avatarImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .statusIndicator {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 12px;
+        height: 12px;
+        background: #22c55e;
+        border-radius: 50%;
+        border: 2px solid white;
+      }
+    }
+    
+    .info {
+      flex: 1;
+      
+      .unitname {
+        font-size: 18px;
+        font-weight: 600;
+        color: #d49d32;
+        margin-bottom: 4px;
+        
+        .ensName {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.7);
+          font-weight: 400;
+          margin-left: 8px;
+        }
+      }
+      
+      .address {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .addressText {
+          font-family: 'Courier New', monospace;
+        }
+        
+        .copyButton {
+          background: none;
+          border: none;
+          color: rgba(255, 255, 255, 0.5);
+          cursor: pointer;
+          padding: 2px;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            color: #d49d32;
+            background: rgba(212, 157, 50, 0.1);
+          }
+        }
+      }
+    }
+  }
+  
+  .details {
+    margin-bottom: 16px;
+    
+    .detailItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .label {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      .value {
+        font-size: 14px;
+        color: white;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  .actions {
+    display: flex;
+    gap: 12px;
+    
+    .logoutButton {
+      flex: 1;
+      padding: 8px 16px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      color: #ef4444;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.5);
+      }
+    }
+    
+    .dashboardButton {
+      flex: 1;
+      padding: 8px 16px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 8px;
+      color: #3b82f6;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .UnitProfileCard {
+    padding: 16px;
+    
+    .header {
+      gap: 12px;
+      
+      .avatar {
+        width: 50px;
+        height: 50px;
+        
+        .statusIndicator {
+          width: 10px;
+          height: 10px;
+        }
+      }
+      
+      .info {
+        .unitname {
+          font-size: 16px;
+          
+          .ensName {
+            font-size: 12px;
+          }
+        }
+        
+        .address {
+          font-size: 12px;
+        }
+      }
+    }
+    
+    .details {
+      .detailItem {
+        .label,
+        .value {
+          font-size: 12px;
+        }
+      }
+    }
+    
+    .actions {
+      gap: 8px;
+      
+      button {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+    
+    &.compact {
+      padding: 10px;
+      
+      .header {
+        gap: 8px;
+        
+        .avatar {
+          width: 35px;
+          height: 35px;
+        }
+        
+        .info {
+          .unitname {
+            font-size: 12px;
+          }
+          
+          .address {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .UnitProfileCard {
+    padding: 12px;
+    
+    .header {
+      flex-direction: column;
+      text-align: center;
+      gap: 8px;
+      
+      .info {
+        .unitname {
+          font-size: 14px;
+        }
+        
+        .address {
+          font-size: 11px;
+          justify-content: center;
+        }
+      }
+    }
+    
+    .actions {
+      flex-direction: column;
+      gap: 8px;
+      
+      button {
+        width: 100%;
+        padding: 8px;
+        font-size: 11px;
+      }
+    }
+  }
+} 

@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useUnitProfile } from '@/shared/hooks/useUnitProfile';
+import { useToast } from '@/shared/hooks/useToast';
 import { Button, ThemeButton } from '@/shared/ui/Button/Button';
 import { SafeImage } from '@/shared/ui/SafeImage';
+import { ToastContainer } from '@/shared/ui/Toast';
 import { UnitProfileEditor } from '../UnitProfileEditor/UnitProfileEditor';
 import cls from './UnitProfileView.module.scss';
 import { classNames } from '@/shared/lib/classNames/classNames';
@@ -16,6 +18,7 @@ interface UnitProfileViewProps {
 
 export const UnitProfileView = ({ className, editable = true }: UnitProfileViewProps) => {
   const { profile, updateUnitProfile } = useUnitProfile();
+  const { toasts, success, error, removeToast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
 
   if (!profile) {
@@ -58,15 +61,10 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
   const handleCopyAddress = async () => {
     try {
       await navigator.clipboard.writeText(profile.address);
-      // Show success notification
-      if (typeof window !== 'undefined' && window.showToast) {
-        window.showToast('success', 'Address copied to clipboard');
-      }
+      success('Address copied to clipboard');
     } catch (err) {
       console.error('Failed to copy address:', err);
-      if (typeof window !== 'undefined' && window.showToast) {
-        window.showToast('error', 'Failed to copy address');
-      }
+      error('Failed to copy address');
     }
   };
 
@@ -321,6 +319,7 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
           )}
         </div>
       </div>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </motion.div>
   );
 }; 

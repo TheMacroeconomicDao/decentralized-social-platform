@@ -27,9 +27,9 @@ docker build -t $FULL_IMAGE .
 echo "📤 Pushing to GHCR..."
 docker push $FULL_IMAGE
 
-# Apply Kubernetes manifests
-echo "☸️  Applying Kubernetes manifests..."
-kubectl apply -f k8s/stage/
+# Apply Kubernetes manifests using kustomize
+echo "☸️  Applying Kubernetes manifests with kustomize..."
+kubectl apply -k k8s/overlays/stage/
 
 # Update deployment image
 echo "🔄 Updating deployment image..."

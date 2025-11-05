@@ -2,7 +2,8 @@
 import { classNames } from "@/shared/lib/classNames/classNames";
 import cls from "./Header-Enhanced.module.scss";
 import React, { useState, useEffect } from "react";
-import { ButtonEnhanced, ThemeButton } from "@/shared/ui/Button/Button-Enhanced";
+import { ButtonEnhanced } from "@/shared/ui/Button/Button-Enhanced";
+import { ThemeButton } from "@/shared/ui/Button/Button";
 import { Logo } from "@/shared/ui/Logo/Logo";
 import { NavbarTablet } from "../Navbar";
 import Link from "next/link";

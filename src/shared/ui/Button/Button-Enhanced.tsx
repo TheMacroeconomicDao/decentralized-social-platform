@@ -2,15 +2,7 @@ import { classNames } from "@/shared/lib/classNames/classNames";
 import cls from "./Button-Enhanced.module.scss";
 import { ButtonHTMLAttributes, FC } from "react";
 import { motion } from "framer-motion";
-
-export enum ThemeButton {
-  CLEAR = "clear",
-  DEFAULT = "default",
-  ORANGE = "orange",
-  BLUE = "blue",
-  GREEN = "green_blue",
-  FIRE = "fire"
-}
+import { ThemeButton } from "./Button";
 
 // Исключаем конфликтующие события из ButtonHTMLAttributes
 interface ButtonEnhancedProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 

@@ -8,7 +8,7 @@ import { Logo } from "@/shared/ui/Logo/Logo";
 import { NavbarTablet } from "../Navbar";
 import Link from "next/link";
 import Documents from "@/widgets/Documents/ui/Documents";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { WalletAuthModal } from "@/features/WalletAuth/ui/WalletAuthModal/WalletAuthModal";
 import { UnitProfileCard } from "@/features/WalletAuth/ui/UnitProfileCard/UnitProfileCard";
 import { useUnitProfile } from "@/shared/hooks/useUnitProfile";
@@ -19,27 +19,27 @@ interface HeaderProps {
 }
 
 // Анимации для Header
-const headerVariants = {
+const headerVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
         opacity: 1,
         y: 0,
         transition: {
             duration: 0.6,
-            ease: "easeOut",
+            ease: "easeOut" as const,
             staggerChildren: 0.1
         }
     }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
     hidden: { opacity: 0, x: 20 },
     visible: {
         opacity: 1,
         x: 0,
         transition: {
             duration: 0.4,
-            ease: "easeOut"
+            ease: "easeOut" as const
         }
     }
 };

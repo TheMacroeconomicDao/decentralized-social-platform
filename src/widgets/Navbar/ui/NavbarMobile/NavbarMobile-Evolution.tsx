@@ -104,49 +104,54 @@ export const NavbarMobileEvolution = () => {
   return (
     <div className={classNames(cls.NavbarMobile, {}, ['cyber-glass-card'])}>
       <div className={cls.NavWrapper}>
-        <motion.button 
+        <button 
           onClick={() => setIsShow(!isShow)} 
           className={classNames(cls.MobileButton, {}, ['cyber-hover-evolution'])}
-          variants={buttonVariants}
-          animate={isShow ? "active" : "idle"}
-          whileTap={{ scale: 0.95 }}
         >
+          <motion.div
+            variants={buttonVariants}
+            animate={isShow ? "active" : "idle"}
+            whileTap={{ scale: 0.95 }}
+            style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}
+          >
           <motion.div
             animate={{ rotate: isShow ? 90 : 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
           >
             <BurgerIcon active={isShow}/>
           </motion.div>
-          <motion.span
-            className="cyber-text-gradient-primary"
-            animate={{ 
-              color: isShow ? "var(--cyber-blue-bright)" : "var(--cyber-white)" 
-            }}
-          >
-            Menu
-          </motion.span>
-        </motion.button>
+          <span className="cyber-text-gradient-primary">
+            <motion.span
+              animate={{ 
+                color: isShow ? "var(--cyber-blue-bright)" : "var(--cyber-white)" 
+              }}
+            >
+              Menu
+            </motion.span>
+          </span>
+          </motion.div>
+        </button>
 
         {/* 🚀 ENHANCED: Улучшенный dropdown с кибер-эффектами */}
         <AnimatePresence>
           {isShow && (
-            <motion.div
-              variants={dropdownVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className={classNames(cls.Dropdown, {}, [
+            <div className={classNames(cls.Dropdown, {}, [
                 'cyber-glass-premium',
                 'cyber-border-gradient'
-              ])}
-              style={{
+              ])} style={{
                 transformOrigin: "top center",
                 perspective: "1000px"
-              }}
-            >
-              {/* ✨ NEW: Динамический фоновый эффект */}
+              }}>
               <motion.div
-                className="absolute inset-0 opacity-10 pointer-events-none rounded-lg"
+                variants={dropdownVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                style={{ width: '100%', height: '100%' }}
+              >
+                {/* ✨ NEW: Динамический фоновый эффект */}
+                <div className="absolute inset-0 opacity-10 pointer-events-none rounded-lg">
+                  <motion.div
                 animate={{
                   background: [
                     "radial-gradient(circle at 0% 50%, rgba(66, 184, 243, 0.1) 0%, transparent 50%)",
@@ -154,12 +159,14 @@ export const NavbarMobileEvolution = () => {
                     "radial-gradient(circle at 0% 50%, rgba(66, 184, 243, 0.1) 0%, transparent 50%)"
                   ]
                 }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
 
               {navbarItems.map((item, index) => (
                 <motion.div
@@ -173,17 +180,18 @@ export const NavbarMobileEvolution = () => {
                     }, ['cyber-hover-evolution'])}
                     href={item.link}
                   >
-                    <motion.div
-                      className="relative"
-                      whileHover={{ 
-                        x: 5,
-                        transition: { type: "spring", stiffness: 400 }
-                      }}
-                    >
-                      {/* ✨ NEW: Активный индикатор */}
-                      {pathName == item.link && (
-                        <motion.div
-                          className="absolute -left-3 top-1/2 w-2 h-2 bg-gradient-to-r from-cyber-blue to-cyber-gold rounded-full"
+                    <div className="relative">
+                      <motion.div
+                        whileHover={{ 
+                          x: 5,
+                          transition: { type: "spring", stiffness: 400 }
+                        }}
+                        style={{ width: '100%', height: '100%' }}
+                      >
+                        {/* ✨ NEW: Активный индикатор */}
+                        {pathName == item.link && (
+                          <div className="absolute -left-3 top-1/2 w-2 h-2 bg-gradient-to-r from-cyber-blue to-cyber-gold rounded-full">
+                            <motion.div
                           initial={{ scale: 0, opacity: 0 }}
                           animate={{ 
                             scale: 1, 
@@ -194,30 +202,34 @@ export const NavbarMobileEvolution = () => {
                               "0 0 10px rgba(66, 184, 243, 0.5)"
                             ]
                           }}
-                          transition={{
-                            boxShadow: {
-                              duration: 1.5,
-                              repeat: Infinity,
-                              repeatType: "reverse"
-                            }
-                          }}
-                          style={{ transform: "translateY(-50%)" }}
-                        />
-                      )}
-                      
-                      <motion.span
-                        className={pathName == item.link ? "cyber-text-gradient-accent" : ""}
-                        whileHover={{ 
-                          textShadow: "0 0 8px rgba(66, 184, 243, 0.5)" 
-                        }}
-                      >
-                        {item.title}
-                      </motion.span>
-                    </motion.div>
+                              transition={{
+                                boxShadow: {
+                                  duration: 1.5,
+                                  repeat: Infinity,
+                                  repeatType: "reverse"
+                                }
+                              }}
+                              style={{ transform: "translateY(-50%)", width: '100%', height: '100%' }}
+                            />
+                          </div>
+                        )}
+                        
+                        <span className={pathName == item.link ? "cyber-text-gradient-accent" : ""}>
+                          <motion.span
+                            whileHover={{ 
+                              textShadow: "0 0 8px rgba(66, 184, 243, 0.5)" 
+                            }}
+                          >
+                            {item.title}
+                          </motion.span>
+                        </span>
+                      </motion.div>
+                    </div>
                   </Link>
                 </motion.div>
               ))}
-            </motion.div>
+              </motion.div>
+            </div>
           )}
         </AnimatePresence>
       </div>
@@ -225,13 +237,14 @@ export const NavbarMobileEvolution = () => {
       {/* 🚀 NEW: Overlay для закрытия меню */}
       <AnimatePresence>
         {isShow && (
-          <motion.div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[-1]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsShow(false)}
-          />
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[-1]" onClick={() => setIsShow(false)}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
         )}
       </AnimatePresence>
     </div>

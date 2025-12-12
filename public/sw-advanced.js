@@ -6,6 +6,20 @@ const STATIC_CACHE = 'dsp-static-v2.0.0';
 const DYNAMIC_CACHE = 'dsp-dynamic-v2.0.0';
 const IMAGE_CACHE = 'dsp-images-v2.0.0';
 
+// Production-ready логирование (только ошибки в production)
+const isDevelopment = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
+const swLogger = {
+  log: (...args) => {
+    if (isDevelopment) console.log('[SW]', ...args);
+  },
+  error: (...args) => {
+    console.error('[SW]', ...args); // Ошибки всегда логируем
+  },
+  warn: (...args) => {
+    if (isDevelopment) console.warn('[SW]', ...args);
+  }
+};
+
 // Critical resources to cache immediately
 const PRECACHE_URLS = [
   '/',
@@ -33,7 +47,7 @@ const CACHE_STRATEGIES = {
 
 // Install event - cache critical resources
 self.addEventListener('install', event => {
-  console.log('[SW] Installing Service Worker v2.0.0');
+  swLogger.log('Installing Service Worker v2.0.0');
   
   event.waitUntil(
     (async () => {
@@ -44,14 +58,14 @@ self.addEventListener('install', event => {
       // Skip waiting to activate immediately
       await self.skipWaiting();
       
-      console.log('[SW] Critical resources cached');
+      swLogger.log('Critical resources cached');
     })()
   );
 });
 
 // Activate event - cleanup old caches
 self.addEventListener('activate', event => {
-  console.log('[SW] Activating Service Worker v2.0.0');
+  swLogger.log('Activating Service Worker v2.0.0');
   
   event.waitUntil(
     (async () => {
@@ -68,7 +82,7 @@ self.addEventListener('activate', event => {
       // Take control of all clients
       await self.clients.claim();
       
-      console.log('[SW] Old caches cleaned, SW activated');
+      swLogger.log('Old caches cleaned, SW activated');
     })()
   );
 });
@@ -116,7 +130,7 @@ async function handleImageRequest(request) {
     
     return response;
   } catch (error) {
-    console.log('[SW] Image fetch failed:', error);
+    swLogger.error('Image fetch failed', error);
     
     // Return placeholder image for failed requests
     return new Response(
@@ -146,7 +160,7 @@ async function handleStaticRequest(request) {
     
     return response;
   } catch (error) {
-    console.log('[SW] Static asset fetch failed:', error);
+    swLogger.error('Static asset fetch failed', error);
     throw error;
   }
 }
@@ -165,7 +179,7 @@ async function handleApiRequest(request) {
     
     return response;
   } catch (error) {
-    console.log('[SW] API fetch failed, trying cache:', error);
+    swLogger.log('API fetch failed, trying cache', error);
     
     const cachedResponse = await cache.match(request);
     if (cachedResponse) {
@@ -208,7 +222,7 @@ async function handlePageRequest(request) {
   try {
     return await fetchPromise;
   } catch (error) {
-    console.log('[SW] Page fetch failed:', error);
+    swLogger.log('Page fetch failed', error);
     
     // Return offline page
     const offlineResponse = await cache.match('/offline.html');
@@ -221,7 +235,7 @@ async function handleDefaultRequest(request) {
   try {
     return await fetch(request);
   } catch (error) {
-    console.log('[SW] Default fetch failed:', error);
+    swLogger.log('Default fetch failed', error);
     
     // Try to find in any cache
     const response = await caches.match(request);
@@ -245,9 +259,9 @@ async function handleFormSubmissionSync() {
     try {
       await fetch(submission.url, submission.options);
       await removeQueuedSubmission(db, submission.id);
-      console.log('[SW] Queued submission sent:', submission.id);
+      swLogger.log('Queued submission sent', submission.id);
     } catch (error) {
-      console.log('[SW] Failed to send queued submission:', error);
+      swLogger.error('Failed to send queued submission', error);
     }
   }
 }
@@ -300,7 +314,7 @@ self.addEventListener('notificationclick', event => {
 // Performance monitoring
 self.addEventListener('message', event => {
   if (event.data && event.data.type === 'PERFORMANCE_REPORT') {
-    console.log('[SW] Performance report:', event.data.metrics);
+    swLogger.log('Performance report', event.data.metrics);
     
     // Could send to analytics service
     // sendToAnalytics(event.data.metrics);
@@ -364,4 +378,4 @@ self.addEventListener('message', event => {
   }
 });
 
-console.log('[SW] Service Worker v2.0.0 loaded successfully'); 
+swLogger.log('Service Worker v2.0.0 loaded successfully'); 

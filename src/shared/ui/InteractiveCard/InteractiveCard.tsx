@@ -198,75 +198,83 @@ export const InteractiveCard = ({
   };
 
   return (
-    <motion.div
-      ref={cardRef}
-      className={`${cls.interactiveCard} ${className}`}
-      style={{
-        x: enableSwipe ? springX : 0,
-        y: enableParallax ? scrollTransform : (enableSwipe ? springY : 0),
-        rotateX: enableTilt ? rotateX : 0,
-        rotateY: enableTilt ? rotateY : 0,
-        transformStyle: "preserve-3d",
-        transformOrigin: "center center",
-        ...style
-      }}
-      variants={cardVariants}
-      initial="initial"
-      animate={isHovered ? "hover" : "initial"}
-      whileTap="tap"
+    <div 
+      ref={cardRef} 
+      className={`${cls.interactiveCard} ${className}`} 
+      style={style}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onPan={handlePan}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
       aria-label="Interactive card"
-      {...(enableSwipe && {
-        drag: true,
-        dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 },
-        dragElastic: 0.2
-      })}
       {...touchHandlers}
     >
-      {/* Shine effect on hover */}
       <motion.div
-        className={cls.shineEffect}
         style={{
+          x: enableSwipe ? springX : 0,
+          y: enableParallax ? scrollTransform : (enableSwipe ? springY : 0),
+          rotateX: enableTilt ? rotateX : 0,
+          rotateY: enableTilt ? rotateY : 0,
+          transformStyle: "preserve-3d",
+          transformOrigin: "center center",
+          width: '100%',
+          height: '100%'
+        }}
+        variants={cardVariants}
+        initial="initial"
+        animate={isHovered ? "hover" : "initial"}
+        whileTap="tap"
+        onPan={handlePan}
+        {...(enableSwipe && {
+          drag: true,
+          dragConstraints: { left: 0, right: 0, top: 0, bottom: 0 },
+          dragElastic: 0.2
+        })}
+      >
+        {/* Shine effect on hover */}
+        <div className={cls.shineEffect} style={{
           background: `linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%)`,
           transform: `translateX(${x.get() * 2}px) translateY(${y.get() * 2}px)`
-        }}
-        animate={isHovered ? { opacity: 1 } : { opacity: 0 }}
-      />
-      
-      {/* Content */}
-      <div className={cls.cardContent}>
-        {children}
-      </div>
-      
-      {/* Interactive indicators */}
-      {enableSwipe && (
-        <div className={cls.swipeIndicators}>
-          <div className={cls.swipeHint}>
-            <span>⟷</span>
-            <span>Swipe</span>
-          </div>
+        }}>
+          <motion.div
+            animate={isHovered ? { opacity: 1 } : { opacity: 0 }}
+            style={{ width: '100%', height: '100%' }}
+          />
         </div>
-      )}
-      
-      {/* Glow effect */}
-      <motion.div
-        className={cls.glowEffect}
-        animate={isHovered ? { 
-          opacity: 0.6,
-          scale: 1.1 
-        } : { 
-          opacity: 0,
-          scale: 1 
-        }}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.div>
+        
+        {/* Content */}
+        <div className={cls.cardContent}>
+          {children}
+        </div>
+        
+        {/* Interactive indicators */}
+        {enableSwipe && (
+          <div className={cls.swipeIndicators}>
+            <div className={cls.swipeHint}>
+              <span>⟷</span>
+              <span>Swipe</span>
+            </div>
+          </div>
+        )}
+        
+        {/* Glow effect */}
+        <div className={cls.glowEffect}>
+          <motion.div
+            animate={isHovered ? { 
+              opacity: 0.6,
+              scale: 1.1 
+            } : { 
+              opacity: 0,
+              scale: 1 
+            }}
+            transition={{ duration: 0.3 }}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 }; 

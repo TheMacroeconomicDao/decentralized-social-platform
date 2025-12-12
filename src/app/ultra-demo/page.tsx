@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
 
-// New Ultra Components
-import { DynamicLighting } from '@/shared/ui/DynamicLighting/DynamicLighting';
-import { ParticleSystem } from '@/shared/ui/ParticleSystem/ParticleSystem';
+// Lazy load тяжелые компоненты для code splitting
+const DynamicLighting = lazy(() => import('@/shared/ui/DynamicLighting/DynamicLighting').then(module => ({ default: module.DynamicLighting })));
+const ParticleSystem = lazy(() => import('@/shared/ui/ParticleSystem/ParticleSystem').then(module => ({ default: module.ParticleSystem })));
+
+// New Ultra Components (легкие компоненты загружаем сразу)
 import { OptimizedImage } from '@/shared/ui/OptimizedImage/OptimizedImage';
 import { ResponsiveContainer } from '@/shared/ui/ResponsiveContainer/ResponsiveContainer';
 import { InteractiveCard } from '@/shared/ui/InteractiveCard/InteractiveCard';
@@ -41,23 +43,26 @@ export default function UltraDemoPage() {
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
       {/* Demo Background with Dynamic Lighting */}
-      <DynamicLighting
-        intensity={lightingIntensity}
-        radius={600}
-        color="212, 157, 50"
-      >
-        {/* Particle System Background */}
-        <ParticleSystem
-          particleCount={particleCount}
-          enablePhysics={true}
-          enableMouse={true}
-          colors={[
-            'rgba(212, 157, 50, 0.8)',
-            'rgba(66, 184, 243, 0.8)',
-            'rgba(225, 225, 225, 0.6)',
-            'rgba(16, 144, 52, 0.7)',
-          ]}
-        />
+      <Suspense fallback={<div style={{ minHeight: '100vh', background: '#001019' }} />}>
+        <DynamicLighting
+          intensity={lightingIntensity}
+          radius={600}
+          color="212, 157, 50"
+        >
+          {/* Particle System Background */}
+          <Suspense fallback={null}>
+            <ParticleSystem
+              particleCount={particleCount}
+              enablePhysics={true}
+              enableMouse={true}
+              colors={[
+                'rgba(212, 157, 50, 0.8)',
+                'rgba(66, 184, 243, 0.8)',
+                'rgba(225, 225, 225, 0.6)',
+                'rgba(16, 144, 52, 0.7)',
+              ]}
+            />
+          </Suspense>
 
         {/* Main Demo Content */}
         <ResponsiveContainer
@@ -355,7 +360,8 @@ export default function UltraDemoPage() {
             </div>
           </motion.section>
         </ResponsiveContainer>
-      </DynamicLighting>
+        </DynamicLighting>
+      </Suspense>
     </div>
   );
 } 

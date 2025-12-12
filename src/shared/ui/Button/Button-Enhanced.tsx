@@ -41,20 +41,24 @@ export const ButtonEnhanced: FC<ButtonEnhancedProps> = (props) => {
   } = props;
 
   return (
-    <motion.button
+    <button
       className={classNames(cls.Button, { [cls.disabled]: disabled }, [
         className,
         cls[theme],
       ])}
       disabled={disabled}
-      variants={buttonVariants}
-      initial="idle"
-      animate="idle"
-      whileHover={!disabled ? "hover" : "idle"}
-      whileTap={!disabled ? "tap" : "idle"}
       {...other}
     >
-      {children}
-    </motion.button>
+      <motion.div
+        variants={buttonVariants}
+        initial="idle"
+        animate="idle"
+        whileHover={!disabled ? "hover" : "idle"}
+        whileTap={!disabled ? "tap" : "idle"}
+        style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}
+      >
+        {children}
+      </motion.div>
+    </button>
   );
 }; 

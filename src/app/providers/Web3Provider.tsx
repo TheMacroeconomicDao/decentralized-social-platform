@@ -1,40 +1,31 @@
 'use client';
 
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, type State } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { config } from '@/shared/config/web3';
-import { useEffect, useState } from 'react';
+import { getConfig } from '@/shared/config/web3';
+import { useState } from 'react';
 import '@rainbow-me/rainbowkit/styles.css';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 2,
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 
 interface Web3ProviderProps {
   children: React.ReactNode;
+  initialState?: State;
 }
 
-export const Web3Provider = ({ children }: Web3ProviderProps) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Show simple loading during SSR
-  if (!mounted) {
-    return <div suppressHydrationWarning>{children}</div>;
-  }
+export const Web3Provider = ({ children, initialState }: Web3ProviderProps) => {
+  const [config] = useState(() => getConfig());
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 2,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        refetchOnWindowFocus: false,
+      },
+    },
+  }));
 
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={config} initialState={initialState}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={darkTheme({

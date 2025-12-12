@@ -37,10 +37,12 @@ export const useChatPopup = (currentUser: string = 'User') => {
     }
   }, []);
 
-  // Сохраняем сообщения при изменении
+  // Сохраняем сообщения при изменении (ограничиваем количество для экономии памяти)
   useEffect(() => {
     if (messages.length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      // Ограничиваем до последних 50 сообщений чтобы не переполнять localStorage
+      const messagesToSave = messages.slice(-50);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messagesToSave));
     }
   }, [messages]);
 

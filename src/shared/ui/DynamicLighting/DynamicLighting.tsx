@@ -82,9 +82,7 @@ export const DynamicLighting = ({
       }}
     >
       {/* Main Dynamic Light */}
-      <motion.div
-        className={cls.lightSource}
-        style={{
+      <div className={cls.lightSource} style={{
           position: 'absolute',
           top: 0,
           left: 0,
@@ -99,13 +97,12 @@ export const DynamicLighting = ({
             transparent 70%)`,
           '--mouse-x': springX,
           '--mouse-y': springY,
-        } as React.CSSProperties}
-      />
+        } as React.CSSProperties}>
+        <motion.div style={{ width: '100%', height: '100%' }} />
+      </div>
       
       {/* Secondary Ambient Light */}
-      <motion.div
-        className={cls.ambientLight}
-        style={{
+      <div className={cls.ambientLight} style={{
           position: 'absolute',
           top: 0,
           left: 0,
@@ -118,8 +115,9 @@ export const DynamicLighting = ({
             transparent 60%)`,
           '--mouse-x': springX,
           '--mouse-y': springY,
-        } as React.CSSProperties}
-      />
+        } as React.CSSProperties}>
+        <motion.div style={{ width: '100%', height: '100%' }} />
+      </div>
       
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2 }}>

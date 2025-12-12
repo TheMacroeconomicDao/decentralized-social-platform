@@ -43,8 +43,8 @@ export const JoinSection = ({ className = "" }: JoinUsBlockProps) => {
                             },
                         }}
                         viewport={{ once: true, amount: 0.2 }}
-                        className={cls.textContent}
                     >
+                    <span className={cls.textContent}>
                         Welcome to Gybernaty, an open community where ideas
                         transform into reality. Here, you will find like-minded
                         individuals who can assist you in bringing your projects
@@ -62,6 +62,7 @@ export const JoinSection = ({ className = "" }: JoinUsBlockProps) => {
                         with whom you can share your ideas and successes.
                         Together, let&#39;s embark on a journey of exploration
                         and transformation.
+                    </span>
                     </motion.p>
                 </div>
             </Container>

@@ -90,24 +90,27 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
     const pathName = usePathname();
 
     return (
-        <motion.div 
-            className={classNames(cls.Navbar, {}, [className])}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-        >
-            {/* Градиентная линия с анимацией */}
-            <motion.div 
-                className={cls.gradientLine} 
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{ scaleX: 1, opacity: 1 }}
-                transition={{ 
-                    delay: 0.5,
-                    type: 'spring',
-                    stiffness: 200,
-                    damping: 20
-                }}
-            />
+        <div className={classNames(cls.Navbar, {}, [className])}>
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                style={{ width: '100%', height: '100%' }}
+            >
+                {/* Градиентная линия с анимацией */}
+                <div className={cls.gradientLine}>
+                    <motion.div
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        transition={{ 
+                            delay: 0.5,
+                            type: 'spring',
+                            stiffness: 200,
+                            damping: 20
+                        }}
+                        style={{ width: '100%', height: '100%' }}
+                    />
+                </div>
             
             {navbarItems.map((item, index) => (
                 <motion.div
@@ -134,34 +137,37 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                     >
                         {/* СОВРЕМЕННЫЙ ЗОЛОТОЙ ИНДИКАТОР */}
                         {pathName === item.link && (
-                            <motion.div
-                                layoutId="bow" // Сохраняем уникальную анимацию проекта
-                                className={cls.indicator}
-                                variants={indicatorVariants}
-                                initial="hidden"
-                                animate="visible"
-                                whileHover="hover"
-                                // ДОПОЛНИТЕЛЬНЫЕ СОВРЕМЕННЫЕ ЭФФЕКТЫ
-                                style={{
-                                    transformOrigin: "center",
-                                    willChange: "transform, opacity, box-shadow"
-                                }}
-                                // GLITCH ЭФФЕКТ ПРИ ПЕРЕКЛЮЧЕНИИ
-                                transition={{
-                                    layout: {
-                                        type: 'spring',
-                                        stiffness: 500,
-                                        damping: 30,
-                                        mass: 0.8,
-                                        duration: 0.6
-                                    }
-                                }}
-                            />
+                            <div className={cls.indicator}>
+                                <motion.div
+                                    layoutId="bow" // Сохраняем уникальную анимацию проекта
+                                    variants={indicatorVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    whileHover="hover"
+                                    // ДОПОЛНИТЕЛЬНЫЕ СОВРЕМЕННЫЕ ЭФФЕКТЫ
+                                    style={{
+                                        transformOrigin: "center",
+                                        willChange: "transform, opacity, box-shadow",
+                                        width: '100%',
+                                        height: '100%'
+                                    }}
+                                    // GLITCH ЭФФЕКТ ПРИ ПЕРЕКЛЮЧЕНИИ
+                                    transition={{
+                                        layout: {
+                                            type: 'spring',
+                                            stiffness: 500,
+                                            damping: 30,
+                                            mass: 0.8,
+                                            duration: 0.6
+                                        }
+                                    }}
+                                />
+                            </div>
                         )}
                         
                         {/* АНИМИРОВАННЫЙ ТЕКСТ */}
-                        <motion.span
-                            className={cls.itemText}
+                        <span className={cls.itemText}>
+                            <motion.span
                             animate={pathName === item.link ? {
                                 textShadow: [
                                     "0 0 15px rgba(212, 157, 50, 0.6)",
@@ -175,12 +181,14 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                                 repeat: Infinity,
                                 ease: "easeInOut"
                             }}
-                        >
-                            {item.title}
-                        </motion.span>
+                            >
+                                {item.title}
+                            </motion.span>
+                        </span>
                     </Link>
                 </motion.div>
             ))}
-        </motion.div>
+            </motion.div>
+        </div>
     );
 }; 

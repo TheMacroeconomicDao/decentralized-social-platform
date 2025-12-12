@@ -83,59 +83,65 @@ export const NavbarEvolution = ({}: NavbarProps) => {
                         )}
                         href={item.link}
                     >
-                        <motion.div
-                            variants={itemVariants}
-                            initial="idle"
-                            whileHover="hover"
-                            className="cyber-transition-smooth"
-                        >
-                            {/* ✅ СОХРАНЯЕМ оригинальную bow анимацию */}
-                            {pathName == item.link && (
-                                <motion.div
-                                    layoutId="bow"
-                                    className={classNames(cls.hatLink, {}, ['cyber-glow-blue'])}
-                                    variants={elementVariants}
-                                    animate={'start'}
-                                    initial={'end'}
-                                    transition={{
-                                        type: 'spring',
-                                        bounce: .2,
-                                        duration: 1.2, // Немного медленнее для большей плавности
-                                        stiffness: 200
-                                    }}
-                                />
-                            )}
-                            
-                            {/* ✨ NEW: Добавляем тонкие кибер-акценты */}
-                            <motion.span
-                                className="cyber-text-gradient-primary"
-                                whileHover={{ 
-                                    letterSpacing: "0.5px",
-                                    transition: { duration: 0.2 }
-                                }}
+                        <div className="cyber-transition-smooth">
+                            <motion.div
+                                variants={itemVariants}
+                                initial="idle"
+                                whileHover="hover"
+                                style={{ width: '100%', height: '100%' }}
                             >
-                                {item.title}
-                            </motion.span>
-                        </motion.div>
+                                {/* ✅ СОХРАНЯЕМ оригинальную bow анимацию */}
+                                {pathName == item.link && (
+                                    <div className={classNames(cls.hatLink, {}, ['cyber-glow-blue'])}>
+                                        <motion.div
+                                            layoutId="bow"
+                                            variants={elementVariants}
+                                            animate={'start'}
+                                            initial={'end'}
+                                            transition={{
+                                                type: 'spring',
+                                                bounce: .2,
+                                                duration: 1.2, // Немного медленнее для большей плавности
+                                                stiffness: 200
+                                            }}
+                                            style={{ width: '100%', height: '100%' }}
+                                        />
+                                    </div>
+                                )}
+                                
+                                {/* ✨ NEW: Добавляем тонкие кибер-акценты */}
+                                <span className="cyber-text-gradient-primary">
+                                    <motion.span
+                                        whileHover={{ 
+                                            letterSpacing: "0.5px",
+                                            transition: { duration: 0.2 }
+                                        }}
+                                    >
+                                        {item.title}
+                                    </motion.span>
+                                </span>
+                            </motion.div>
+                        </div>
                     </Link>
                 </motion.div>
             ))}
             
             {/* ✨ NEW: Динамический фоновый эффект */}
-            <motion.div
-                className="absolute inset-0 opacity-20 pointer-events-none"
-                style={{
+            <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
                     background: "linear-gradient(90deg, transparent, rgba(66, 184, 243, 0.1), transparent)"
-                }}
-                animate={{
-                    x: ['-100%', '100%'],
-                }}
-                transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "linear"
-                }}
-            />
+                }}>
+                <motion.div
+                    animate={{
+                        x: ['-100%', '100%'],
+                    }}
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "linear"
+                    }}
+                    style={{ width: '100%', height: '100%' }}
+                />
+            </div>
         </nav>
     );
 }; 

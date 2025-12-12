@@ -7,4 +7,15 @@ services:
     build: .
     ports:
       - "3000:3000"
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=2048
+    # Ограничения памяти для контейнера
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    # Перезапуск при превышении памяти
+    restart: unless-stopped
     

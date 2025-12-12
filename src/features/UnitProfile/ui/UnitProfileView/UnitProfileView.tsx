@@ -85,12 +85,13 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
   }
 
   return (
-    <motion.div 
-      className={classNames(cls.UnitProfileView, {}, [className || ''])}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className={classNames(cls.UnitProfileView, {}, [className || ''])}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{ width: '100%', height: '100%' }}
+      >
       {/* Header Section */}
       <div className={cls.header}>
         <div className={cls.avatarSection}>
@@ -153,53 +154,61 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
       <div className={cls.statsSection}>
         <h3 className={cls.sectionTitle}>📊 Statistics</h3>
         <div className={cls.statsGrid}>
-          <motion.div 
-            className={cls.statCard}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div className={cls.statCard}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+              style={{ width: '100%', height: '100%' }}
+            >
             <div className={cls.statIcon}>💬</div>
             <div className={cls.statInfo}>
               <span className={cls.statValue}>{profile.stats?.messagesCount || 0}</span>
               <span className={cls.statLabel}>Messages</span>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          <motion.div 
-            className={cls.statCard}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div className={cls.statCard}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+              style={{ width: '100%', height: '100%' }}
+            >
             <div className={cls.statIcon}>💼</div>
             <div className={cls.statInfo}>
               <span className={cls.statValue}>{profile.stats?.chatsCount || 0}</span>
               <span className={cls.statLabel}>Chats</span>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          <motion.div 
-            className={cls.statCard}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div className={cls.statCard}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+              style={{ width: '100%', height: '100%' }}
+            >
             <div className={cls.statIcon}>🤝</div>
             <div className={cls.statInfo}>
               <span className={cls.statValue}>{profile.stats?.connectionsCount || 0}</span>
               <span className={cls.statLabel}>Connections</span>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          <motion.div 
-            className={cls.statCard}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
+          <div className={cls.statCard}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+              style={{ width: '100%', height: '100%' }}
+            >
             <div className={cls.statIcon}>⭐</div>
             <div className={cls.statInfo}>
               <span className={cls.statValue}>{profile.stats?.reputation || 0}</span>
               <span className={cls.statLabel}>Reputation</span>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -209,15 +218,15 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
           <h3 className={cls.sectionTitle}>🛠️ Skills</h3>
           <div className={cls.skillsContainer}>
             {profile.skills.map((skill, index) => (
-              <motion.span
-                key={skill}
-                className={cls.skillTag}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                {skill}
-              </motion.span>
+              <span key={skill} className={cls.skillTag}>
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  {skill}
+                </motion.span>
+              </span>
             ))}
           </div>
         </div>
@@ -320,6 +329,7 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
         </div>
       </div>
       <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }; 

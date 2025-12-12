@@ -53,12 +53,10 @@ export const useUnitProfile = () => {
   const { signMessageAsync } = useSignMessage();
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ 
-    address: address,
-    enabled: !!address && mounted
+    address: address && mounted ? address : undefined
   });
   const { data: balance } = useBalance({ 
-    address: address,
-    enabled: !!address && mounted
+    address: address && mounted ? address : undefined
   });
 
   // Set mounted state

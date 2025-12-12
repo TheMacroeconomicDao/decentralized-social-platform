@@ -1,13 +1,15 @@
 'use client'
 import {classNames} from "@/shared/lib/classNames/classNames";
 import cls from "./Header.module.scss";
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import {Button, ThemeButton} from "@/shared/ui/Button/Button";
 import {Logo} from "@/shared/ui/Logo/Logo";
 import {NavbarTablet} from "../Navbar";
 import Link from "next/link";
 import Documents from "@/widgets/Documents/ui/Documents";
-import { ChatPopup } from "../Chat/ui/ChatPopUp";
+
+// Lazy load Chat component для code splitting
+const ChatPopup = lazy(() => import("../Chat/ui/ChatPopUp").then(module => ({ default: module.ChatPopup })));
 
 interface HeaderProps {
     children?: React.ReactNode;
@@ -47,9 +49,11 @@ export const Header = ({className = ""}: HeaderProps) => {
                         Dapp
                     </Button>
                 }
-                {isShowChat &&
-                    <ChatPopup isOpen={isShowChat} onClose={handleCloseChat} />
-                }
+                {isShowChat && (
+                    <Suspense fallback={<div>Loading chat...</div>}>
+                        <ChatPopup isOpen={isShowChat} onClose={handleCloseChat} />
+                    </Suspense>
+                )}
                 <NavbarTablet/>
             </div>
         </div>

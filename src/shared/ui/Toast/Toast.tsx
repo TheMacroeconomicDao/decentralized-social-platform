@@ -52,26 +52,28 @@ export const Toast = ({ id, type, message, duration = 5000, onClose }: ToastProp
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, x: 300, scale: 0.8 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          exit={{ opacity: 0, x: 300, scale: 0.8 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          className={classNames(cls.Toast, {
+        <div className={classNames(cls.Toast, {
             [cls.success]: type === 'success',
             [cls.error]: type === 'error',
             [cls.warning]: type === 'warning',
             [cls.info]: type === 'info',
-          })}
-        >
-          <div className={cls.content}>
-            <span className={cls.icon}>{getIcon()}</span>
-            <span className={cls.message}>{message}</span>
-          </div>
-          <button className={cls.closeButton} onClick={handleClose}>
-            ✕
-          </button>
-        </motion.div>
+          })}>
+          <motion.div
+            initial={{ opacity: 0, x: 300, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 300, scale: 0.8 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <div className={cls.content}>
+              <span className={cls.icon}>{getIcon()}</span>
+              <span className={cls.message}>{message}</span>
+            </div>
+            <button className={cls.closeButton} onClick={handleClose}>
+              ✕
+            </button>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

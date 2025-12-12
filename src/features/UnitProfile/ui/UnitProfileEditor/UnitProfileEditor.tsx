@@ -148,12 +148,13 @@ export const UnitProfileEditor = ({
   };
 
   return (
-    <motion.div 
-      className={classNames(cls.UnitProfileEditor, {}, [className || ''])}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className={classNames(cls.UnitProfileEditor, {}, [className || ''])}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        style={{ width: '100%', height: '100%' }}
+      >
       <div className={cls.header}>
         <h2 className={cls.title}>✏️ Edit Profile</h2>
         <p className={cls.subtitle}>Update your unit profile information</p>
@@ -413,6 +414,7 @@ export const UnitProfileEditor = ({
           </Button>
         </div>
       </form>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }; 

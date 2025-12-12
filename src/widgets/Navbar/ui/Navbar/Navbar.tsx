@@ -40,18 +40,20 @@ export const Navbar = ({}: NavbarProps) => {
                     href={item.link}
                 >
                     {pathName == item.link && (
-                        <motion.div
-                            layoutId="bow"
-                            className={cls.hatLink}
-                            variants={elementVariants}
-                            animate={'start'}
-                            initial={'end'}
-                            transition={{
-                              type: 'spring',
-                              bounce: .2,
-                              duration: 1
-                            }}
-                        />
+                        <div className={cls.hatLink}>
+                            <motion.div
+                                layoutId="bow"
+                                variants={elementVariants}
+                                animate={'start'}
+                                initial={'end'}
+                                transition={{
+                                  type: 'spring',
+                                  bounce: .2,
+                                  duration: 1
+                                }}
+                                style={{ width: '100%', height: '100%' }}
+                            />
+                        </div>
                     )}
                     {item.title}
                 </Link>

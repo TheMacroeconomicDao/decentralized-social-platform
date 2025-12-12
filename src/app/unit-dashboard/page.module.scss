@@ -1,0 +1,130 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+  
+  .noProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    
+    .title {
+      font-size: 48px;
+      font-weight: 700;
+      color: #d49d32;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 32px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    
+    .connectButton {
+      min-width: 200px;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    
+    .title {
+      font-size: 42px;
+      font-weight: 700;
+      color: #d49d32;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #d49d32 0%, #f4c430 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+    }
+  }
+  
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .container {
+    padding: 24px 16px;
+    
+    .noProfile {
+      .title {
+        font-size: 36px;
+      }
+      
+      .subtitle {
+        font-size: 16px;
+      }
+    }
+    
+    .header {
+      margin-bottom: 32px;
+      
+      .title {
+        font-size: 32px;
+      }
+      
+      .subtitle {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 12px;
+    
+    .noProfile {
+      .title {
+        font-size: 28px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+      }
+      
+      .connectButton {
+        min-width: 160px;
+        padding: 14px 24px;
+        font-size: 14px;
+      }
+    }
+    
+    .header {
+      .title {
+        font-size: 24px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+      }
+    }
+  }
+} 

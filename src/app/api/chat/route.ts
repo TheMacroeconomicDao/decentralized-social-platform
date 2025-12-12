@@ -1,8 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createLogger } from '@/shared/lib/logger';
 
+const logger = createLogger('ChatAPI');
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Серверная переменная без NEXT_PUBLIC_
 const OPENAI_MODEL = 'gpt-4';
+
+// Кеш для ответов (in-memory cache)
+const responseCache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 минут
+
+/**
+ * Генерация ключа кеша на основе сообщения
+ */
+function generateCacheKey(message: string): string {
+  return `chat:${message.trim().toLowerCase().slice(0, 100)}`;
+}
+
+/**
+ * Проверка и получение из кеша
+ */
+function getCachedResponse(key: string): any | null {
+  const cached = responseCache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.data;
+  }
+  if (cached) {
+    responseCache.delete(key); // Удаляем устаревший кеш
+  }
+  return null;
+}
+
+/**
+ * Сохранение в кеш
+ */
+function setCachedResponse(key: string, data: any): void {
+  // Ограничиваем размер кеша (максимум 100 записей)
+  if (responseCache.size >= 100) {
+    const firstKey = responseCache.keys().next().value;
+    if (firstKey !== undefined) {
+      responseCache.delete(firstKey);
+    }
+  }
+  responseCache.set(key, { data, timestamp: Date.now() });
+}
 
 const GYBERNATY_SYSTEM_PROMPT = `Ты — Gybernaty AI, официальный ИИ-ассистент сообщества Gybernaty. Твоя задача — помогать участникам сообщества, отвечать на вопросы о проектах и философии Gybernaty, а также поощрять участие в open source разработке.
 
@@ -63,7 +104,7 @@ export async function POST(request: NextRequest) {
   try {
     // Проверяем наличие API ключа
     if (!OPENAI_API_KEY) {
-      console.error('OpenAI API key is not configured');
+      logger.error('OpenAI API key is not configured');
       return NextResponse.json(
         { 
           error: 'OpenAI API key is not configured',
@@ -95,6 +136,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Проверяем кеш (только для не-streaming запросов)
+    if (!stream) {
+      const cacheKey = generateCacheKey(message);
+      const cachedResponse = getCachedResponse(cacheKey);
+      if (cachedResponse) {
+        logger.log('Returning cached response', { data: { cacheKey } });
+        return NextResponse.json(cachedResponse, {
+          headers: {
+            'X-Cache': 'HIT',
+            'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          },
+        });
+      }
+    }
+
     // Подготавливаем запрос к OpenAI
     const openaiRequest = {
       model: OPENAI_MODEL,
@@ -119,7 +175,12 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('OpenAI API error:', response.status, errorData);
+      logger.error('OpenAI API error', new Error(`Status: ${response.status}`), { 
+        data: { 
+          status: response.status, 
+          errorData 
+        }
+      });
       
       return NextResponse.json(
         { 
@@ -153,10 +214,19 @@ export async function POST(request: NextRequest) {
         avatarSrc: '/gybernaty-ai-avatar.png',
       };
 
-      return NextResponse.json(chatResponse);
+      // Сохраняем в кеш
+      const cacheKey = generateCacheKey(message);
+      setCachedResponse(cacheKey, chatResponse);
+
+      return NextResponse.json(chatResponse, {
+        headers: {
+          'X-Cache': 'MISS',
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        },
+      });
     }
   } catch (error) {
-    console.error('Chat API error:', error);
+    logger.error('Chat API error', error);
     
     const errorResponse: ChatResponse = {
       author: 'Gybernaty AI',

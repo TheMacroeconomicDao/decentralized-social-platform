@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server';
+import { createLogger } from '@/shared/lib/logger';
+
+const logger = createLogger('HealthAPI');
 
 export async function GET() {
   try {
@@ -12,7 +15,12 @@ export async function GET() {
           reason: 'OpenAI API key not configured',
           timestamp: new Date().toISOString()
         },
-        { status: 503 } // Service Unavailable
+        { 
+          status: 503, // Service Unavailable
+          headers: {
+            'Cache-Control': 'no-store', // Не кешируем unhealthy статус
+          },
+        }
       );
     }
 
@@ -22,9 +30,13 @@ export async function GET() {
       services: {
         openai: hasOpenAIKey ? 'configured' : 'missing'
       }
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120', // Кешируем на 60 секунд
+      },
     });
   } catch (error) {
-    console.error('Health check error:', error);
+    logger.error('Health check error', error);
     return NextResponse.json(
       { 
         status: 'unhealthy', 

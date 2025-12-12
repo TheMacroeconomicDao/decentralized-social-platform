@@ -55,9 +55,10 @@ export const PartnerSection = ({
                             },
                         }}
                         viewport={{once:true, amount: 0.4 }}
-                        className={cls.textContent}
                     >
-                        {children}
+                        <span className={cls.textContent}>
+                            {children}
+                        </span>
                     </motion.p>
                     <div className={cls.buttonWrapper}>
                         <ExternalLink

@@ -8,7 +8,7 @@ metadata:
     environment: production
 spec:
   selector:
-    app: dsp-prod-primary
+    app: dsp-prod
     environment: production
   ports:
   - protocol: TCP

@@ -69,7 +69,7 @@ export const OptimizedImage = ({
 
   // Generate optimized sources
   const generateSources = useCallback(() => {
-    const sources: JSX.Element[] = [];
+    const sources: React.JSX.Element[] = [];
     
     formats.forEach(format => {
       if (format === 'avif' || format === 'webp') {
@@ -130,28 +130,31 @@ export const OptimizedImage = ({
 
   // Loading placeholder component
   const LoadingPlaceholder = () => (
-    <motion.div
-      className={cls.placeholder}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      style={{
+    <div className={cls.placeholder} style={{
         width: props.width || '100%',
         height: props.height || '200px',
         background: 'linear-gradient(90deg, var(--glass-bg) 25%, rgba(255,255,255,0.1) 50%, var(--glass-bg) 75%)',
         backgroundSize: '200% 100%',
-      }}
-    >
+      }}>
       <motion.div
-        className={cls.shimmer}
-        animate={{ x: ['0%', '100%'] }}
-        transition={{ 
-          duration: 1.5, 
-          repeat: Infinity, 
-          ease: 'easeInOut' 
-        }}
-      />
-    </motion.div>
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        style={{ width: '100%', height: '100%' }}
+      >
+        <div className={cls.shimmer}>
+          <motion.div
+            animate={{ x: ['0%', '100%'] }}
+            transition={{ 
+              duration: 1.5, 
+              repeat: Infinity, 
+              ease: 'easeInOut' 
+            }}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 
   // Error fallback component
@@ -211,12 +214,14 @@ export const OptimizedImage = ({
       
       {/* Progressive enhancement indicator */}
       {isLoaded && (
-        <motion.div
-          className={cls.loaded}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
-        />
+        <div className={cls.loaded}>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
       )}
     </div>
   );

@@ -45,13 +45,14 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
   switch (id) {
     case 1: {
       return (
-        <motion.div
-          initial={'initialLaptop'}
-          whileInView={'viewLaptop'}
-          variants={cardVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          className={cls.RoadmapCard}
-        >
+        <div className={cls.RoadmapCard}>
+          <motion.div
+            initial={'initialLaptop'}
+            whileInView={'viewLaptop'}
+            variants={cardVariants}
+            viewport={{ once: true, amount: 0.5 }}
+            style={{ width: '100%', height: '100%' }}
+          >
           {!isCurrent && (
             <StartItem
               className={classNames(cls.svgItem, {}, [cls.Start])}
@@ -99,18 +100,20 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
               />
             ))}
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )
     }
     case 4: {
       return (
-        <motion.div
-          initial={'initialLaptop'}
-          whileInView={'viewLaptop'}
-          variants={cardVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          className={cls.RoadmapCard}
-        >
+        <div className={cls.RoadmapCard}>
+          <motion.div
+            initial={'initialLaptop'}
+            whileInView={'viewLaptop'}
+            variants={cardVariants}
+            viewport={{ once: true, amount: 0.5 }}
+            style={{ width: '100%', height: '100%' }}
+          >
           <span
             className={classNames(cls.period, {
               [cls.yellow]: isCurrent,
@@ -127,18 +130,20 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
               />
             ))}
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )
     }
     default: {
       return (
-        <motion.div
-          initial={'initialLaptop'}
-          whileInView={'viewLaptop'}
-          variants={cardVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          className={cls.RoadmapCard}
-        >
+        <div className={cls.RoadmapCard}>
+          <motion.div
+            initial={'initialLaptop'}
+            whileInView={'viewLaptop'}
+            variants={cardVariants}
+            viewport={{ once: true, amount: 0.5 }}
+            style={{ width: '100%', height: '100%' }}
+          >
           {!isCurrent && (
             <NextPeriodItem
               className={classNames(cls.svgItem, {}, [cls.Next])}
@@ -167,7 +172,8 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
               />
             ))}
           </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )
     }
   }

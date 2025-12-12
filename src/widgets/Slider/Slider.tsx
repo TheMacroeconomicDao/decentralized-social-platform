@@ -37,50 +37,53 @@ export const Slider = (props: SliderProps) => {
 
     return (
         <AnimatePresence>
-            <motion.div
-                initial={{
-                    opacity: 0,
-                    y: 10
-                }}
-                animate={{
-                    opacity: 1,
-                    y: 0
-                }}
-                transition={{
-                  type: "spring",
-                  bounce: 0.2,
-                  duration: 1,
-              }}
-                className={classNames(cls.Slider, {}, [className])}
-            >
+            <div className={classNames(cls.Slider, {}, [className])}>
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 10
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0
+                    }}
+                    transition={{
+                      type: "spring",
+                      bounce: 0.2,
+                      duration: 1,
+                  }}
+                    style={{ width: '100%', height: '100%' }}
+                >
                 <SlideImage
                     path={path}
                     mobilePath={mobilePath || ""}
                     title={title}
                 />
                 {title && (
-                    <motion.div
-                        initial={{
-                            opacity: 0,
-                            y: 30,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            y: 0,
-                        }}
-                        transition={{
-                            duration: 0.8,
-                            ease: 'easeOut'
-                        }}
-                        className={cls.sliderTitle}
-                        style={{
-                            transform: `translateY(${verticalOffset}px)`
-                        }}
-                    >
-                        <h1>{title}</h1>
-                    </motion.div>
+                    <div className={cls.sliderTitle} style={{
+                        transform: `translateY(${verticalOffset}px)`
+                    }}>
+                        <motion.div
+                            initial={{
+                                opacity: 0,
+                                y: 30,
+                            }}
+                            animate={{
+                                opacity: 1,
+                                y: 0,
+                            }}
+                            transition={{
+                                duration: 0.8,
+                                ease: 'easeOut'
+                            }}
+                            style={{ width: '100%', height: '100%' }}
+                        >
+                            <h1>{title}</h1>
+                        </motion.div>
+                    </div>
                 )}
-            </motion.div>
+                </motion.div>
+            </div>
         </AnimatePresence>
     );
 };

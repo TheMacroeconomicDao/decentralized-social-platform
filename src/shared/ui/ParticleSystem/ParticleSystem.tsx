@@ -47,7 +47,7 @@ export const ParticleSystem = ({
   className = ""
 }: ParticleSystemProps) => {
   const containerRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [isClient, setIsClient] = useState(false);
@@ -215,40 +215,40 @@ export const ParticleSystem = ({
     switch (particle.type) {
       case 'icon':
         return (
-          <motion.div
-            key={particle.id}
-            style={style}
-            className={cls.particleIcon}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-          >
-            {PARTICLE_ICONS[Math.floor(Math.random() * PARTICLE_ICONS.length)]}
-          </motion.div>
+          <div key={particle.id} style={style} className={cls.particleIcon}>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              style={{ width: '100%', height: '100%' }}
+            >
+              {PARTICLE_ICONS[Math.floor(Math.random() * PARTICLE_ICONS.length)]}
+            </motion.div>
+          </div>
         );
       case 'star':
         return (
-          <motion.div
-            key={particle.id}
-            style={style}
-            className={cls.particleStar}
-            initial={{ scale: 0, rotate: 0 }}
-            animate={{ scale: 1, rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          >
-            ⭐
-          </motion.div>
+          <div key={particle.id} style={style} className={cls.particleStar}>
+            <motion.div
+              initial={{ scale: 0, rotate: 0 }}
+              animate={{ scale: 1, rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              style={{ width: '100%', height: '100%' }}
+            >
+              ⭐
+            </motion.div>
+          </div>
         );
       default:
         return (
-          <motion.div
-            key={particle.id}
-            style={style}
-            className={cls.particleDot}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-          />
+          <div key={particle.id} style={style} className={cls.particleDot}>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
         );
     }
   };

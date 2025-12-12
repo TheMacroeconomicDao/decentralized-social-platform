@@ -121,7 +121,7 @@ export const ButtonEvolution = ({
   };
 
   return (
-    <motion.button
+    <button
       className={classNames(
         cls.Button,
         {
@@ -135,79 +135,91 @@ export const ButtonEvolution = ({
           ...(className ? [className] : [])
         ]
       )}
-      variants={buttonVariants}
-      initial="idle"
-      whileHover={!disabled && !isLoading ? "hover" : "idle"}
-      whileTap={!disabled && !isLoading ? "tap" : "idle"}
       disabled={disabled || isLoading}
       {...props}
     >
-      {/* ✨ Динамический фоновый эффект */}
       <motion.div
-        className="absolute inset-0 opacity-10"
-        animate={{
-          background: [
-            "linear-gradient(45deg, transparent, rgba(66, 184, 243, 0.1), transparent)",
-            "linear-gradient(45deg, transparent, rgba(212, 157, 50, 0.1), transparent)",
-            "linear-gradient(45deg, transparent, rgba(66, 184, 243, 0.1), transparent)"
-          ]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      />
-      
-      {/* Контент кнопки */}
-      <div className="relative z-10 flex items-center justify-center gap-2">
-        {leftIcon && !isLoading && (
-          <motion.span
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-shrink-0"
-          >
-            {leftIcon}
-          </motion.span>
-        )}
-        
-        {isLoading ? (
+        variants={buttonVariants}
+        initial="idle"
+        whileHover={!disabled && !isLoading ? "hover" : "idle"}
+        whileTap={!disabled && !isLoading ? "tap" : "idle"}
+        style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}
+      >
+        {/* ✨ Динамический фоновый эффект */}
+        <div className="absolute inset-0 opacity-10">
           <motion.div
-            variants={loadingVariants}
-            animate="animate"
-            className="w-5 h-5 border-2 border-current border-t-transparent rounded-full"
+            animate={{
+              background: [
+                "linear-gradient(45deg, transparent, rgba(66, 184, 243, 0.1), transparent)",
+                "linear-gradient(45deg, transparent, rgba(212, 157, 50, 0.1), transparent)",
+                "linear-gradient(45deg, transparent, rgba(66, 184, 243, 0.1), transparent)"
+              ]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{ width: '100%', height: '100%' }}
           />
-        ) : (
-          <motion.span
-            className="cyber-text-gradient-primary font-semibold"
-            whileHover={{ letterSpacing: "0.3px" }}
-          >
-            {children}
-          </motion.span>
-        )}
+        </div>
         
-        {rightIcon && !isLoading && (
-          <motion.span
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex-shrink-0"
-          >
-            {rightIcon}
-          </motion.span>
-        )}
-      </div>
-      
-      {/* ✨ Кибер-border эффект */}
-      <motion.div
-        className="absolute inset-0 rounded-lg opacity-0"
-        whileHover={{ opacity: 1 }}
-        style={{
+        {/* Контент кнопки */}
+        <div className="relative z-10 flex items-center justify-center gap-2">
+          {leftIcon && !isLoading && (
+            <span className="flex-shrink-0">
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                {leftIcon}
+              </motion.span>
+            </span>
+          )}
+          
+          {isLoading ? (
+            <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full">
+              <motion.div
+                variants={loadingVariants}
+                animate="animate"
+                style={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          ) : (
+            <span className="cyber-text-gradient-primary font-semibold">
+              <motion.span
+                whileHover={{ letterSpacing: "0.3px" }}
+              >
+                {children}
+              </motion.span>
+            </span>
+          )}
+          
+          {rightIcon && !isLoading && (
+            <span className="flex-shrink-0">
+              <motion.span
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                {rightIcon}
+              </motion.span>
+            </span>
+          )}
+        </div>
+        
+        {/* ✨ Кибер-border эффект */}
+        <div className="absolute inset-0 rounded-lg opacity-0" style={{
           background: "linear-gradient(45deg, transparent, rgba(66, 184, 243, 0.2), transparent)",
           padding: "1px",
           mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           maskComposite: "xor"
-        }}
-      />
-    </motion.button>
+        }}>
+          <motion.div
+            whileHover={{ opacity: 1 }}
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+      </motion.div>
+    </button>
   );
 }; 

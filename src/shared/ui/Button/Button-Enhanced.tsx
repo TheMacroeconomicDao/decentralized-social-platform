@@ -1,7 +1,7 @@
 import { classNames } from "@/shared/lib/classNames/classNames";
 import cls from "./Button-Enhanced.module.scss";
 import { ButtonHTMLAttributes, FC } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ThemeButton } from "./Button";
 
 // Исключаем конфликтующие события из ButtonHTMLAttributes
@@ -13,13 +13,13 @@ interface ButtonEnhancedProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 // Premium Button анимации
-const buttonVariants = {
+const buttonVariants: Variants = {
   idle: { scale: 1, y: 0 },
   hover: { 
     scale: 1.03, 
     y: -3,
     transition: { 
-      type: "spring", 
+      type: "spring" as const, 
       stiffness: 400, 
       damping: 17 
     }

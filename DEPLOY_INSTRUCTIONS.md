@@ -22,18 +22,18 @@ git pull origin stage
 # git checkout main
 # git pull origin main
 
-# 3. Сборка образа
+# 3. Сборка образа (только с хешем коммита)
+COMMIT_HASH=$(git rev-parse --short HEAD)
 docker build \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$(git rev-parse --short HEAD) \
+  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH \
   -f Dockerfile .
 
 # 4. Push в registry
-docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
+docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH
 
 # 5. Deploy в Kubernetes
 kubectl apply -k k8s/overlays/stage/
-kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest -n default
+kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -n default
 kubectl rollout status deployment/dsp-stage-deployment --timeout=300s
 
 # 6. Проверка
@@ -108,15 +108,15 @@ kubectl get deployment dsp-stage-deployment -n default -o jsonpath='{.spec.templ
 cd /Users/Gyber/GYBERNATY-ECOSYSTEM/DSP
 
 # Для stage
+COMMIT_HASH=$(git rev-parse --short HEAD)
 docker build \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$(git rev-parse --short HEAD) \
+  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH \
   -f Dockerfile .
 
 # Для production
+COMMIT_HASH=$(git rev-parse --short HEAD)
 docker build \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$(git rev-parse --short HEAD) \
+  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH \
   -f Dockerfile .
 ```
 
@@ -140,7 +140,7 @@ docker build --no-cache \
 docker images | grep "decentralized-social-platform" | head -3
 
 # Должны увидеть:
-# ghcr.io/.../dsp-stage   latest   XXXXX   N seconds/minutes ago   400-500MB
+# ghcr.io/.../dsp-stage   <commit-hash>   XXXXX   N seconds/minutes ago   400-500MB
 ```
 
 ---
@@ -178,8 +178,9 @@ docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$
 kubectl apply -k k8s/overlays/stage/
 
 # 2. Обновить образ в deployment
+COMMIT_HASH=$(git rev-parse --short HEAD)
 kubectl set image deployment/dsp-stage-deployment \
-  dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest \
+  dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH \
   -n default
 
 # 3. Дождаться завершения rollout
@@ -198,8 +199,9 @@ kubectl get pods -l app=dsp-stage,environment=stage -n default
 kubectl apply -k k8s/overlays/prod/
 
 # 2. Обновить образ в deployment
+COMMIT_HASH=$(git rev-parse --short HEAD)
 kubectl set image deployment/dsp-prod-deployment \
-  dsp-prod=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest \
+  dsp-prod=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH \
   -n default
 
 # 3. Дождаться завершения rollout (может быть canary)
@@ -345,7 +347,8 @@ docker build --no-cache -t ghcr.io/themacroeconomicdao/decentralized-social-plat
 **Решение**:
 ```bash
 # 1. Проверить что образ существует в registry
-docker manifest inspect ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
+COMMIT_HASH=$(git rev-parse --short HEAD)
+docker manifest inspect ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH
 
 # 2. Проверить imagePullSecrets
 kubectl get secret ghcr-secret -n default
@@ -468,7 +471,6 @@ echo "✅ Docker работает"
 echo "🔨 Собираю образ (10-15 минут)..."
 COMMIT_HASH=$(git rev-parse --short HEAD)
 docker build \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest \
   -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH \
   -f Dockerfile .
 
@@ -476,7 +478,6 @@ echo "✅ Образ собран"
 
 # 5. Push в registry
 echo "📤 Пушу в registry..."
-docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
 docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH
 echo "✅ Образ запушен"
 
@@ -484,7 +485,7 @@ echo "✅ Образ запушен"
 echo "🚀 Деплою в Kubernetes..."
 kubectl apply -k k8s/overlays/stage/
 kubectl set image deployment/dsp-stage-deployment \
-  dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest \
+  dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH \
   -n default
 kubectl rollout status deployment/dsp-stage-deployment --timeout=300s
 echo "✅ Deployment завершен"
@@ -533,7 +534,6 @@ echo "✅ Docker работает"
 echo "🔨 Собираю образ (10-15 минут)..."
 COMMIT_HASH=$(git rev-parse --short HEAD)
 docker build \
-  -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest \
   -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH \
   -f Dockerfile .
 
@@ -541,7 +541,6 @@ echo "✅ Образ собран"
 
 # 5. Push в registry
 echo "📤 Пушу в registry..."
-docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest
 docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH
 echo "✅ Образ запушен"
 
@@ -549,7 +548,7 @@ echo "✅ Образ запушен"
 echo "🚀 Деплою в Kubernetes..."
 kubectl apply -k k8s/overlays/prod/
 kubectl set image deployment/dsp-prod-deployment \
-  dsp-prod=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:latest \
+  dsp-prod=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH \
   -n default
 kubectl rollout status deployment/dsp-prod-deployment --timeout=600s
 echo "✅ Deployment завершен"
@@ -678,9 +677,11 @@ git reset --hard <PREVIOUS_COMMIT_HASH>
 git push origin stage --force  # или main
 
 # 3. Пересобрать и задеплоить
-docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest -f Dockerfile .
-docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest
-kubectl rollout restart deployment/dsp-stage-deployment -n default
+COMMIT_HASH=$(git rev-parse --short HEAD)
+docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -f Dockerfile .
+docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH
+kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -n default
+kubectl rollout status deployment/dsp-stage-deployment --timeout=300s
 ```
 
 ### Откат deployment без изменения кода:
@@ -723,9 +724,10 @@ kubectl rollout undo deployment/dsp-stage-deployment --to-revision=2 -n default
 
 ```bash
 # Быстрая пересборка и деплой (stage)
-docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest -f Dockerfile . && \
-docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest && \
-kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest -n default && \
+COMMIT_HASH=$(git rev-parse --short HEAD) && \
+docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -f Dockerfile . && \
+docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH && \
+kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -n default && \
 kubectl rollout status deployment/dsp-stage-deployment --timeout=300s
 
 # Посмотреть логи ошибок
@@ -752,10 +754,10 @@ kubectl get certificate -n default
 
 1. `cd /Users/Gyber/GYBERNATY-ECOSYSTEM/DSP`
 2. `git checkout stage && git pull origin stage`
-3. `docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest -f Dockerfile .`
-4. `docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest`
+3. `COMMIT_HASH=$(git rev-parse --short HEAD) && docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -f Dockerfile .`
+4. `docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH`
 5. `kubectl apply -k k8s/overlays/stage/`
-6. `kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:latest -n default`
+6. `kubectl set image deployment/dsp-stage-deployment dsp-stage=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-stage:$COMMIT_HASH -n default`
 7. `kubectl rollout status deployment/dsp-stage-deployment --timeout=300s`
 8. Проверить через `kubectl get pods -l app=dsp-stage,environment=stage -n default`
 
@@ -777,12 +779,12 @@ kubectl get certificate -n default
 ### Автоматический деплой:
 
 **Stage CD** (автоматический при push в `stage`):
-1. Build image `dsp-stage:stage-<sha>` + `latest`
+1. Build image `dsp-stage:<commit-hash>` (только с хешем коммита)
 2. Deploy overlay `k8s/overlays/stage`
 3. Telegram notify success / failure
 
 **Prod CD** (требует approval при push в `main`):
-1. Build image `dsp-prod:main-<sha>` + `latest`
+1. Build image `dsp-prod:<commit-hash>` (только с хешем коммита)
 2. Deploy overlay `k8s/overlays/prod` (includes Canary)
 3. Wait Flagger promotion (<=30 min)
 4. Telegram notify

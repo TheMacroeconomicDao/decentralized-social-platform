@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, ReactNode } from 'react';
-import { motion, useMotionValue, useTransform, useSpring, PanInfo } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring, PanInfo, Variants } from 'framer-motion';
 import cls from './InteractiveCard.module.scss';
 
 interface InteractiveCardProps {
@@ -173,7 +173,7 @@ export const InteractiveCard = ({
   };
 
   // Card variants for different states
-  const cardVariants = {
+  const cardVariants: Variants = {
     initial: {
       scale: 1,
       rotateX: 0,
@@ -185,14 +185,14 @@ export const InteractiveCard = ({
       boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)",
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: "easeOut" as const
       }
     },
     tap: {
       scale: 0.98,
       transition: {
         duration: 0.1,
-        ease: "easeInOut"
+        ease: "easeInOut" as const
       }
     }
   };

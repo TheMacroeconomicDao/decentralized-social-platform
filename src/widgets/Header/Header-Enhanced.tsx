@@ -121,7 +121,7 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
                             variants={itemVariants}
                             style={{ width: '100%', height: '100%' }}
                         >
-                            {/* Wallet Auth Button or Profile */}
+                            {/* Profile или Dapp Button для подключения */}
                             <motion.div
                                 whileHover={{ 
                                     scale: 1.02,
@@ -135,12 +135,12 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
                                     </div>
                                 ) : (
                                     <ButtonEnhanced 
-                                        theme={ThemeButton.BLUE} 
+                                        theme={ThemeButton.ORANGE} 
                                         disabled={false}
                                         onClick={handleWalletClick}
-                                        className={cls.walletButton}
+                                        className={cls.dappButton}
                                     >
-                                        🔗 Connect
+                                        Dapp
                                     </ButtonEnhanced>
                                 )}
                             </motion.div>
@@ -155,24 +155,6 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
                             >
                                 <Documents handleClick={handleClick} isShow={isShow} />
                             </motion.div>
-                            
-                            {/* Dapp Button - только если Documents не показаны */}
-                            {!isShow && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <ButtonEnhanced 
-                                        theme={ThemeButton.ORANGE} 
-                                        disabled={false}
-                                        className={cls.dappButton}
-                                    >
-                                        Dapp
-                                    </ButtonEnhanced>
-                                </motion.div>
-                            )}
                             
                             {/* NavbarTablet */}
                             <motion.div

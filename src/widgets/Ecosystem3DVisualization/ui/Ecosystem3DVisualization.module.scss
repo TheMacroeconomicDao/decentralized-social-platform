@@ -1,0 +1,156 @@
+.visualization {
+  padding: 2rem 0;
+}
+
+.title {
+  font-size: var(--fs-4);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--c-grey);
+  font-size: var(--fs-1);
+  margin-bottom: 2rem;
+}
+
+.canvasContainer {
+  margin: 2rem 0;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.canvas {
+  width: 100%;
+  min-height: 600px;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--c-grey);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.legendDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.legendDot.production {
+  background: #00f2fe;
+  border-color: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
+}
+
+.legendDot.development {
+  background: #f5576c;
+  border-color: #ff6b7d;
+  box-shadow: 0 0 8px rgba(245, 87, 108, 0.5);
+}
+
+.legendDot.testnet {
+  background: #ff9800;
+  border-color: #ffb74d;
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+}
+
+.projectInfo {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(7, 43, 64, 0.95);
+  border: 1px solid rgba(66, 184, 243, 0.5);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 500px;
+  width: 90%;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.projectInfo h3 {
+  font-size: var(--fs-2);
+  font-weight: 700;
+  color: var(--c-blue);
+  margin-bottom: 0.5rem;
+}
+
+.projectInfo p {
+  color: var(--c-grey);
+  font-size: var(--fs-1);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--c-grey);
+  font-size: var(--fs-4);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(245, 87, 108, 0.2);
+  color: #f5576c;
+}
+
+@media screen and (max-width: 768px) {
+  .visualization {
+    padding: 1.5rem 0;
+  }
+
+  .title {
+    font-size: var(--fs-3);
+  }
+
+  .subtitle {
+    font-size: var(--fs-xs);
+    margin-bottom: 1.5rem;
+  }
+
+  .canvas {
+    min-height: 400px;
+  }
+
+  .legend {
+    gap: 1rem;
+  }
+
+  .projectInfo {
+    bottom: 1rem;
+    padding: 1.25rem;
+  }
+}

@@ -1,0 +1,29 @@
+.page {
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.visualizationSection {
+  min-height: 600px;
+  margin: 3rem 0;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--c-white);
+  font-size: var(--fs-2);
+}
+
+@media screen and (max-width: 768px) {
+  .page {
+    padding: 1rem 0;
+  }
+
+  .visualizationSection {
+    min-height: 400px;
+    margin: 2rem 0;
+  }
+}

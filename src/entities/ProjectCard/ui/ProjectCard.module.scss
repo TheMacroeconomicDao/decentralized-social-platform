@@ -1,0 +1,148 @@
+.card {
+  background: rgba(7, 43, 64, 0.6);
+  border: 1px solid rgba(66, 184, 243, 0.3);
+  border-left: 4px solid var(--category-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--category-color);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(66, 184, 243, 0.2);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.name {
+  font-size: var(--fs-2);
+  font-weight: 700;
+  color: var(--c-white);
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: var(--fs-s);
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1.5px solid var(--status-color);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--status-color);
+}
+
+.status.production {
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+}
+
+.status.development {
+  box-shadow: 0 0 8px rgba(245, 87, 108, 0.2);
+}
+
+.status.testnet {
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.2);
+}
+
+.category {
+  margin-bottom: 1rem;
+}
+
+.categoryBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 8px;
+  font-size: var(--fs-s);
+  font-weight: 600;
+  background: rgba(66, 184, 243, 0.1);
+  color: var(--c-blue);
+  border: 1px solid rgba(66, 184, 243, 0.3);
+}
+
+.description {
+  color: var(--c-grey);
+  font-size: var(--fs-1);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  margin-bottom: 1rem;
+}
+
+.progressLabel {
+  display: flex;
+  justify-content: space-between;
+  color: var(--c-grey);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.progressBar {
+  height: 8px;
+  background: rgba(7, 43, 64, 0.8);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-orange) 0%, #ff6b35 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease-out;
+}
+
+.technologies {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(66, 184, 243, 0.2);
+}
+
+.techLabel {
+  color: var(--c-grey);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.techList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.techTag {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: var(--fs-s);
+  background: rgba(66, 184, 243, 0.1);
+  color: var(--c-blue);
+  border: 1px solid rgba(66, 184, 243, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    padding: 1.25rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .name {
+    font-size: var(--fs-1);
+  }
+}

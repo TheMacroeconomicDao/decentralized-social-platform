@@ -18,12 +18,12 @@ export function Ecosystem3DVisualization() {
       const height = Math.sin(angle * 2) * 1.5; // Волнообразное распределение
 
       // Преобразуем статус: testnet -> development для Ecosystem3D
-      const status = project.status === 'production' ? 'production' : 'development';
+      const status: 'production' | 'development' = project.status === 'production' ? 'production' : 'development';
 
       return {
         id: index + 1,
         name: project.shortName,
-        status: status,
+        status: status as 'production' | 'development',
         category: project.category,
         position: [
           Math.cos(angle) * radius,

@@ -1,10 +1,32 @@
 "use client";
 
 import { Suspense, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, extend } from '@react-three/fiber';
 import { OrbitControls, Environment, Stars, Text3D } from '@react-three/drei';
 import * as THREE from 'three';
 import cls from './Ecosystem3D.module.scss';
+
+// Расширяем типы для React Three Fiber JSX элементов
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      group: any;
+      mesh: any;
+      sphereGeometry: any;
+      meshStandardMaterial: any;
+      meshBasicMaterial: any;
+      ringGeometry: any;
+      torusGeometry: any;
+      points: any;
+      bufferGeometry: any;
+      bufferAttribute: any;
+      pointsMaterial: any;
+      ambientLight: any;
+      pointLight: any;
+      directionalLight: any;
+    }
+  }
+}
 
 interface ProjectNode {
   id: number;

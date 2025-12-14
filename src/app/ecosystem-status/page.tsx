@@ -1,8 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Container } from '@/shared/ui/Container';
-import { Section } from '@/shared/ui/Section';
+import { Container } from '@/shared/ui/Container/Container';
+import { Section } from '@/shared/ui/Section/Section';
 import styles from './page.module.scss';
 
 // Lazy loading для тяжелых компонентов

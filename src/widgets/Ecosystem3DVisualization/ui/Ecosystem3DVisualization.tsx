@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Ecosystem3D } from '@/shared/ui/Ecosystem3D';
+import { Ecosystem3D } from '@/shared/ui/Ecosystem3D/Ecosystem3D';
 import { ecosystemProjects } from '@/shared/lib/ecosystem-data';
 import { EcosystemProject } from '@/shared/types/ecosystem';
 import styles from './Ecosystem3DVisualization.module.scss';

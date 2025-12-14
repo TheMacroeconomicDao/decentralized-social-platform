@@ -1,0 +1,89 @@
+// Ecosystem3D Component Styles
+
+.container {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 16, 25, 0.9) 0%,
+    rgba(7, 43, 64, 0.9) 100%
+  );
+  border: 1px solid rgba(66, 184, 243, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 0 50px rgba(66, 184, 243, 0.1);
+  
+  @media (min-width: 768px) {
+    height: 600px;
+  }
+  
+  @media (min-width: 1024px) {
+    height: 700px;
+  }
+  
+  // Glassmorphism эффект
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+// Loading state
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--cyber-blue);
+  font-size: 1.2rem;
+}
+
+// Error state
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--cyber-pink);
+  font-size: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+// Mobile optimizations
+@media (max-width: 767px) {
+  .container {
+    height: 400px;
+    
+    // Упрощенные эффекты для мобильных
+    &::before {
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .container {
+    // Отключаем анимации для accessibility
+  }
+}
+

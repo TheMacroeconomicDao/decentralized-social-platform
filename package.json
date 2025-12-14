@@ -47,6 +47,7 @@
     "wagmi": "^2.15.6"
   },
   "devDependencies": {
+    "@types/three": "^0.159.0",
     "pino-pretty": "^13.0.0",
     "sass": "^1.63.6"
   }

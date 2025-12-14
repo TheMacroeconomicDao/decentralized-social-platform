@@ -39,7 +39,7 @@
     "rehype-highlight": "^7.0.2",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.32.5",
-    "three": "^0.158.0",
+    "three": "^0.159.0",
     "@react-three/fiber": "^8.15.0",
     "@react-three/drei": "^9.88.0",
     "typescript": "^5.8.3",

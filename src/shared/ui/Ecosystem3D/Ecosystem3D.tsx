@@ -36,7 +36,6 @@ const ProjectNode3D = ({
   const emissiveColor = status === 'production' ? '#00d4ff' : '#ff6b7d';
   
   return (
-    // @ts-ignore - React Three Fiber расширяет JSX
     <group position={position}>
       {/* Основная сфера проекта */}
       <mesh>

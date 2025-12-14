@@ -4,8 +4,6 @@ import './styles/global-enhanced.scss'
 import type { Metadata } from 'next'
 import { Montserrat, Grape_Nuts } from 'next/font/google'
 import { headers } from 'next/headers'
-import { cookieToInitialState } from 'wagmi'
-import { getConfig } from '@/shared/config/web3'
 import { ClientHeader } from '@/widgets/Header/ClientHeader'
 import { Navbar, NavbarMobile } from '@/widgets/Navbar'
 import { Footer } from '@/widgets/Footer/Footer'
@@ -63,12 +61,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Hydrate wagmi state from cookies for SSR compatibility
-  const initialState = cookieToInitialState(
-    getConfig(),
-    (await headers()).get('cookie')
-  );
-
+  // Получаем cookie для SSR, но не вызываем getConfig() на сервере
+  // getConfig() будет вызван в Web3Provider (клиентский компонент)
+  const cookie = (await headers()).get('cookie');
+  
+  // Передаем cookie в Web3Provider, который сам создаст initialState
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -76,7 +73,7 @@ export default async function RootLayout({
       </head>
       <body className={montserrat.className} suppressHydrationWarning>
         <ErrorBoundary>
-          <Web3Provider initialState={initialState}>
+          <Web3Provider cookie={cookie}>
             <AppContent>{children}</AppContent>
           </Web3Provider>
         </ErrorBoundary>

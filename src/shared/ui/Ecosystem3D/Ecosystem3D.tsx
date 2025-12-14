@@ -5,6 +5,8 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Stars, Text3D } from '@react-three/drei';
 import * as THREE from 'three';
 import cls from './Ecosystem3D.module.scss';
+// Импорт типов для React Three Fiber
+import '@/types/react-three-fiber';
 
 interface ProjectNode {
   id: number;

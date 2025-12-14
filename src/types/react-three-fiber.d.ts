@@ -3,12 +3,25 @@
  * Позволяет использовать JSX элементы из three.js
  */
 
-import { ThreeElements } from '@react-three/fiber';
+import '@react-three/fiber';
 
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends ThreeElements {
-      // Все элементы из three.js уже включены через ThreeElements
+    interface IntrinsicElements {
+      group: any;
+      mesh: any;
+      sphereGeometry: any;
+      meshStandardMaterial: any;
+      meshBasicMaterial: any;
+      ringGeometry: any;
+      torusGeometry: any;
+      points: any;
+      bufferGeometry: any;
+      bufferAttribute: any;
+      pointsMaterial: any;
+      ambientLight: any;
+      pointLight: any;
+      directionalLight: any;
     }
   }
 }

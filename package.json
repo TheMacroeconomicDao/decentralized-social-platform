@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@types/three": "^0.159.0",
+    "critters": "^0.0.24",
     "pino-pretty": "^13.0.0",
     "sass": "^1.63.6"
   }

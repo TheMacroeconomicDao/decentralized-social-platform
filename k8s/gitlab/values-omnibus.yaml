@@ -1,0 +1,40 @@
+# GitLab Omnibus - упрощенная версия для быстрого старта
+# Все компоненты в одном поде
+
+gitlab:
+  host: gitlab.gyber.org
+  email: themacroeconomicdao@proton.me
+  
+  # Ресурсы
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "1000m"
+    limits:
+      memory: "4Gi"
+      cpu: "2000m"
+  
+  # Persistence
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: ""
+  
+  # Ingress
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: gitlab.gyber.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: gitlab-tls
+        hosts:
+          - gitlab.gyber.org
+

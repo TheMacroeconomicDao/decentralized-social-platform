@@ -1,0 +1,20 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Минималистичная иконка для маленьких размеров -->
+  <defs>
+    <linearGradient id="icon16Gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d49d32"/>
+      <stop offset="100%" style="stop-color:#f4c430"/>
+    </linearGradient>
+    <linearGradient id="icon16Blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#42b8f3"/>
+      <stop offset="100%" style="stop-color:#00d4ff"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Простая колба -->
+  <rect x="6" y="4" width="4" height="8" rx="2" fill="none" stroke="url(#icon16Blue)" stroke-width="1"/>
+  <ellipse cx="8" cy="10" rx="2" ry="1" fill="url(#icon16Blue)" opacity="0.5"/>
+  <circle cx="7" cy="7" r="0.5" fill="url(#icon16Gold)"/>
+  <circle cx="9" cy="8" r="0.5" fill="url(#icon16Blue)"/>
+</svg>
+

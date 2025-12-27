@@ -45,8 +45,9 @@ spec:
         env:
         - name: GITLAB_OMNIBUS_CONFIG
           value: |
-            external_url 'https://gitlab.gyber.org'
+            external_url 'https://gyber.org/GitLab'
             gitlab_rails['gitlab_shell_ssh_port'] = 22
+            gitlab_rails['relative_url_root'] = '/GitLab'
             nginx['listen_port'] = 80
             nginx['listen_https'] = false
         volumeMounts:
@@ -58,10 +59,10 @@ spec:
           mountPath: /var/log/gitlab
         resources:
           requests:
-            memory: "2Gi"
+            memory: "3Gi"
             cpu: "1000m"
           limits:
-            memory: "4Gi"
+            memory: "6Gi"
             cpu: "2000m"
       volumes:
       - name: gitlab-data
@@ -110,13 +111,13 @@ metadata:
 spec:
   tls:
   - hosts:
-    - gitlab.gyber.org
+    - gyber.org
     secretName: gitlab-tls
   rules:
-  - host: gitlab.gyber.org
+  - host: gyber.org
     http:
       paths:
-      - path: /
+      - path: /lab
         pathType: Prefix
         backend:
           service:

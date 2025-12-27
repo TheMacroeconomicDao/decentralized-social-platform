@@ -1,0 +1,76 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+  REGISTRY: ghcr.io
+  IMAGE_NAME: themacroeconomicdao/decentralized-social-platform
+
+build-stage:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u $GHCR_USERNAME -p $GHCR_TOKEN $REGISTRY
+  script:
+    - |
+      COMMIT_HASH=$(echo $CI_COMMIT_SHA | cut -c1-7)
+      docker build -t $REGISTRY/$IMAGE_NAME/dsp-stage:$COMMIT_HASH -f Dockerfile .
+      docker push $REGISTRY/$IMAGE_NAME/dsp-stage:$COMMIT_HASH
+      docker tag $REGISTRY/$IMAGE_NAME/dsp-stage:$COMMIT_HASH $REGISTRY/$IMAGE_NAME/dsp-stage:latest
+      docker push $REGISTRY/$IMAGE_NAME/dsp-stage:latest
+  only:
+    - stage
+
+deploy-stage:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - |
+      kubectl config use-context $KUBE_CONTEXT || true
+      COMMIT_HASH=$(echo $CI_COMMIT_SHA | cut -c1-7)
+      kubectl apply -k k8s/overlays/stage/
+      kubectl set image deployment/dsp-stage-deployment \
+        dsp-stage=$REGISTRY/$IMAGE_NAME/dsp-stage:$COMMIT_HASH \
+        -n default
+      kubectl rollout status deployment/dsp-stage-deployment --timeout=300s -n default
+  only:
+    - stage
+  when: on_success
+
+build-prod:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u $GHCR_USERNAME -p $GHCR_TOKEN $REGISTRY
+  script:
+    - |
+      COMMIT_HASH=$(echo $CI_COMMIT_SHA | cut -c1-7)
+      docker build -t $REGISTRY/$IMAGE_NAME/dsp-prod:$COMMIT_HASH -f Dockerfile .
+      docker push $REGISTRY/$IMAGE_NAME/dsp-prod:$COMMIT_HASH
+      docker tag $REGISTRY/$IMAGE_NAME/dsp-prod:$COMMIT_HASH $REGISTRY/$IMAGE_NAME/dsp-prod:latest
+      docker push $REGISTRY/$IMAGE_NAME/dsp-prod:latest
+  only:
+    - main
+  when: manual
+
+deploy-prod:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - |
+      kubectl config use-context $KUBE_CONTEXT || true
+      COMMIT_HASH=$(echo $CI_COMMIT_SHA | cut -c1-7)
+      kubectl apply -k k8s/overlays/prod/
+      kubectl set image deployment/dsp-prod-deployment \
+        dsp-prod=$REGISTRY/$IMAGE_NAME/dsp-prod:$COMMIT_HASH \
+        -n default
+      kubectl rollout status deployment/dsp-prod-deployment --timeout=600s -n default
+  only:
+    - main
+  when: manual

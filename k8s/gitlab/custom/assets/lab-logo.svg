@@ -1,0 +1,68 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Основа на Logo Gybernaty с добавлением элементов лаборатории -->
+  <defs>
+    <!-- Градиенты Gybernaty -->
+    <linearGradient id="gyberGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d49d32;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f4c430;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff6b35;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gyberBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#42b8f3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+    </linearGradient>
+    <!-- Glow эффект -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Тень -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Фоновая форма (адаптированная из оригинального логотипа) -->
+  <g filter="url(#shadow)">
+    <path d="M68.1843 3.1211C77.2394 -1.65716 88.2558 -0.67627 96.3242 5.62666L152.828 49.766C159.072 54.6439 162.751 62.103 162.821 70.0264L163.399 135.773C163.478 144.662 159.009 152.975 151.552 157.813L99.6595 191.481C90.3501 197.521 78.2333 196.987 69.4917 190.151L43.5863 169.892C37.2187 164.913 33.5294 157.255 33.6038 149.172L34.2571 78.2713C34.3476 68.4414 39.9745 59.503 48.7991 55.1712L67.1133 46.1812C76.101 41.7693 86.8235 42.9102 94.6817 49.1144L119.734 68.8943C125.916 73.7752 129.553 81.1955 129.622 89.0718L129.835 113.332C129.912 121.982 125.681 130.103 118.549 134.998L93.5745 152.139C87.806 156.098 80.2483 156.294 74.2829 152.638C69.0721 149.445 65.8739 143.792 65.8201 137.681L65.3958 89.4731C65.3599 85.3996 67.3317 81.5696 70.6681 79.2323L77.2705 74.6071C79.2198 73.2415 81.9069 73.7147 83.2725 75.664C84.638 77.6132 84.1648 80.3004 82.2155 81.6659L78.0464 84.5866C75.5112 86.3626 74.0129 89.2728 74.0402 92.368L74.4384 137.605C74.466 140.745 76.1091 143.649 78.7862 145.29C81.851 147.168 85.7338 147.067 88.6974 145.033L109.891 130.487C117.022 125.593 121.253 117.472 121.177 108.822L121.04 93.2772C120.971 85.4009 117.334 77.9806 111.152 73.0997L93.6039 59.2445C85.7457 53.0403 75.0232 51.8994 66.0355 56.3113L57.3683 60.5658C48.5438 64.8975 42.9169 73.8359 42.8263 83.6659L42.2612 145.001C42.1868 153.084 45.8761 160.742 52.2437 165.721L69.9581 179.574C78.6997 186.41 90.8165 186.945 100.126 180.905L142.892 153.158C150.349 148.32 154.818 140.007 154.739 131.118L154.239 74.2592C154.169 66.3358 150.49 58.8767 144.246 53.9988L95.4138 15.852C87.3453 9.54911 76.329 8.56821 67.2738 13.3465L23.3817 36.5078C14.8116 41.03 9.46751 49.943 9.51605 59.6329L9.93945 144.156C9.95137 146.536 8.03172 148.475 5.65178 148.487C3.27185 148.498 1.33287 146.579 1.32095 144.199L0.871368 54.4496C0.822828 44.7597 6.16693 35.8468 14.737 31.3245L68.1843 3.1211Z" 
+          fill="url(#gyberGold)" 
+          filter="url(#glow)"/>
+  </g>
+  
+  <!-- Элементы лаборатории: колба/пробирка -->
+  <g transform="translate(100, 100)">
+    <!-- Колба -->
+    <ellipse cx="0" cy="20" rx="15" ry="8" fill="url(#gyberBlue)" opacity="0.3" filter="url(#glow)"/>
+    <rect x="-12" y="-30" width="24" height="50" rx="12" fill="none" stroke="url(#gyberBlue)" stroke-width="2" opacity="0.6"/>
+    <line x1="-8" y1="-25" x2="-8" y2="15" stroke="url(#gyberBlue)" stroke-width="1.5" opacity="0.4"/>
+    <line x1="0" y1="-25" x2="0" y2="15" stroke="url(#gyberBlue)" stroke-width="1.5" opacity="0.4"/>
+    <line x1="8" y1="-25" x2="8" y2="15" stroke="url(#gyberBlue)" stroke-width="1.5" opacity="0.4"/>
+    
+    <!-- Жидкость в колбе -->
+    <ellipse cx="0" cy="10" rx="10" ry="5" fill="url(#gyberBlue)" opacity="0.5"/>
+    
+    <!-- Частицы/молекулы -->
+    <circle cx="-5" cy="-10" r="2" fill="url(#gyberGold)" filter="url(#glow)"/>
+    <circle cx="5" cy="-5" r="1.5" fill="url(#gyberBlue)" filter="url(#glow)"/>
+    <circle cx="-3" cy="0" r="1.5" fill="url(#gyberGold)" filter="url(#glow)"/>
+    <circle cx="4" cy="5" r="2" fill="url(#gyberBlue)" filter="url(#glow)"/>
+  </g>
+  
+  <!-- Текст "LAB" (опционально, можно убрать для минимализма) -->
+  <text x="100" y="180" font-family="Arial, sans-serif" font-size="24" font-weight="bold" 
+        fill="url(#gyberGold)" text-anchor="middle" opacity="0.8" filter="url(#glow)">
+    LAB
+  </text>
+</svg>
+

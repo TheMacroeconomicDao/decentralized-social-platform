@@ -1,0 +1,194 @@
+/* Community Lab by Gybernaty - Custom Styling */
+
+/* Цветовая палитра Gybernaty */
+:root {
+  --gyber-dark-primary: #001019;
+  --gyber-dark-secondary: #072b40;
+  --gyber-gold: #d49d32;
+  --gyber-blue: #42b8f3;
+  --gyber-white: #e1e1e1;
+  --gyber-grey: #b8b8b8;
+  --gyber-gold-bright: #ff6b35;
+  --gyber-blue-bright: #00d4ff;
+  
+  /* Glassmorphism */
+  --gyber-glass-bg: rgba(7, 43, 64, 0.25);
+  --gyber-glass-border: rgba(225, 225, 225, 0.18);
+  --gyber-glass-gold: rgba(212, 157, 50, 0.15);
+  --gyber-glass-blue: rgba(66, 184, 243, 0.15);
+  
+  /* Shadows & Glows */
+  --gyber-shadow-soft: 0 8px 32px rgba(0, 16, 25, 0.37);
+  --gyber-glow-gold: 0 0 20px rgba(212, 157, 50, 0.3);
+  --gyber-glow-blue: 0 0 20px rgba(66, 184, 243, 0.3);
+}
+
+/* Основной фон */
+body {
+  background: var(--gyber-dark-primary) !important;
+  color: var(--gyber-white) !important;
+}
+
+/* Header & Navigation */
+.navbar, .navbar-gitlab, .header-content {
+  background: var(--gyber-glass-bg) !important;
+  backdrop-filter: blur(25px) saturate(1.1) !important;
+  border-bottom: 0.5px solid var(--gyber-glass-border) !important;
+  box-shadow: var(--gyber-shadow-soft) !important;
+}
+
+/* Логотип и название */
+.navbar-brand, .logo-text {
+  color: var(--gyber-white) !important;
+  background: linear-gradient(135deg, var(--gyber-blue) 0%, var(--gyber-gold) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Кнопки и ссылки */
+.btn-primary, .btn-success, .btn-confirm {
+  background: linear-gradient(135deg, var(--gyber-blue) 0%, var(--gyber-gold) 100%) !important;
+  border: none !important;
+  color: var(--gyber-white) !important;
+  box-shadow: var(--gyber-glow-blue) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-primary:hover, .btn-success:hover, .btn-confirm:hover {
+  background: linear-gradient(135deg, var(--gyber-blue-bright) 0%, var(--gyber-gold-bright) 100%) !important;
+  box-shadow: var(--gyber-glow-gold) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+/* Карточки и контейнеры */
+.card, .content-wrapper, .container-fluid {
+  background: var(--gyber-glass-bg) !important;
+  backdrop-filter: blur(15px) saturate(1.05) !important;
+  border: 0.5px solid var(--gyber-glass-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--gyber-shadow-soft) !important;
+}
+
+/* Активные элементы */
+.active, .selected, .is-active {
+  background: var(--gyber-glass-blue) !important;
+  border-color: var(--gyber-blue) !important;
+  box-shadow: var(--gyber-glow-blue) !important;
+}
+
+/* Input поля */
+.form-control, .form-input, input[type="text"], input[type="email"], input[type="password"] {
+  background: var(--gyber-dark-secondary) !important;
+  border: 0.5px solid var(--gyber-glass-border) !important;
+  color: var(--gyber-white) !important;
+  border-radius: 8px !important;
+}
+
+.form-control:focus, .form-input:focus {
+  border-color: var(--gyber-blue) !important;
+  box-shadow: 0 0 0 3px var(--gyber-glass-blue) !important;
+  outline: none !important;
+}
+
+/* Ссылки */
+a, .link {
+  color: var(--gyber-blue) !important;
+  transition: all 0.2s ease-out !important;
+}
+
+a:hover, .link:hover {
+  color: var(--gyber-gold) !important;
+  text-shadow: var(--gyber-glow-blue) !important;
+}
+
+/* Badges и метки */
+.badge, .label {
+  background: var(--gyber-glass-gold) !important;
+  color: var(--gyber-gold) !important;
+  border: 1px solid var(--gyber-gold) !important;
+  border-radius: 8px !important;
+}
+
+/* Sidebar */
+.sidebar, .nav-sidebar {
+  background: var(--gyber-dark-secondary) !important;
+  border-right: 0.5px solid var(--gyber-glass-border) !important;
+}
+
+/* Таблицы */
+.table, table {
+  background: var(--gyber-glass-bg) !important;
+  color: var(--gyber-white) !important;
+}
+
+.table thead th {
+  background: var(--gyber-dark-secondary) !important;
+  color: var(--gyber-gold) !important;
+  border-bottom: 2px solid var(--gyber-gold) !important;
+}
+
+.table tbody tr:hover {
+  background: var(--gyber-glass-blue) !important;
+}
+
+/* Code blocks */
+.code, pre, code {
+  background: var(--gyber-dark-secondary) !important;
+  border: 0.5px solid var(--gyber-glass-border) !important;
+  color: var(--gyber-blue) !important;
+  border-radius: 8px !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  background: var(--gyber-dark-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gyber-gold) 0%, #a46b17 100%);
+  border-radius: 3px;
+  box-shadow: var(--gyber-glow-gold);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f4b73e 0%, var(--gyber-gold) 100%);
+}
+
+/* Footer */
+.footer, .footer-content {
+  background: var(--gyber-dark-secondary) !important;
+  border-top: 0.5px solid var(--gyber-glass-border) !important;
+  color: var(--gyber-grey) !important;
+}
+
+/* Анимации */
+@keyframes gyber-glow {
+  0%, 100% { box-shadow: var(--gyber-glow-blue); }
+  50% { box-shadow: var(--gyber-glow-gold); }
+}
+
+.gyber-pulse {
+  animation: gyber-glow 2s ease-in-out infinite;
+}
+
+/* Улучшенная типографика */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--gyber-white) !important;
+  text-shadow: 0 2px 8px rgba(0, 16, 25, 0.5) !important;
+}
+
+/* Убираем стандартные цвета GitLab */
+.gl-brand-color {
+  color: var(--gyber-blue) !important;
+}
+
+.gl-text-gray-900, .text-gray-900 {
+  color: var(--gyber-white) !important;
+}
+
+.gl-text-gray-500 {
+  color: var(--gyber-grey) !important;
+}
+

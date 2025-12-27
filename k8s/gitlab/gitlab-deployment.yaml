@@ -45,9 +45,9 @@ spec:
         env:
         - name: GITLAB_OMNIBUS_CONFIG
           value: |
-            external_url 'https://gyber.org/GitLab'
+            external_url 'https://gyber.org/lab'
             gitlab_rails['gitlab_shell_ssh_port'] = 22
-            gitlab_rails['relative_url_root'] = '/GitLab'
+            gitlab_rails['relative_url_root'] = '/lab'
             nginx['listen_port'] = 80
             nginx['listen_https'] = false
         volumeMounts:

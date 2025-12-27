@@ -192,3 +192,42 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--gyber-grey) !important;
 }
 
+/* ============================================
+   СКРЫТИЕ ЛОГОТИПОВ И ТЕКСТА GITLAB
+   ============================================ */
+
+/* Скрываем логотип GitLab (если он еще виден) */
+.navbar-brand img[src*="gitlab"],
+.navbar-brand img[alt*="GitLab"],
+.brand-holder img[src*="gitlab"],
+.brand-holder img[alt*="GitLab"],
+.login-page img[src*="gitlab"],
+.login-page img[alt*="GitLab"],
+img[src*="gitlab-logo"],
+img[alt*="GitLab logo"],
+svg[class*="gitlab-logo"],
+svg[data-name*="GitLab"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Скрываем стандартные элементы GitLab брендинга */
+.brand-holder:not([class*="lab"]):not([class*="gybernaty"]),
+.navbar-brand:not([class*="lab"]):not([class*="gybernaty"]) {
+  /* Будет заменено через JavaScript */
+}
+
+/* Стили для замененного текста */
+.gybernaty-brand-text {
+  color: var(--gyber-white) !important;
+  background: linear-gradient(135deg, var(--gyber-blue) 0%, var(--gyber-gold) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 600 !important;
+  font-size: 24px !important;
+}
+

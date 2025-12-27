@@ -113,20 +113,33 @@ export const OptimizedImage = ({
     }
   }, [fallback, currentSrc, onError]);
 
-  // Preload critical images
+  // Preload critical images - only for above-the-fold priority images
   useEffect(() => {
-    if (priority && isInView) {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = currentSrc;
-      document.head.appendChild(link);
+    if (priority && isInView && !lazy) {
+      // Only preload if image is definitely going to be used
+      // Check if link already exists to avoid duplicates
+      const existingLink = document.querySelector(`link[rel="preload"][href="${currentSrc}"]`);
+      if (!existingLink) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = currentSrc;
+        // Add crossorigin if needed for CORS images
+        if (currentSrc.startsWith('http')) {
+          link.crossOrigin = 'anonymous';
+        }
+        document.head.appendChild(link);
 
-      return () => {
-        document.head.removeChild(link);
-      };
+        return () => {
+          // Clean up preload link
+          const linkToRemove = document.querySelector(`link[rel="preload"][href="${currentSrc}"]`);
+          if (linkToRemove) {
+            document.head.removeChild(linkToRemove);
+          }
+        };
+      }
     }
-  }, [priority, currentSrc, isInView]);
+  }, [priority, currentSrc, isInView, lazy]);
 
   // Loading placeholder component
   const LoadingPlaceholder = () => (

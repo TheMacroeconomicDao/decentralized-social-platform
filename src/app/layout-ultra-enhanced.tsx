@@ -63,12 +63,12 @@ export default function UltraEnhancedRootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Modern image formats preload */}
-        <link rel="preload" as="image" type="image/avif" href="/images/hero-bg.avif" />
-        <link rel="preload" as="image" type="image/webp" href="/images/hero-bg.webp" />
+        {/* Modern image formats preload - commented out until files exist */}
+        {/* <link rel="preload" as="image" type="image/avif" href="/images/hero-bg.avif" /> */}
+        {/* <link rel="preload" as="image" type="image/webp" href="/images/hero-bg.webp" /> */}
         
-        {/* CSS preload for critical styles */}
-        <link rel="preload" href="/styles/critical.css" as="style" />
+        {/* CSS preload for critical styles - commented out until file exists */}
+        {/* <link rel="preload" href="/styles/critical.css" as="style" /> */}
         
         {/* Prefetch DNS for external resources */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />

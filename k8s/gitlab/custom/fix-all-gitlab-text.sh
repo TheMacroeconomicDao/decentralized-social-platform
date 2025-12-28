@@ -20,10 +20,34 @@ fi
 echo "📦 Pod: $POD_NAME"
 echo ""
 
-# Получаем токен
-echo "🔐 Получение root токена..."
+# Получаем токен из переменной окружения или файла
+echo "🔐 Получение токена..."
 
-ROOT_TOKEN=$(kubectl exec -n gitlab $POD_NAME -- gitlab-rails runner <<EOF
+ROOT_TOKEN=""
+
+# Проверяем переменную окружения
+if [ -n "$GITLAB_TOKEN" ]; then
+    ROOT_TOKEN="$GITLAB_TOKEN"
+    echo "✅ Токен найден в переменной окружения GITLAB_TOKEN"
+# Проверяем файл gitlab-token.env
+elif [ -f "k8s/gitlab/gitlab-token.env" ]; then
+    source k8s/gitlab/gitlab-token.env
+    if [ -n "$GITLAB_TOKEN" ]; then
+        ROOT_TOKEN="$GITLAB_TOKEN"
+        echo "✅ Токен загружен из k8s/gitlab/gitlab-token.env"
+    fi
+# Проверяем файл .gitlab-token
+elif [ -f "k8s/gitlab/.gitlab-token" ]; then
+    ROOT_TOKEN=$(cat k8s/gitlab/.gitlab-token | tr -d '\n\r ')
+    if [ -n "$ROOT_TOKEN" ]; then
+        echo "✅ Токен загружен из k8s/gitlab/.gitlab-token"
+    fi
+fi
+
+# Если токен не найден, пытаемся создать через Rails console
+if [ -z "$ROOT_TOKEN" ]; then
+    echo "⚠️  Токен не найден, пытаемся создать через Rails console..."
+    ROOT_TOKEN=$(kubectl exec -n gitlab $POD_NAME -- gitlab-rails runner <<EOF
 user = User.find_by_username('root')
 if user.personal_access_tokens.active.where(name: 'gybernaty-setup').exists?
   token = user.personal_access_tokens.active.where(name: 'gybernaty-setup').first
@@ -38,13 +62,16 @@ else
 end
 EOF
 )
+fi
 
 if [ -z "$ROOT_TOKEN" ]; then
     echo "❌ Не удалось получить токен"
+    echo "💡 Установите токен: export GITLAB_TOKEN=\"ваш-токен\""
+    echo "   Или сохраните в файл: echo 'токен' > k8s/gitlab/.gitlab-token"
     exit 1
 fi
 
-echo "✅ Токен получен"
+echo "✅ Токен готов к использованию"
 echo ""
 
 # GitLab URL
@@ -64,48 +91,35 @@ kubectl cp k8s/gitlab/custom/gitlab-text-replace.js gitlab/$POD_NAME:/var/opt/gi
 echo "✅ Файлы загружены"
 echo ""
 
-# Применяем через Rails console
-echo "🎨 Применение брендинга через Rails console..."
+# Применяем настройки через API
+echo "🎨 Применение настроек через API..."
 
-kubectl exec -n gitlab $POD_NAME -- gitlab-rails runner <<'EOF'
-app_settings = ApplicationSetting.current
+GITLAB_URL="https://gyber.org/lab"
+API_URL="${GITLAB_URL}/api/v4"
 
-# Загружаем файлы
-custom_css = File.read('/tmp/gybernaty-custom.css') rescue nil
-custom_js = File.read('/tmp/gybernaty-text-replace.js') rescue nil
+# Обновляем настройки приложения
+curl -s --request PUT "${API_URL}/application/settings" \
+  --header "PRIVATE-TOKEN: ${ROOT_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "after_sign_up_text": "Добро пожаловать в Community Lab by Gybernaty!",
+    "help_page_text": "Community Lab by Gybernaty - ваша лаборатория для разработки и экспериментов.",
+    "home_page_url": "https://gyber.org",
+    "signup_enabled": true,
+    "user_default_external": false
+  }' > /dev/null
 
-# Обновляем все настройки приложения
-updates = {
-  after_sign_up_text: 'Добро пожаловать в Community Lab by Gybernaty!',
-  help_page_text: 'Community Lab by Gybernaty - ваша лаборатория для разработки и экспериментов.',
-  home_page_url: 'https://gyber.org',
-  signup_enabled: true,
-  user_default_external: false
-}
+echo "✅ Настройки приложения обновлены через API"
 
-# Пытаемся обновить через API-совместимые поля
-begin
-  app_settings.update!(updates)
-  puts "✅ Настройки приложения обновлены"
-rescue => e
-  puts "⚠️  Ошибка обновления настроек: #{e.message}"
-end
-
-# Пытаемся применить кастомный CSS и JavaScript
-if custom_css || custom_js
-  puts ""
-  puts "📝 Информация о кастомных файлах:"
-  puts "   CSS: #{custom_css ? "#{custom_css.length} символов" : "не найден"}"
-  puts "   JS: #{custom_js ? "#{custom_js.length} символов" : "не найден"}"
-  puts ""
-  puts "💡 Примените эти файлы через Admin Area → Appearance:"
-  puts "   1. Custom CSS: скопируйте содержимое из k8s/gitlab/custom/gitlab-custom.css"
-  puts "   2. Custom HTML head: <script src=\"https://gyber.org/lab/assets/lab/text-replace.js\"></script>"
-end
-
-puts ""
-puts "✅ Брендинг применен через Rails console"
-EOF
+# Информация о загруженных файлах
+echo ""
+echo "📝 Информация о кастомных файлах:"
+CSS_SIZE=$(wc -c < k8s/gitlab/custom/gitlab-custom.css | tr -d ' ')
+JS_SIZE=$(wc -c < k8s/gitlab/custom/gitlab-text-replace.js | tr -d ' ')
+echo "   ✅ CSS: ${CSS_SIZE} символов"
+echo "   ✅ JavaScript: ${JS_SIZE} символов"
+echo ""
+echo "💡 Примените эти файлы через Admin Area → Appearance (см. инструкции ниже)"
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

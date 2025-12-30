@@ -1,20 +1,13 @@
 .Slider {
   position: relative;
-  width: 100vw;
-  height: 500px;
-
+  width: 100%;
+  /* Mobile First: начинаем с меньшей высоты */
+  height: 260px;
   overflow: hidden;
-
-  @media screen and (max-width: 900px) {
-    height: 260px;
-  }
-
-  @media screen and (max-width: 768px) {
-    margin-bottom: 2rem;
-  }
-  
+  margin-bottom: 2rem;
 }
-.mask_img{
+
+.mask_img {
   mask-image: linear-gradient(
     to top,
     transparent 0%,
@@ -23,35 +16,51 @@
     transparent 100%
   );
 }
+
 .sliderTitle {
   position: absolute;
   z-index: 1;
   top: 0;
   bottom: 0;
-  left: 37%;
+  left: 0;
   right: 0;
-  max-width: 750px;
+  max-width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
 
   h1 {
-    font-size: 3rem;
+    font-size: clamp(1.5rem, 5vw, 3rem);
     font-weight: 500;
     color: #E8C1B0;
-    @media screen and (max-width: 900px) {
-      font-size: 2rem;
-      
+    text-align: center;
+  }
+}
+
+/* Планшеты (768px+) */
+@media (min-width: 768px) {
+  .Slider {
+    margin-bottom: 2rem;
+  }
+  
+  .sliderTitle {
+    left: 37%;
+    right: 0;
+    justify-content: flex-start;
+    padding: 0;
+    max-width: 750px;
+    
+    h1 {
+      text-align: left;
     }
   }
 }
-@media screen and (max-width: 760px) {
-  .sliderTitle {
-    left: 0;
-    justify-content: center;
-    padding: 11rem 1rem 0;
 
-    h1 {
-      font-size: 1.5rem;
-    }
+/* Десктоп (900px+) */
+@media (min-width: 900px) {
+  .Slider {
+    height: 500px;
+    margin-bottom: 0;
   }
 }

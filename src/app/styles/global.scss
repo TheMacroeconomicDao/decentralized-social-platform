@@ -3,11 +3,13 @@ html {
     background: #001019;
 }
 :root {
+    /* Colors */
     --c-white: #e1e1e1;
     --c-orange: #d49d32;
     --c-blue: #42b8f3;
     --c-grey: #b8b8b8;
 
+    /* Typography */
     --fs-s: 0.75rem;
     --fs-xs: 0.875rem;
     --fs-1: 1rem;
@@ -17,10 +19,28 @@ html {
     --fs-5: 2.5rem;
     --fs-6: 3rem;
 
+    /* Breakpoints - Mobile First */
+    --bp-mobile: 320px;
+    --bp-mobile-lg: 480px;
+    --bp-tablet: 768px;
+    --bp-desktop: 1024px;
+    --bp-desktop-lg: 1440px;
+    
+    /* Legacy breakpoints (для обратной совместимости) */
     --bp-s: 576px;
     --bp-m: 768px;
     --bp-l: 960px;
     --bp-xl: 1280px;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Touch targets - минимум для accessibility */
+    --touch-target-min: 44px;
 }
 
 body {
@@ -62,6 +82,7 @@ h2 {
     line-height: 1.5;
 }
 
+/* Mobile First: базовые стили для mobile, затем расширяем для больших экранов */
 /* Мобильная адаптация */
 @media screen and (max-width: 768px) {
     main {

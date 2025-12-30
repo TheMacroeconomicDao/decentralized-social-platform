@@ -101,19 +101,47 @@
   }
 }
 
-// Мобильные устройства
-@media (max-width: 480px) {
+/* Mobile First: базовые стили для mobile */
+
+// Очень маленькие экраны (320px+)
+@media (min-width: 320px) {
   .Footer {
     margin-bottom: clamp(60px, 15vw, 70px); // Учитываем мобильные навигации
     padding: 16px 0;
     
+    .wrapper {
+      grid-template-columns: 1fr;
+      grid-template-areas: 
+        'logo'
+        'social'
+        'copyright';
+      gap: 12px;
+      padding: 0 12px;
+      text-align: center;
+      
+      .logo,
+      .social,
+      .Copyright {
+        justify-self: center;
+      }
+      
+      .Copyright {
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+// Мобильные устройства (480px+)
+@media (min-width: 480px) {
+  .Footer {
     .wrapper {
       grid-template-columns: auto 1fr;
       grid-template-areas: 
         'logo social'
         'copyright copyright';
       gap: 0.75rem;
-      padding: 0 12px;
+      text-align: left;
       
       .logo {
         justify-self: start;
@@ -128,27 +156,6 @@
         grid-area: copyright;
         margin-top: 8px;
         font-size: 11px;
-      }
-    }
-  }
-}
-
-// Очень маленькие экраны
-@media (max-width: 320px) {
-  .Footer {
-    .wrapper {
-      grid-template-columns: 1fr;
-      grid-template-areas: 
-        'logo'
-        'social'
-        'copyright';
-      gap: 12px;
-      text-align: center;
-      
-      .logo,
-      .social,
-      .Copyright {
-        justify-self: center;
       }
     }
   }

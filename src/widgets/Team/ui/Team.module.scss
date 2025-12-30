@@ -22,51 +22,60 @@
   .wrapper {
     padding: clamp(24px, 4vw, 50px) 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Mobile First: начинаем с одной колонки */
+    grid-template-columns: 1fr;
     justify-content: center;
     align-items: flex-start;
     width: 100%;
     max-width: 1400px;
-    gap: clamp(20px, 4vw, 50px);
-    
-    // Для очень маленьких карточек на мобильных
-    @media (max-width: 320px) {
+    gap: clamp(16px, 4vw, 50px);
+  }
+}
+
+/* Mobile First подход - базовые стили уже для mobile */
+
+/* Маленькие мобильные (320px+) */
+@media (min-width: 320px) {
+  .Team {
+    .wrapper {
       grid-template-columns: 1fr;
       gap: 16px;
     }
   }
 }
 
-// Mobile First подход
-@media (max-width: 480px) {
+/* Средние мобильные (480px+) */
+@media (min-width: 480px) {
   .Team {
     margin-top: 24px;
     padding: 0 12px;
 
     h2 {
-      font-size: 20px;
+      font-size: clamp(20px, 5vw, 24px);
       margin-bottom: 20px;
       letter-spacing: 0.5px;
     }
 
     .wrapper {
       padding: 20px 0;
-      grid-template-columns: 1fr;
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
     }
   }
 }
 
-@media (min-width: 481px) and (max-width: 768px) {
+/* Планшеты (768px+) */
+@media (min-width: 768px) {
   .Team {
     .wrapper {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
     }
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+/* Десктоп (1024px+) */
+@media (min-width: 1024px) {
   .Team {
     .wrapper {
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -76,7 +85,8 @@
   }
 }
 
-@media (min-width: 1025px) and (max-width: 1440px) {
+/* Большие десктопы (1440px+) */
+@media (min-width: 1440px) {
   .Team {
     .wrapper {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -85,8 +95,8 @@
   }
 }
 
-// Large desktop
-@media (min-width: 1441px) {
+/* Очень большие экраны (1600px+) */
+@media (min-width: 1600px) {
   .Team {
     .wrapper {
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));

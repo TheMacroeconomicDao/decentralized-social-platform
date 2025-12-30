@@ -4,37 +4,48 @@
   align-items: center;
   flex-direction: column;
   gap: 10px;
-  width: 180px;
+  width: 100%;
+  max-width: 180px;
+  min-width: 145px;
   text-align: center;
+  
   .avatar {
     position: relative !important;
     overflow: hidden;
     border-radius: 26px;
     width: 100%;
-    height: 180px;
+    aspect-ratio: 1;
     transition: 0.3s;
     cursor: pointer;
+    
     &:hover {
       transform: scale(1.1, 1.1);
     }
   }
+  
   h3 {
     margin-top: 10px;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 600;
   }
+  
   p {
-    font-size: 14px;
+    font-size: clamp(12px, 2.5vw, 14px);
     font-weight: 500;
-    line-height: 24px;
+    line-height: 1.5;
+  }
+}
+
+/* Mobile First подход */
+@media screen and (min-width: 481px) {
+  .CardMember {
+    max-width: 180px;
   }
 }
 
 @media screen and (max-width: 480px) {
-    .CardMember {
-        width: 145px;
-        .avatar {
-          height: 145px;
-        }
-    }
+  .CardMember {
+    max-width: 145px;
+    min-width: 140px;
+  }
 }

@@ -77,7 +77,9 @@
 .NavbarMobile {
   display: none;
 }
-@media screen and (max-width: 480px) {
+
+/* Mobile First: показываем на мобильных и планшетах */
+@media screen and (max-width: 900px) {
   .NavbarMobile {
     display: flex;
   }

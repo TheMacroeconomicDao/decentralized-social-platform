@@ -3,10 +3,10 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 10px;
+  gap: clamp(8px, 2vw, 10px);
   width: 100%;
-  max-width: 180px;
-  min-width: 145px;
+  max-width: clamp(145px, 25vw, 180px);
+  min-width: clamp(140px, 22vw, 145px);
   text-align: center;
   
   .avatar {

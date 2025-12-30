@@ -12,8 +12,8 @@
     position: absolute;
     pointer-events: all; // Восстанавливаем события для popup
     width: auto;
-    min-width: 400px;
-    max-width: 500px;
+    min-width: clamp(300px, 50vw, 400px);
+    max-width: clamp(400px, 60vw, 500px);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.2s ease;
     
@@ -80,8 +80,8 @@
   border-radius: 40px;
   overflow: hidden;
   backdrop-filter: blur(20px);
-  min-height: 400px;
-  min-width: 350px;
+  min-height: clamp(300px, 50vh, 400px);
+  min-width: clamp(280px, 45vw, 350px);
   position: relative;
   
   // Базовое состояние - видимый чат

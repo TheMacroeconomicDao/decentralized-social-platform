@@ -2,8 +2,8 @@
     position: relative;
     width: 100%;
     max-width: 1250px;
-    margin-top: 80px; // Ещё больше отступ сверху для размещения линии и индикатора
-    padding: 20px 20px;
+    margin-top: clamp(60px, 10vw, 80px);
+    padding: clamp(12px, 2.5vw, 20px);
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -25,13 +25,14 @@
     }
     .item {
         position: relative;
-        min-width: 80px;
-        padding: 0 10px;
-        font-size: 20px;
+        min-width: clamp(60px, 10vw, 80px);
+        padding: 0 clamp(8px, 1.5vw, 10px);
+        font-size: clamp(14px, 2.5vw, 20px);
         display: flex;
         justify-content: center;
         text-align: center;
         user-select: none;
+        min-height: var(--touch-target-min);
         &.active {
             color: var(--c-orange);
         }

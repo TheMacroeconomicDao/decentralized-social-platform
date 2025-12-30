@@ -3,9 +3,9 @@
   border: none;
   user-select: none;
   border-radius: 8px;
-  padding: 14px 60px;
+  padding: clamp(10px, 2vw, 14px) clamp(32px, 8vw, 60px);
   font-family: inherit;
-  font-size: 20px;
+  font-size: clamp(14px, 2.5vw, 20px);
   font-weight: 500;
   color: var(--c-white);
   outline: none;
@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: center;
   transition: 0.2s;
+  min-height: var(--touch-target-min);
   &:hover {
     filter: brightness(90%);
   }
@@ -54,9 +55,10 @@
   }
 }
 
+/* Mobile First: базовые стили уже для mobile */
 @media screen and (max-width: 490px) {
   .Button {
-    padding: 14px 30px;
+    padding: clamp(10px, 2vw, 14px) clamp(20px, 5vw, 30px);
     width: 100%;
   }
   .clear {

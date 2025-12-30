@@ -1,10 +1,12 @@
 .Substrate {
-  margin-top: 50px;
+  margin-top: clamp(30px, 6vw, 50px);
+  margin-left: auto;
+  margin-right: auto;
   border: 3px solid transparent;
   box-shadow: 32px 32px 32px 0 rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 1200px;
-  padding: 41px 100px;
+  padding: clamp(20px, 4vw, 41px) clamp(16px, 8vw, 100px);
   background: linear-gradient(
         53deg,
         rgb(20, 39, 49),
@@ -27,7 +29,7 @@
   border-radius: 40px;
   .text_box {
     margin-top: -20px;
-    font-size: 16px;
+    font-size: clamp(14px, 2vw, 16px);
     font-weight: 300;
     line-height: 2;
     text-align: justify;
@@ -149,7 +151,7 @@
     white-space: pre-line;
   }
   h3 {
-    text-align: start;
+    text-align: center;
     font-size: 22px;
     font-weight: 500;
     line-height: 3;
@@ -163,12 +165,15 @@
 
 @media screen and (max-width: 1200px) {
   .Substrate {
-    padding: 40px;
-    margin: 50px 32px 0 32px;
+    padding: clamp(24px, 4vw, 40px);
+    margin-top: clamp(30px, 6vw, 50px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
     width: auto;
 
     .scroll {
-      padding: 0 30px 0 0;
+      padding: 0 clamp(16px, 3vw, 30px) 0 0;
     }
   }
   .with_button {
@@ -183,18 +188,21 @@
 }
 @media screen and (max-width: 576px) {
   .Substrate {
-    margin: 50px 16px 0 16px;
-    padding: 30px 5px 30px 20px;
+    margin-top: clamp(30px, 6vw, 50px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    padding: clamp(20px, 4vw, 30px) clamp(8px, 2vw, 12px) clamp(20px, 4vw, 30px) clamp(16px, 4vw, 20px);
     .text_box{
-      height: 400px;
+      height: clamp(300px, 70vh, 400px);
     }
     .scroll {
-      padding: 0 20px 0 0;
+      padding: 0 clamp(12px, 3vw, 20px) 0 0;
       touch-action: pan-y;
     }
 
     h3 {
-      font-size: 20px;
+      font-size: clamp(16px, 4vw, 20px);
       line-height: 2;
     }
   }

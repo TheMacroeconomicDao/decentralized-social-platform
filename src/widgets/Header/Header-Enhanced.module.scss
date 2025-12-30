@@ -13,7 +13,9 @@
   .btnGroup {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 16px;
+    margin-left: auto;
     
     .walletButton {
       display: flex;

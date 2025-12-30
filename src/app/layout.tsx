@@ -5,7 +5,8 @@ import type { Metadata } from 'next'
 import { Montserrat, Grape_Nuts } from 'next/font/google'
 import { headers } from 'next/headers'
 import { ClientHeader } from '@/widgets/Header/ClientHeader'
-import { Navbar, NavbarMobile } from '@/widgets/Navbar'
+import { NavbarMobile } from '@/widgets/Navbar'
+import { NavbarEnhanced } from '@/widgets/Navbar/ui/Navbar/Navbar-Enhanced'
 import { Footer } from '@/widgets/Footer/Footer'
 import { GlobalAnimatedBackground } from '@/shared/ui/AnimatedIcons/GlobalAnimatedBackground'
 import { Web3Provider } from '@/app/providers/Web3Provider'
@@ -18,7 +19,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
     <>
       <GlobalAnimatedBackground />
       <ClientHeader />
-      <Navbar />
+      <NavbarEnhanced />
       {children}
       <Footer />
       <NavbarMobile />

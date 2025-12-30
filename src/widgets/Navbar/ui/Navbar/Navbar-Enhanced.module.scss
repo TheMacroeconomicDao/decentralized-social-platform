@@ -8,8 +8,8 @@
     align-items: center;
     justify-content: space-around;
     
-    /* ПО УМОЛЧАНИЮ ПОЛУПРОЗРАЧНЫЙ */
-    opacity: 0.3;
+    /* ПОЛНАЯ ВИДИМОСТЬ ПО УМОЛЧАНИЮ */
+    opacity: 1;
     visibility: visible;
     transform: translateY(0px); /* Нормальная позиция */
     
@@ -29,7 +29,7 @@
     /* ДОБАВЛЯЕМ: Плавная анимация появления */
     transition: all 0.4s ease-out;
     
-    /* HOVER ЭФФЕКТ - выезжает вверх и становится полностью видимым */
+    /* HOVER ЭФФЕКТ - выезжает вверх с дополнительными эффектами */
     &:hover {
         opacity: 1;
         visibility: visible;
@@ -207,6 +207,9 @@
             opacity: 1;
             transform: translateY(-4px); /* Меньше подъём на планшетах */
         }
+        
+        /* Полная видимость на планшетах */
+        opacity: 1;
         
         .item {
             min-width: 70px;

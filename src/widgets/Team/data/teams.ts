@@ -7,6 +7,13 @@ const data = [
     link: 'https://t.me/themacroeconomicdao',
   },
   {
+    id: 21,
+    avatarSrc: '/images/teams/Michael_Hypov.jpeg',
+    fullName: 'Michael Hypov',
+    skills: 'CMO of Gybernaty, CEO of TechHy, Co-Founder of Maximus Marketing Swarm',
+    link: 'https://t.me/Hypov',
+  },
+  {
     id: 2,
     avatarSrc: '/images/teams/Karina.jpg',
     fullName: 'Karina Yanyshevskaya',

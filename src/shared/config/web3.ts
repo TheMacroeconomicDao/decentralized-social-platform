@@ -1,6 +1,6 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { mainnet, polygon, optimism, arbitrum, base, sepolia } from 'wagmi/chains';
-import { http, cookieStorage, createStorage } from 'wagmi';
+import { http, cookieStorage, createStorage, createConfig } from 'wagmi';
 import type { Config } from 'wagmi';
 
 let configInstance: Config | null = null;
@@ -9,15 +9,12 @@ let serverConfigInstance: Config | null = null;
 // Get config - create full config for both server and client
 // Both must have ssr: true and storage for cookieToInitialState to work
 export function getConfig(): Config {
-  // On server, use getDefaultConfig with SSR support
-  // getDefaultConfig from RainbowKit works on server if ssr: true is set
+  // On server, create config manually without getDefaultConfig (which is client-only)
   if (typeof window === 'undefined') {
     if (!serverConfigInstance) {
-      // Create config on server with SSR support
+      // Create config on server with SSR support using createConfig
       // cookieToInitialState requires config with ssr: true and storage properties
-      serverConfigInstance = getDefaultConfig({
-        appName: 'DSP - Decentralized Social Platform',
-        projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
+      serverConfigInstance = createConfig({
         chains: [mainnet, polygon, optimism, arbitrum, base, sepolia],
         transports: {
           [mainnet.id]: http('https://eth.llamarpc.com'),

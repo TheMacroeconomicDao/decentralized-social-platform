@@ -1,7 +1,7 @@
 const data = [
   {
     id: 1,
-    avatarSrc: '/images/teams/Giber.jpg',
+    avatarSrc: '/images/teams/Gyber.jpg',
     fullName: 'Lll CIlician',
     skills: 'Founder, Architector, CEO of GybernatyCommunity',
     link: 'https://t.me/themacroeconomicdao',

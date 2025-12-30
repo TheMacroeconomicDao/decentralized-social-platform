@@ -2,8 +2,8 @@
     position: relative;
     width: 100%;
     max-width: 1250px;
-    margin-top: clamp(60px, 10vw, 80px);
-    padding: clamp(12px, 2.5vw, 20px);
+    margin-top: 30px;
+    padding: 20px 20px;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -20,19 +20,18 @@
         );
         height: 3px;
         width: 100%;
-        top: -50px; // Выношу линию намного выше за пределы прямоугольника
+        top: -3px;
         z-index: 1;
     }
     .item {
         position: relative;
-        min-width: clamp(60px, 10vw, 80px);
-        padding: 0 clamp(8px, 1.5vw, 10px);
-        font-size: clamp(14px, 2.5vw, 20px);
+        min-width: 80px;
+        padding: 0 10px;
+        font-size: 20px;
         display: flex;
         justify-content: center;
         text-align: center;
         user-select: none;
-        min-height: var(--touch-target-min);
         &.active {
             color: var(--c-orange);
         }
@@ -45,7 +44,7 @@
 }
 
 .hatLink {
-    top: -56px; // Размещаю выше новой позиции линии: линия на -50px, индикатор на -56px чтобы быть над ней
+    top: -9px; /* Размещаем сверху линии: линия на -3px, hatLink высота 5px, значит top: -9px чтобы низ hatLink был на -4px, отступ 1px от линии на -3px */
     position: absolute;
     background: var(--c-orange);
     width: 100%;

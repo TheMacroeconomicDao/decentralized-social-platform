@@ -191,4 +191,4 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
             </motion.div>
         </div>
     );
-}; 
+};

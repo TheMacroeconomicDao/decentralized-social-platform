@@ -127,3 +127,4 @@ kubectl describe ingress gitlab-ingress -n gitlab
 
 См. `k8s/gitlab/README.md` для полной документации.
 
+

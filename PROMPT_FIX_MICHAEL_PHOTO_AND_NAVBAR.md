@@ -256,3 +256,4 @@ kubectl rollout status deployment/dsp-prod-deployment-primary --timeout=600s -n 
 
 **ВАЖНО:** Работать аккуратно, не ломать существующий функционал. Восстановить оригинальный качественный Navbar, а не создавать новую версию.
 
+

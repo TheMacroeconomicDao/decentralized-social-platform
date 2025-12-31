@@ -62,3 +62,4 @@ kubectl apply -f k8s/gitlab/gitlab-deployment.yaml
 
 
 
+

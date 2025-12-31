@@ -179,3 +179,4 @@ kubectl rollout status deployment/dsp-prod-deployment --timeout=600s -n default
 **Дата создания**: 30 декабря 2025  
 **Приоритет**: Высокий  
 **Статус**: Требует изучения и исправления
+

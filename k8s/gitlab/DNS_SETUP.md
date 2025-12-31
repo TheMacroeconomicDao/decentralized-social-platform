@@ -112,3 +112,4 @@ curl -I https://gitlab.gyber.org
 6. **Войдите**: root / `73/sV+RgIpHNd9Go7w0SJoTGJoLvl71P3NwUDh2nUUk=`
 7. **Создайте токен** и настройте переменные окружения
 
+

@@ -80,3 +80,4 @@ kubectl delete -f k8s/gitlab/gitlab-deployment.yaml
 - Рекомендуется изменить root пароль после первого входа
 - Для SSH доступа нужно настроить port forwarding или использовать ingress
 
+

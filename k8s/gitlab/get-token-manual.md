@@ -72,3 +72,4 @@ chmod 600 k8s/gitlab/.gitlab-token
 ./k8s/gitlab/add-to-env.sh
 ```
 
+

@@ -51,3 +51,4 @@ echo "💡 После настройки DNS на сервере, удалите
 echo "   sudo sed -i.bak '/gitlab.gyber.org/d' /etc/hosts"
 echo ""
 
+

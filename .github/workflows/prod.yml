@@ -59,19 +59,20 @@ jobs:
           chmod 600 $HOME/.kube/config
 
       - name: Pre-deployment diagnostics
+        continue-on-error: true
         run: |
           echo "🔍 Pre-deployment cluster diagnostics:"
           echo "📊 Node resources:"
           kubectl top nodes || echo "⚠️ Metrics server unavailable"
-          
+
           echo "📋 Current pods:"
-          kubectl get pods -n default -l app=dsp-prod
-          
+          kubectl get pods -n default -l app=dsp-prod || true
+
           echo "📈 Current deployment status:"
-          kubectl get deployment dsp-prod-deployment -n default -o wide
-          
+          kubectl get deployment dsp-prod-deployment -n default -o wide || true
+
           echo "🔄 ReplicaSets:"
-          kubectl get rs -n default -l app=dsp-prod --sort-by=.metadata.creationTimestamp
+          kubectl get rs -n default -l app=dsp-prod --sort-by=.metadata.creationTimestamp || true
 
       - name: Deploy to k3s
         run: |
@@ -114,17 +115,19 @@ jobs:
       - name: Post-deployment verification
         run: |
           echo "🔍 Post-deployment verification:"
-          
+
           echo "📊 Final pod status:"
           kubectl get pods -n default -l app=dsp-prod -o wide
-          
+
           echo "🌐 Service status:"
           kubectl get svc dsp-prod-service -n default
-          
-          echo "🔗 Ingress/Gateway status:"
-          kubectl get gateway dsp-prod-gateway -n default || echo "No gateway found"
-          kubectl get virtualservice -n default -l app=dsp-prod
-          
+
+          echo "🔗 Ingress status:"
+          kubectl get ingress dsp-prod-ingress -n default || echo "No ingress found"
+
+          echo "🔒 Certificate status:"
+          kubectl get certificate dsp-prod-tls -n default || echo "No certificate found"
+
           echo "🏥 Health check:"
           for pod in $(kubectl get pods -n default -l app=dsp-prod -o jsonpath='{.items[*].metadata.name}'); do
             echo "Pod $pod readiness:"

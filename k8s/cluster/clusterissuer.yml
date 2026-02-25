@@ -12,20 +12,8 @@ spec:
       name: letsencrypt-production
     solvers:
     - http01:
-        gatewayHTTPRoute:
-          parentRefs:
-          - name: dsp-prod-gateway
-            namespace: default
-            kind: Gateway
-            group: networking.istio.io
-      selector:
-        dnsNames:
-        - "gyber.org"
-        - "www.gyber.org"
-    - http01:
         ingress:
-          class: istio
-      selector: {}
+          class: traefik
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -42,5 +30,4 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: istio
-      selector: {} 
+          class: traefik 

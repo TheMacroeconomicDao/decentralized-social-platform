@@ -43,7 +43,7 @@ export const Card = ({id, items}: CardProps) => {
             whileInView={'viewLaptop'}
             variants={cardVariants}
             viewport={{ once: true, amount: 0.5 }}
-            style={{ width: '100%', height: '100%' }}>
+            style={{ width: '100%' }}>
                 <div className={cls.StageWrapper}>
                     <h3>{id}<sup>{suffix.has(id) ? suffix.get(id): 'th'}</sup></h3>
                     <span>Year</span>

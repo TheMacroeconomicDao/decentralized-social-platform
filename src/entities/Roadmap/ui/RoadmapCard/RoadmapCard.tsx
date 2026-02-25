@@ -51,7 +51,7 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
             whileInView={'viewLaptop'}
             variants={cardVariants}
             viewport={{ once: true, amount: 0.5 }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%' }}
           >
           {!isCurrent && (
             <StartItem
@@ -112,7 +112,7 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
             whileInView={'viewLaptop'}
             variants={cardVariants}
             viewport={{ once: true, amount: 0.5 }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%' }}
           >
           <span
             className={classNames(cls.period, {
@@ -142,7 +142,7 @@ export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
             whileInView={'viewLaptop'}
             variants={cardVariants}
             viewport={{ once: true, amount: 0.5 }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%' }}
           >
           {!isCurrent && (
             <NextPeriodItem

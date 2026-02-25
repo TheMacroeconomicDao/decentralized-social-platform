@@ -35,7 +35,7 @@ export const CardMemberEvolution = (props: CardMemberEvolutionProps) => {
           y: -8,
           transition: { type: "spring", stiffness: 300 }
         }}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%' }}
       >
         <div className={cls.avatar}>
           <a href={link}>

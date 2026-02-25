@@ -78,6 +78,7 @@
     
     /* УСИЛИВАЕМ: Существующий градиентный фон с glassmorphism */
     background: rgba(7, 43, 64, 0.4);
+    -webkit-backdrop-filter: var(--glass-blur);
     backdrop-filter: var(--glass-blur);
     border: var(--glass-border);
     box-shadow: var(--shadow-strong);
@@ -136,6 +137,7 @@
       rgba(9, 21, 26, 0.85) 0%,
       rgba(7, 46, 63, 0.85) 100%
     );
+    -webkit-backdrop-filter: var(--glass-blur);
     backdrop-filter: var(--glass-blur);
     border: var(--glass-border);
     box-shadow: var(--shadow-medium);

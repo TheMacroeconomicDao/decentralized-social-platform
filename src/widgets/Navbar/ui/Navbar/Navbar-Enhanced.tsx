@@ -3,7 +3,7 @@ import cls from "./Navbar-Enhanced.module.scss";
 import { classNames } from "@/shared/lib/classNames/classNames";
 import { usePathname } from "next/navigation";
 import navbarItems from "../../data/routesData";
-import { motion, Variants, useSpring, useTransform } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
 interface NavbarProps {
@@ -90,28 +90,25 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
     const pathName = usePathname();
 
     return (
-        <div className={classNames(cls.Navbar, {}, [className])}>
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                style={{ width: '100%', height: '100%' }}
-            >
-                {/* Градиентная линия с анимацией */}
-                <div className={cls.gradientLine}>
-                    <motion.div
-                        initial={{ scaleX: 0, opacity: 0 }}
-                        animate={{ scaleX: 1, opacity: 1 }}
-                        transition={{ 
-                            delay: 0.5,
-                            type: 'spring',
-                            stiffness: 200,
-                            damping: 20
-                        }}
-                        style={{ width: '100%', height: '100%' }}
-                    />
-                </div>
-            
+        <motion.div
+            className={classNames(cls.Navbar, {}, [className])}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
+                {/* Gradient Line */}
+                <motion.div
+                    className={cls.gradientLine}
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    transition={{
+                        delay: 0.5,
+                        type: 'spring',
+                        stiffness: 200,
+                        damping: 20
+                    }}
+                />
+
             {navbarItems.map((item, index) => (
                 <motion.div
                     key={item.link}
@@ -135,60 +132,28 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                         )}
                         href={item.link}
                     >
-                        {/* СОВРЕМЕННЫЙ ЗОЛОТОЙ ИНДИКАТОР */}
+                        {/* Golden Indicator (layoutId="bow") */}
                         {pathName === item.link && (
-                            <div className={cls.indicator}>
-                                <motion.div
-                                    layoutId="bow" // Сохраняем уникальную анимацию проекта
-                                    variants={indicatorVariants}
-                                    initial="hidden"
-                                    animate="visible"
-                                    whileHover="hover"
-                                    // ДОПОЛНИТЕЛЬНЫЕ СОВРЕМЕННЫЕ ЭФФЕКТЫ
-                                    style={{
-                                        transformOrigin: "center",
-                                        willChange: "transform, opacity, box-shadow",
-                                        width: '100%',
-                                        height: '100%'
-                                    }}
-                                    // GLITCH ЭФФЕКТ ПРИ ПЕРЕКЛЮЧЕНИИ
-                                    transition={{
-                                        layout: {
-                                            type: 'spring',
-                                            stiffness: 500,
-                                            damping: 30,
-                                            mass: 0.8,
-                                            duration: 0.6
-                                        }
-                                    }}
-                                />
-                            </div>
+                            <motion.div
+                                layoutId="bow"
+                                className={cls.indicator}
+                                transition={{
+                                    layout: {
+                                        type: 'spring',
+                                        stiffness: 500,
+                                        damping: 30,
+                                        mass: 0.8,
+                                    }
+                                }}
+                            />
                         )}
                         
-                        {/* АНИМИРОВАННЫЙ ТЕКСТ */}
                         <span className={cls.itemText}>
-                            <motion.span
-                            animate={pathName === item.link ? {
-                                textShadow: [
-                                    "0 0 15px rgba(212, 157, 50, 0.6)",
-                                    "0 0 25px rgba(212, 157, 50, 0.4)",
-                                    "0 0 15px rgba(212, 157, 50, 0.6)"
-                                ],
-                                scale: [1, 1.02, 1]
-                            } : {}}
-                            transition={{ 
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }}
-                            >
-                                {item.title}
-                            </motion.span>
+                            {item.title}
                         </span>
                     </Link>
                 </motion.div>
             ))}
-            </motion.div>
-        </div>
+        </motion.div>
     );
 };

@@ -92,35 +92,30 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
     
     return (
         <>
-            <div className={classNames(cls.Header, {}, [className])}>
-                <motion.div
-                    variants={headerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    style={{ width: '100%', height: '100%' }}
-                >
-                    {/* Logo с анимацией */}
+            <motion.div
+                className={classNames(cls.Header, {}, [className])}
+                variants={headerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                    {/* Logo */}
                     <motion.div variants={itemVariants}>
                         <Link href={'/'}>
                             <motion.div
-                                whileHover={{ 
+                                whileHover={{
                                     scale: 1.05,
                                     filter: "brightness(110%)"
                                 }}
                                 whileTap={{ scale: 0.98 }}
-                                transition={{ duration: 0.2 }}
+                                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                             >
                                 <Logo>Gyber</Logo>
                             </motion.div>
                         </Link>
                     </motion.div>
 
-                    {/* Button Group с анимациями */}
-                    <div className={cls.btnGroup}>
-                        <motion.div
-                            variants={itemVariants}
-                            style={{ width: '100%', height: '100%' }}
-                        >
+                    {/* Button Group */}
+                    <motion.div className={cls.btnGroup} variants={itemVariants}>
                             {/* Profile или Dapp Button для подключения */}
                             <motion.div
                                 whileHover={{ 
@@ -158,17 +153,15 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
                             
                             {/* NavbarTablet */}
                             <motion.div
-                                whileHover={{ 
+                                whileHover={{
                                     scale: 1.02,
                                     transition: { duration: 0.2 }
                                 }}
                             >
                                 <NavbarTablet />
                             </motion.div>
-                        </motion.div>
-                    </div>
-                </motion.div>
-            </div>
+                    </motion.div>
+            </motion.div>
 
             {/* Wallet Auth Modal */}
             <WalletAuthModal 

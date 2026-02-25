@@ -27,51 +27,78 @@ html {
     --bp-l: 960px;
     --bp-xl: 1280px;
 
-    /* === NEW: CYBER EVOLUTION 2025 VARIABLES === */
-    
-    /* Glassmorphism 2025 */
-    --glass-blur: blur(25px) saturate(1.1);
-    --glass-blur-medium: blur(15px) saturate(1.05);
-    --glass-blur-light: blur(10px) saturate(1.02);
-    --glass-border: 0.5px solid rgba(225, 225, 225, 0.18);
+    /* === CYBER EVOLUTION 2025-2026 — ULTRA MODERN DESIGN SYSTEM === */
+
+    /* ─── Glassmorphism 3.0 ─── */
+    --glass-blur: blur(25px) saturate(1.4);
+    --glass-blur-medium: blur(15px) saturate(1.2);
+    --glass-blur-light: blur(10px) saturate(1.1);
+    --glass-border: 0.5px solid rgba(225, 225, 225, 0.10);
     --glass-bg: rgba(7, 43, 64, 0.25);
-    --glass-bg-strong: rgba(7, 43, 64, 0.4);
-    
-    /* Neomorphism Shadows */
+    --glass-bg-strong: rgba(7, 43, 64, 0.35);
+    --glass-bg-subtle: rgba(7, 43, 64, 0.15);
+
+    /* ─── Shadows (Neomorphism) ─── */
     --shadow-soft: 0 8px 32px rgba(0, 16, 25, 0.37);
     --shadow-medium: 0 12px 40px rgba(0, 16, 25, 0.5);
     --shadow-strong: 0 16px 48px rgba(0, 16, 25, 0.65);
     --shadow-inset: inset 0 1px 3px rgba(255, 255, 255, 0.1);
     --shadow-inset-deep: inset 0 2px 8px rgba(0, 16, 25, 0.3);
-    
-    /* Premium Glows */
+
+    /* ─── Glows ─── */
     --glow-orange: 0 0 20px rgba(212, 157, 50, 0.3);
     --glow-orange-strong: 0 0 30px rgba(212, 157, 50, 0.5);
     --glow-blue: 0 0 20px rgba(66, 184, 243, 0.3);
     --glow-blue-strong: 0 0 30px rgba(66, 184, 243, 0.5);
     --glow-white: 0 0 15px rgba(225, 225, 225, 0.2);
-    
-    /* Premium Transitions */
+
+    /* ─── Transitions ─── */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     --transition-fast: all 0.2s ease-out;
-    
-    /* Fluid Typography (Enhanced) */
-    --fs-fluid-xs: clamp(0.75rem, 1.5vw, 0.875rem);
-    --fs-fluid-sm: clamp(0.875rem, 2vw, 1rem);
-    --fs-fluid-base: clamp(1rem, 2.5vw, 1.25rem);
-    --fs-fluid-lg: clamp(1.25rem, 3vw, 1.5rem);
-    --fs-fluid-xl: clamp(1.5rem, 4vw, 2rem);
-    --fs-fluid-2xl: clamp(2rem, 5vw, 2.5rem);
-    --fs-fluid-3xl: clamp(2.5rem, 6vw, 3rem);
-    
-    /* Spacing Fluid */
+
+    /* ─── Fluid Typography (Modular Scale 1.25 Major Third) ─── */
+    --fs-fluid-xs: clamp(0.694rem, 0.65rem + 0.22vw, 0.8rem);
+    --fs-fluid-sm: clamp(0.833rem, 0.77rem + 0.32vw, 1rem);
+    --fs-fluid-base: clamp(1rem, 0.91rem + 0.43vw, 1.25rem);
+    --fs-fluid-lg: clamp(1.2rem, 1.08rem + 0.58vw, 1.563rem);
+    --fs-fluid-xl: clamp(1.44rem, 1.28rem + 0.78vw, 1.953rem);
+    --fs-fluid-2xl: clamp(1.728rem, 1.51rem + 1.07vw, 2.441rem);
+    --fs-fluid-3xl: clamp(2.074rem, 1.78rem + 1.44vw, 3.052rem);
+    --fs-fluid-hero: clamp(3rem, 2.4rem + 2.93vw, 5rem);
+
+    /* ─── Line Heights ─── */
+    --lh-tight: 1.1;
+    --lh-snug: 1.25;
+    --lh-normal: 1.5;
+    --lh-relaxed: 1.75;
+
+    /* ─── Letter Spacing ─── */
+    --ls-tight: -0.02em;
+    --ls-normal: 0;
+    --ls-wide: 0.05em;
+    --ls-wider: 0.1em;
+
+    /* ─── Fluid Spacing ─── */
     --space-xs: clamp(0.25rem, 1vw, 0.5rem);
     --space-sm: clamp(0.5rem, 2vw, 1rem);
     --space-md: clamp(1rem, 3vw, 1.5rem);
     --space-lg: clamp(1.5rem, 4vw, 2rem);
     --space-xl: clamp(2rem, 5vw, 3rem);
     --space-2xl: clamp(3rem, 6vw, 4rem);
+
+    /* ─── Semantic Surface Tokens ─── */
+    --surface-glass: rgba(7, 43, 64, 0.25);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.12);
+    --border-accent: rgba(212, 157, 50, 0.4);
+
+    /* ─── Semantic Color Tokens ─── */
+    --color-primary: var(--c-orange);
+    --color-secondary: var(--c-blue);
+    --color-success: #00ff88;
+    --color-danger: #ff4444;
+    --color-warning: #f0a030;
 }
 
 body {
@@ -155,21 +182,82 @@ h2 {
     100% { background-position: 200% 0; }
 }
 
-/* Premium Interaction Classes */
-.glass-effect {
+/* ═══ GLASSMORPHISM 3.0 — Layered System ═══ */
+
+/* Level 1: Subtle Glass (navbar, small cards) */
+.glass-subtle {
+    background: var(--glass-bg-subtle);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    backdrop-filter: blur(12px) saturate(1.2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+}
+
+/* Level 2: Standard Glass (cards, panels) — default */
+.glass-effect,
+.glass-standard {
     background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
     backdrop-filter: var(--glass-blur);
     border: var(--glass-border);
     border-radius: 16px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.glass-effect-strong {
+/* Level 3: Premium Glass (hero, modals) */
+.glass-effect-strong,
+.glass-premium {
     background: var(--glass-bg-strong);
-    backdrop-filter: var(--glass-blur);
-    border: var(--glass-border);
+    -webkit-backdrop-filter: blur(40px) saturate(1.6);
+    backdrop-filter: blur(40px) saturate(1.6);
+    border: 1px solid var(--border-default);
     border-radius: 20px;
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-medium), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Level 4: Liquid Glass (special effects, hero overlay) */
+.glass-liquid {
+    background: rgba(7, 43, 64, 0.20);
+    -webkit-backdrop-filter: blur(60px) saturate(1.8) brightness(1.1);
+    backdrop-filter: blur(60px) saturate(1.8) brightness(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Chromatic accent line for glass cards */
+.glass-chromatic-line {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(212, 157, 50, 0.5),
+            rgba(66, 184, 243, 0.5),
+            transparent
+        );
+        pointer-events: none;
+    }
+}
+
+/* Backdrop-filter fallback */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .glass-subtle,
+    .glass-effect,
+    .glass-standard,
+    .glass-premium,
+    .glass-effect-strong,
+    .glass-liquid {
+        background: rgba(7, 43, 64, 0.85);
+    }
 }
 
 .neo-pressed {

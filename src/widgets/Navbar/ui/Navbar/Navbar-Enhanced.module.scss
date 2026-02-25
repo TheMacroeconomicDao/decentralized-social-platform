@@ -1,286 +1,240 @@
+/* ═══════════════════════════════════════════════════════════════
+   NavbarEnhanced — Ultra Modern Design 2025-2026
+   Glass 3.0 + Spring Animations + layoutId="bow"
+   ═══════════════════════════════════════════════════════════════ */
+
 .Navbar {
     position: relative;
     width: 100%;
     max-width: 1250px;
-    margin-top: 80px; /* Увеличиваю отступ для размещения линии и индикатора выше */
+    margin-top: 80px;
     padding: var(--space-md) var(--space-md);
     display: flex;
     align-items: center;
     justify-content: space-around;
-    
-    /* ПОЛНАЯ ВИДИМОСТЬ ПО УМОЛЧАНИЮ */
+
+    /* Full visibility by default */
     opacity: 1;
     visibility: visible;
-    transform: translateY(0px); /* Нормальная позиция */
-    
-    /* ОТКЛЮЧАЕМ: Оригинальную градиентную линию */
-    &::before {
-        display: none !important;
-        content: none !important;
-    }
-    
-    /* ДОБАВЛЯЕМ: Modern Glassmorphism 2025 */
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    border: var(--glass-border);
-    border-radius: 16px; /* Добавляем округлые углы контейнеру */
+
+    /* Glass Subtle (Level 1) */
+    background: var(--glass-bg-subtle, rgba(7, 43, 64, 0.15));
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    backdrop-filter: blur(12px) saturate(1.2);
+    border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.06));
+    border-radius: 16px;
     box-shadow: var(--shadow-soft);
-    
-    /* ДОБАВЛЯЕМ: Плавная анимация появления */
-    transition: all 0.4s ease-out;
-    
-    /* HOVER ЭФФЕКТ - выезжает вверх с дополнительными эффектами */
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+
+    /* Disable legacy ::before gradient (replaced by .gradientLine) */
+    &::before {
+        display: none;
+    }
+
+    /* Hover: only enhance glass, no translateY on container */
     &:hover {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(-8px); /* Выезжает вверх */
-        background: var(--glass-bg-strong);
-        box-shadow: var(--shadow-medium);
-        
-        /* ДОБАВЛЯЕМ: Дополнительные эффекты при hover */
-        box-shadow: 
+        background: var(--glass-bg, rgba(7, 43, 64, 0.25));
+        box-shadow:
             0 12px 40px rgba(0, 0, 0, 0.25),
-            0 8px 24px rgba(0, 0, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-    
-    /* ГРАДИЕНТНАЯ ЛИНИЯ - 2px как запрошено */
-    .gradientLine {
-        position: absolute !important;
-        background: linear-gradient(
-            270deg,
-            rgba(56, 34, 5, 0) 0%,
-            #965e15 13.59%,
-            #0e5e84 50.98%,
-            #638917 78.07%,
-            rgba(30, 19, 7, 0) 100%
-        ) !important;
-        height: 2px !important; /* Уменьшил до 2px */
-        width: 100% !important;
-        top: -3px !important; /* Как в оригинале */
-        left: 0 !important;
-        z-index: 1 !important; /* Как в оригинале */
-        border-radius: 0 !important;
-        display: block !important;
-        box-shadow: 0 0 15px rgba(150, 94, 21, 0.5) !important;
-    }
-    
-    /* ЗОЛОТОЙ ИНДИКАТОР - современная версия 2025 */
-    .indicator {
-        position: absolute !important;
-        top: -36px !important; /* Как в оригинале */
-        left: 0 !important;
-        width: 100% !important;
-        height: 5px !important;
-        background: linear-gradient(
-            135deg,
-            var(--c-orange) 0%,
-            #FFD700 30%,
-            var(--c-orange) 60%,
-            #FF8C00 100%
-        ) !important;
-        border-radius: 2px !important; /* Небольшое скругление */
-        z-index: 10 !important;
-        box-shadow: 
-            var(--glow-orange),
-            0 0 30px rgba(212, 157, 50, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-        border: none !important;
-        
-        /* Поддержка GPU ускорения */
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        perspective: 1000px;
-        
-        /* Улучшенная производительность */
-        will-change: transform, opacity, box-shadow;
-        
-        &::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(212, 157, 50, 0.1),
-                transparent
-            );
-            border-radius: 4px;
-            z-index: -1;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        &::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-            animation: pulse 4s ease-in-out infinite;
-        }
-    }
-    
-    /* АНИМАЦИЯ БЛЕСКА */
-    @keyframes shimmer {
-        0%, 100% { opacity: 0; }
-        50% { opacity: 1; }
-    }
-    
-    /* АНИМАЦИЯ ПУЛЬСАЦИИ */
-    @keyframes pulse {
-        0%, 100% { 
-            opacity: 0.3; 
-            transform: translate(-50%, -50%) scale(0.8);
-        }
-        50% { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1.2);
-        }
-    }
-    
-    .item {
-        position: relative;
-        min-width: 80px;
-        padding: 0 var(--space-sm);
-        font-size: var(--fs-fluid-base);
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        user-select: none;
-        cursor: pointer;
-        
-        /* ДОБАВЛЯЕМ: Premium transitions */
-        transition: var(--transition-smooth);
-        border-radius: 0; /* Убираем скругления у item */
-        
-        /* ДОБАВЛЯЕМ: Subtle hover effects */
-        &:hover {
-            background: rgba(225, 225, 225, 0.05);
-            backdrop-filter: blur(10px);
-            
-            .itemText {
-                color: rgba(225, 225, 225, 0.9);
-                text-shadow: 0 0 10px rgba(225, 225, 225, 0.3);
-            }
-        }
-        
-        &.active {
-            .itemText {
-                color: var(--c-orange);
-                font-weight: 600;
-                text-shadow: 0 0 15px rgba(212, 157, 50, 0.4);
-            }
-        }
-    }
-    
-    .itemText {
-        transition: var(--transition-smooth);
-        position: relative;
-        z-index: 2;
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 }
 
-/* СОХРАНЯЕМ: Мобильную адаптивность */
+/* ─── Gradient Line ─── */
+.gradientLine {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 1;
+    border-radius: 1px;
+    background: linear-gradient(
+        270deg,
+        rgba(56, 34, 5, 0) 0%,
+        #965e15 13.59%,
+        #0e5e84 50.98%,
+        #638917 78.07%,
+        rgba(30, 19, 7, 0) 100%
+    );
+    box-shadow: 0 0 12px rgba(150, 94, 21, 0.4);
+}
+
+/* ─── Active Indicator (Golden Bow) ─── */
+.indicator {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 10;
+    border-radius: 2px;
+    background: linear-gradient(
+        135deg,
+        var(--c-orange) 0%,
+        #FFD700 30%,
+        var(--c-orange) 60%,
+        #FF8C00 100%
+    );
+    box-shadow:
+        var(--glow-orange),
+        0 0 20px rgba(212, 157, 50, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: none;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+
+    /* Shimmer pseudo-element */
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(
+            45deg,
+            transparent,
+            rgba(212, 157, 50, 0.1),
+            transparent
+        );
+        border-radius: 4px;
+        z-index: -1;
+        animation: shimmer 3s ease-in-out infinite;
+    }
+
+    /* Center pulse dot */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+        animation: pulse 4s ease-in-out infinite;
+    }
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* ─── Nav Items ─── */
+.item {
+    position: relative;
+    min-width: 80px;
+    padding: 0 var(--space-sm);
+    font-size: var(--fs-fluid-base, clamp(1rem, 0.91rem + 0.43vw, 1.25rem));
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+        background: rgba(225, 225, 225, 0.05);
+
+        .itemText {
+            color: rgba(225, 225, 225, 0.95);
+            text-shadow: 0 0 10px rgba(225, 225, 225, 0.3);
+        }
+    }
+
+    &.active {
+        .itemText {
+            color: var(--c-orange);
+            font-weight: 600;
+            text-shadow: 0 0 15px rgba(212, 157, 50, 0.4);
+        }
+    }
+}
+
+.itemText {
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+    position: relative;
+    z-index: 2;
+}
+
+/* ─── Responsive ─── */
+
+/* Mobile: hide navbar (NavbarMobile used instead) */
 @media screen and (max-width: 900px) {
     .Navbar {
         display: none;
     }
 }
 
-/* ДОБАВЛЯЕМ: Tablet optimizations */
+/* Tablet: compact layout */
 @media screen and (max-width: 1024px) and (min-width: 901px) {
     .Navbar {
         max-width: 100%;
         margin-top: var(--space-md);
         padding: var(--space-sm) var(--space-md);
-        
-        /* Сохраняем hover эффекты на планшетах */
-        &:hover {
-            opacity: 1;
-            transform: translateY(-4px); /* Меньше подъём на планшетах */
-        }
-        
-        /* Полная видимость на планшетах */
-        opacity: 1;
-        
+
         .item {
             min-width: 70px;
             padding: 0 var(--space-xs);
-            font-size: var(--fs-fluid-sm);
+            font-size: var(--fs-fluid-sm, clamp(0.833rem, 0.77rem + 0.32vw, 1rem));
         }
     }
 }
 
-/* ДОБАВЛЯЕМ: Reduced motion accessibility для новых анимаций */
+/* ─── Accessibility ─── */
+
+.item:focus-visible {
+    outline: 2px solid var(--c-orange);
+    outline-offset: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .Navbar {
-        transition: opacity 0.3s ease-out; /* Только opacity анимация */
-        
-        &:hover {
-            transform: none; /* Убираем движение */
-            opacity: 1; /* Сохраняем смену прозрачности */
-        }
-        
-        .indicator {
-            &::before,
-            &::after {
-                animation: none; /* Отключаем все анимации блеска и пульсации */
-            }
-        }
-    }
-    
-    .item {
         transition: none;
     }
-    
+
+    .indicator {
+        &::before,
+        &::after {
+            animation: none;
+        }
+    }
+
+    .item,
     .itemText {
         transition: none;
     }
 }
 
-/* ДОБАВЛЯЕМ: High-resolution display optimizations для новых анимаций */
+/* ─── High DPI ─── */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .Navbar {
-        border-width: 0.25px;
+        border-width: 0.5px;
     }
-    
+
     .gradientLine {
-        height: 2px;
+        height: 1.5px;
     }
-    
+
     .indicator {
-        /* Более четкие границы для retina дисплеев */
         border-radius: 1px;
-        
+
         &::after {
-            width: 4px;
-            height: 4px;
-        }
-    }
-}
-
-/* ДОБАВЛЯЕМ: Focus accessibility */
-.item:focus-visible {
-    outline: 2px solid var(--c-orange);
-    outline-offset: 2px;
-    border-radius: 0; /* Убираем скругления */
-}
-
-/* ДОБАВЛЯЕМ: Dark mode enhancements (если потребуется) */
-@media (prefers-color-scheme: dark) {
-    .Navbar {
-        background: rgba(7, 43, 64, 0.35);
-        
-        .item:hover {
-            background: rgba(225, 225, 225, 0.08);
+            width: 3px;
+            height: 3px;
         }
     }
 }

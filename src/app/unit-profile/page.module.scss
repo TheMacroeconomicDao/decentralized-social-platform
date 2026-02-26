@@ -1,9 +1,10 @@
 .container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f2027 100%);
   color: white;
   padding: clamp(16px, 4vw, 20px);
   font-family: 'Inter', sans-serif;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .noProfile {

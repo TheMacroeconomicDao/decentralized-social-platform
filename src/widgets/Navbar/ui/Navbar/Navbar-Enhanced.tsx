@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import navbarItems from "../../data/routesData";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface NavbarProps {
     className?: string;
@@ -47,22 +47,29 @@ const itemVariants: Variants = {
 
 export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
     const pathName = usePathname();
+    const [mounted, setMounted] = useState(false);
     const hasAnimated = useRef(false);
-    const shouldAnimate = !hasAnimated.current;
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Animate only on first client mount, skip on subsequent navigations
+    const shouldAnimate = mounted && !hasAnimated.current;
     if (shouldAnimate) hasAnimated.current = true;
 
     return (
         <motion.div
             className={classNames(cls.Navbar, {}, [className])}
             variants={containerVariants}
-            initial={shouldAnimate ? "hidden" : false}
-            animate="visible"
+            initial={false}
+            animate={mounted ? "visible" : false}
         >
                 {/* Gradient Line */}
                 <motion.div
                     className={cls.gradientLine}
-                    initial={shouldAnimate ? { scaleX: 0, opacity: 0 } : false}
-                    animate={{ scaleX: 1, opacity: 1 }}
+                    initial={false}
+                    animate={mounted ? { scaleX: 1, opacity: 1 } : false}
                     transition={{
                         delay: shouldAnimate ? 0.5 : 0,
                         type: 'spring',
@@ -71,14 +78,14 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                     }}
                 />
 
-            {navbarItems.map((item, index) => (
+            {navbarItems.map((item) => (
                 <motion.div
                     key={item.link}
                     variants={itemVariants}
-                    whileHover={{ 
+                    whileHover={{
                         scale: 1.05,
                         y: -2,
-                        transition: { 
+                        transition: {
                             type: 'spring',
                             stiffness: 400,
                             damping: 17
@@ -109,7 +116,7 @@ export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
                                 }}
                             />
                         )}
-                        
+
                         <span className={cls.itemText}>
                             {item.title}
                         </span>

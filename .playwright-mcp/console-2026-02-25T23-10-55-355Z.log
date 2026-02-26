@@ -1,0 +1,274 @@
+[    1722ms] [WARNING] Image with src "/images/slides/main-slide.jpg" is using quality "70" which is not configured in images.qualities. This config will be required starting in Next.js 16.
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1774ms] [ERROR] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+      <RedirectBoundary>
+        <RedirectErrorBoundary router={{...}}>
+          <InnerLayoutRouter url="/" tree={[...]} cacheNode={{lazyData:null, ...}} segmentPath={[...]}>
+            <SegmentViewNode type="page" pagePath="page.tsx">
+              <SegmentTrieNode>
+              <Home>
+                <Home>
+                  <Slider path="/images/sl..." mobilePath="/images/sl..." title={"Communit..."}>
+                    <AnimatePresence>
+                      <PresenceChild isPresent={true} initial={undefined} custom={undefined} presenceAffectsLayout={true} ...>
+                        <div className="Slider_Sli...">
+                          <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} ...>
+                            <div
+                              style={{
++                               width: "100%"
+-                               width: "100%"
++                               height: "100%"
++                               opacity: 0
+-                               opacity: "0"
++                               transform: "translateY(10px)"
+-                               transform: "translateY(10px)"
+                              }}
+                              ref={function useMotionRef.useCallback}
+                            >
+                              <SlideImage>
+                              <div className="Slider_sli..." style={{...}}>
+                                <motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} ...>
+                                  <div
+                                    style={{
++                                     width: "100%"
+-                                     width: "100%"
++                                     height: "100%"
++                                     opacity: 0
+-                                     opacity: "0"
++                                     transform: "translateY(30px)"
+-                                     transform: "translateY(30px)"
+                                    }}
+                                    ref={function useMotionRef.useCallback}
+                                  >
+                ...
+            ...
+          ...
+ @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:56
+[    1986ms] [WARNING] Image with src "/images/slides/main-slide.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1986ms] [WARNING] Image with src "/images/slides/main-slide.jpg" has "fill" and a height value of 0. This is likely because the parent element of the image has not been styled to have a set height. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1987ms] [WARNING] Image with src "/images/teams/Gyber.jpeg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1987ms] [WARNING] Image with src "/images/teams/Michael_Hypov.jpeg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1987ms] [WARNING] Image with src "/images/teams/Karina.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1987ms] [WARNING] Image with src "/images/teams/Nikita-Juravski.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1987ms] [WARNING] Image with src "/images/teams/Pavel-Anisimov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1987ms] [WARNING] Image with src "/images/teams/Novikov-Egor.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1989ms] [WARNING] Image with src "/images/teams/Artem-Smirnov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1989ms] [WARNING] Image with src "/images/teams/Daniil.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1989ms] [WARNING] Image with src "/images/teams/Dmitrii-Novikov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1990ms] [WARNING] Image with src "/images/teams/Bogdan.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1990ms] [WARNING] Image with src "/images/teams/Miracle-Obiekwe.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    1990ms] [WARNING] Image with src "/images/teams/Frank-Zulu.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    2076ms] [WARNING] Image with src "/images/teams/Fuad-Topchiyev.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    2080ms] [WARNING] Image with src "/images/teams/Zeyad-Elshenhab.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    2092ms] [WARNING] Image with src "/images/teams/ChimdaluNnenne.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    2093ms] [WARNING] Image with src "/images/teams/IrinaChekalina.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    2596ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ webpack-internal:///(app-pages-browser)/./node_modules/@lit/reactive-element/development/reactive-element.js:62
+[    4828ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[    4830ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[   55811ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[   55812ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[   76811ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[   76812ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[   97813ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/debian.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  103809ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  103809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  103998ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr' failed:  @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/use-websocket.js:41
+[  106834ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkafka.svg&w=32&q=75:0
+[  106834ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  109813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fnextjs.svg&w=48&q=75:0
+[  109814ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/nextjs.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  112809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2F1inch.svg&w=48&q=75:0
+[  112810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/1inch.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  115810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Finternet.svg&w=48&q=75:0
+[  115810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/internet.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  118811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fdebian.svg&w=48&q=75:0
+[  118811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/debian.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  121808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=32&q=75:0
+[  121809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  124808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Ftron.svg&w=48&q=75:0
+[  124808ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/tron.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  127808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fcardano.svg&w=32&q=75:0
+[  127809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/cardano.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  130811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpowr.svg&w=32&q=75:0
+[  130811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/powr.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  133807ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpowr.svg&w=32&q=75:0
+[  133808ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/powr.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  136808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Freact.svg&w=48&q=75:0
+[  136808ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/react.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  139807ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=32&q=75:0
+[  139807ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  142823ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkafka.svg&w=32&q=75:0
+[  142823ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  145822ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpolkadot.svg&w=32&q=75:0
+[  145822ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/polkadot.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  148806ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Flitecoin.svg&w=48&q=75:0
+[  148807ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/litecoin.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  151842ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fpython.svg&w=48&q=75:0
+[  151842ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/python.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  154871ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fnear.svg&w=32&q=75:0
+[  154872ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/near.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  157834ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkibana.svg&w=32&q=75:0
+[  157835ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kibana.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  160819ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=48&q=75:0
+[  160820ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  163815ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fgolang.svg&w=48&q=75:0
+[  163815ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/golang.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  166824ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fcardano.svg&w=32&q=75:0
+[  166824ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/cardano.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  169817ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=32&q=75:0
+[  169818ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  172811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum-classic.svg&w=32&q=75:0
+[  172811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum-classic.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  175815ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpowr.svg&w=48&q=75:0
+[  175816ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/powr.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  178811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Freact.svg&w=32&q=75:0
+[  178812ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/react.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  181810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fflutter.svg&w=48&q=75:0
+[  181811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/flutter.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  184806ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fnextjs.svg&w=32&q=75:0
+[  184807ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/nextjs.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  187808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fcisco.svg&w=32&q=75:0
+[  187809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/cisco.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  190816ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2F1inch.svg&w=48&q=75:0
+[  190816ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/1inch.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  193808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum-classic.svg&w=32&q=75:0
+[  193809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum-classic.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  199808ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  199808ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  202808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fgolang.svg&w=32&q=75:0
+[  202809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/golang.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  205803ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Freact.svg&w=48&q=75:0
+[  205803ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/react.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  208804ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Freact.svg&w=32&q=75:0
+[  208805ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/react.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  211807ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Ftoncoin.svg&w=48&q=75:0
+[  211808ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/toncoin.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  214809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fnextjs.svg&w=48&q=75:0
+[  214810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/nextjs.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  217810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fzrx.svg&w=48&q=75:0
+[  217811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/zrx.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  220813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fcardano.svg&w=32&q=75:0
+[  220813ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/cardano.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  223819ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Finternet.svg&w=48&q=75:0
+[  223819ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/internet.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  226821ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=32&q=75:0
+[  226821ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  229814ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fnodejs.svg&w=32&q=75:0
+[  229815ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/nodejs.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  232813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkafka.svg&w=32&q=75:0
+[  232813ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  235811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fnear.svg&w=48&q=75:0
+[  235811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/near.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  238813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fsupa.svg&w=32&q=75:0
+[  238814ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/supa.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  241809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fdebian.svg&w=32&q=75:0
+[  241809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/debian.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  244808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fgolang.svg&w=48&q=75:0
+[  244809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/golang.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  247810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fnear.svg&w=32&q=75:0
+[  247820ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/near.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  250809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Flitecoin.svg&w=48&q=75:0
+[  250809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/litecoin.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  256818ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2F1inch.svg&w=32&q=75:0
+[  256819ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/1inch.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  259824ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=48&q=75:0
+[  259824ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  262818ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fgolang.svg&w=32&q=75:0
+[  262819ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/golang.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  265812ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkibana.svg&w=32&q=75:0
+[  265813ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kibana.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  268884ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpolkadot.svg&w=48&q=75:0
+[  268884ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/polkadot.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  271832ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  271834ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  274816ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fnear.svg&w=32&q=75:0
+[  274820ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/near.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  277820ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpolygon.svg&w=48&q=75:0
+[  277821ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/polygon.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  280816ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Felastik.svg&w=32&q=75:0
+[  280817ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/elastik.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  283815ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fcardano.svg&w=32&q=75:0
+[  283816ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/cardano.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  286813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fflutter.svg&w=32&q=75:0
+[  286814ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/flutter.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  289808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpolygon.svg&w=48&q=75:0
+[  289809ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/polygon.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  292811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fsolana.svg&w=32&q=75:0
+[  292812ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/solana.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  298808ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fbnb.svg&w=32&q=75:0
+[  298808ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/bnb.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  301816ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fbnb.svg&w=32&q=75:0
+[  301817ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/bnb.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  304813ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fbitcoin.svg&w=32&q=75:0
+[  304815ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/bitcoin.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  307814ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fhandshake.svg&w=32&q=75:0
+[  307815ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/handshake.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  310807ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkafka.svg&w=48&q=75:0
+[  310807ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  313838ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpolygon.svg&w=32&q=75:0
+[  313838ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/polygon.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  316810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fsolana.svg&w=48&q=75:0
+[  316814ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/solana.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  319811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Felastik.svg&w=32&q=75:0
+[  319811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/elastik.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  322809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Finternet.svg&w=32&q=75:0
+[  322810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/internet.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  325809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fzrx.svg&w=32&q=75:0
+[  325810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/zrx.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  328848ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=32&q=75:0
+[  328849ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  331820ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Frust.svg&w=32&q=75:0
+[  331822ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/rust.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  334851ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fdebian.svg&w=48&q=75:0
+[  334851ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/debian.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  337833ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2F1inch.svg&w=32&q=75:0
+[  337833ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/1inch.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  340811ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  340811ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  343838ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fflutter.svg&w=48&q=75:0
+[  343838ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/flutter.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  346828ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fsupa.svg&w=48&q=75:0
+[  346829ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/supa.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  349824ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Ftron.svg&w=48&q=75:0
+[  349824ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/tron.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  352862ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum-classic.svg&w=32&q=75:0
+[  352862ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum-classic.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  355844ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fkuber.svg&w=48&q=75:0
+[  355845ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kuber.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  358853ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Frust.svg&w=48&q=75:0
+[  358854ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/rust.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  361833ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fsolana.svg&w=48&q=75:0
+[  361833ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/solana.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  364822ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fflutter.svg&w=48&q=75:0
+[  364823ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/flutter.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  367832ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fzrx.svg&w=48&q=75:0
+[  367832ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/zrx.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  370818ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Finternet.svg&w=32&q=75:0
+[  370819ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/internet.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  376815ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpowr.svg&w=48&q=75:0
+[  376816ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/powr.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  379870ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Finternet.svg&w=32&q=75:0
+[  379871ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/internet.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  382857ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Fpython.svg&w=32&q=75:0
+[  382857ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/python.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  385824ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fnear.svg&w=32&q=75:0
+[  385825ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/near.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  388810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fpolkadot.svg&w=32&q=75:0
+[  388810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/polkadot.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  394856ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Ftron.svg&w=32&q=75:0
+[  394856ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/tron.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  397810ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2F1inch.svg&w=48&q=75:0
+[  397810ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/1inch.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19

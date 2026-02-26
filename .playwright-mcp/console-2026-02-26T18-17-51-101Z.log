@@ -1,0 +1,166 @@
+[    3372ms] Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <TransactionStoreProvider>
+      <ShowBalanceProvider>
+        <ModalProvider>
+          <div data-rk="">
+            <style>
+            <AppContent>
+              <GlobalAnimatedBackground>
+              <ClientHeader>
+              <AppContent>
+                <NavbarEnhanced>
+                  <motion.div className="Navbar-Enh..." variants={{hidden:{...}, ...}} initial={false} animate="visible">
+                    <div
+                      className="Navbar-Enhanced_Navbar__xeh4b"
++                     style={{opacity:1}}
+-                     style={{opacity:"0"}}
+                      ref={function useMotionRef.useCallback}
+                    >
+                      <motion.div className="Navbar-Enh..." initial={false} animate={{scaleX:1,opacity:1}} ...>
+                        <div
+                          className="Navbar-Enhanced_gradientLine__FAAzJ"
++                         style={{opacity:1,transform:"none"}}
+-                         style={{opacity:"0",transform:"scaleX(0)"}}
+                          ref={function useMotionRef.useCallback}
+                        >
+                      <motion.div variants={{...}} whileHover={{scale:1.05,y:-2, ...}} whileTap={{scale:0.95}}>
+                        <div
+                          tabIndex={0}
+                          style={{
++                           opacity: 1
+-                           opacity: "0"
++                           filter: "blur(0px)"
+-                           filter: "blur(4px)"
++                           transform: "none"
+-                           transform: "translateY(-20px) scale(0.8)"
+                          }}
+                          ref={function useMotionRef.useCallback}
+                        >
+                      <motion.div variants={{...}} whileHover={{scale:1.05,y:-2, ...}} whileTap={{scale:0.95}}>
+                        <div
+                          tabIndex={0}
+                          style={{
++                           opacity: 1
+-                           opacity: "0"
++                           filter: "blur(0px)"
+-                           filter: "blur(4px)"
++                           transform: "none"
+-                           transform: "translateY(-20px) scale(0.8)"
+                          }}
+                          ref={function useMotionRef.useCallback}
+                        >
+                      <motion.div variants={{...}} whileHover={{scale:1.05,y:-2, ...}} whileTap={{scale:0.95}}>
+                        <div
+                          tabIndex={0}
+                          style={{
++                           opacity: 1
+-                           opacity: "0"
++                           filter: "blur(0px)"
+-                           filter: "blur(4px)"
++                           transform: "none"
+-                           transform: "translateY(-20px) scale(0.8)"
+                          }}
+                          ref={function useMotionRef.useCallback}
+                        >
+                      <motion.div variants={{...}} whileHover={{scale:1.05,y:-2, ...}} whileTap={{scale:0.95}}>
+                        <div
+                          tabIndex={0}
+                          style={{
++                           opacity: 1
+-                           opacity: "0"
++                           filter: "blur(0px)"
+-                           filter: "blur(4px)"
++                           transform: "none"
+-                           transform: "translateY(-20px) scale(0.8)"
+                          }}
+                          ref={function useMotionRef.useCallback}
+                        >
+                      <motion.div variants={{...}} whileHover={{scale:1.05,y:-2, ...}} whileTap={{scale:0.95}}>
+                        <div
+                          tabIndex={0}
+                          style={{
++                           opacity: 1
+-                           opacity: "0"
++                           filter: "blur(0px)"
+-                           filter: "blur(4px)"
++                           transform: "none"
+-                           transform: "translateY(-20px) scale(0.8)"
+                          }}
+                          ref={function useMotionRef.useCallback}
+                        >
+                      <motion.div variants={{...}} whileHover={{scale:1.05,y:-2, ...}} whileTap={{scale:0.95}}>
+                        <div
+                          tabIndex={0}
+                          style={{
++                           opacity: 1
+-                           opacity: "0"
++                           filter: "blur(0px)"
+-                           filter: "blur(4px)"
++                           transform: "none"
+-                           transform: "translateY(-20px) scale(0.8)"
+                          }}
+                          ref={function useMotionRef.useCallback}
+                        >
+              ...
+                <ClientPageRoot Component={function EcosystemStatusPage} searchParams={{}} params={{}}>
+                  <EcosystemStatusPage params={Promise} searchParams={Promise}>
+                    <DynamicLighting color="66, 184, 243" intensity={0.1} radius={1200}>
+                      <div className="">
+                        <div className="page_page_...">
+                          <Container>
+                            <div className="Container_...">
+                              <motion.div variants={{hidden:{...}, ...}} initial="hidden" animate="visible">
+                                <div
+                                  style={{
++                                   opacity: 0
++                                   filter: "blur(10px)"
++                                   transform: "translateY(40px)"
+                                  }}
+                                  ref={function useMotionRef.useCallback}
+-                                 className="page_content__ohi2F"
+                                >
+                                  <Section className="page_secti...">
+                                    <div
++                                     className="Section_Section__6gyI6 page_sectionWrapper__lSPuO"
+-                                     className={null}
+-                                     style={{opacity:"0",filter:"blur(10px)",transform:"translateY..."}}
+                                    >
+                                      <LoadableComponent>
++                                       <Suspense fallback={null}>
+-                                       <div className="Section_Section__6gyI6 page_sectionWrapper__lSPuO">
+                              ...
+              ...
+          ...
+
+    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:4506:11)
+    at updateSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:9947:15)
+    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:11173:18)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)
+    at workLoopConcurrentByScheduler (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15721:9)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15696:15)
+    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14990:13)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)
+[    4159ms] [WARNING] ./node_modules/.pnpm/@metamask+sdk@0.33.1_bufferutil@4.0.9_encoding@0.1.13_utf-8-validate@5.0.10/node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+Module not found: Can't resolve '@react-native-async-storage/async-storage' in '/Users/Gyber/GYBERNATY-ECOSYSTEM/CYBER-SOCIAL-CORPORATION/DSP/node_modules/.pnpm/@metamask+sdk@0.33.1_bufferutil@4.0.9_encoding@0.1.13_utf-8-validate@5.0.10/node_modules/@metamask/sdk/dist/browser/es' @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@15.5.7_@babel+core@7.28.5_react-dom@19.2.1_react@19.2.1__react@19.2.1_sass@1.94.2/node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:241
+[    5132ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/@lit+reactive-element@2.1.1/node_modules/@lit/reactive-element/development/reactive-element.js:62
+[   21106ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[   21117ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[   32993ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  116989ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  197980ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/kafka.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[  210017ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  210018ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19

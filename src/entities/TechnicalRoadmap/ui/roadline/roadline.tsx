@@ -2,6 +2,7 @@
 import { useMediaQuery } from "@/shared/hooks/mediaQuery/useMediaQuery";
 import { SVGProps } from "react";
 import { motion, Variants } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const cardVariants: Variants = {
     initialLaptop: {
@@ -18,10 +19,18 @@ const cardVariants: Variants = {
 };
 
 const RoadLine = (props: SVGProps<SVGSVGElement>) => {
-    const isLaptop = useMediaQuery("(max-width: 1280px)");
+    const isLaptopQuery = useMediaQuery("(max-width: 1280px)");
+    const [mounted, setMounted] = useState(false);
+    
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    
+    // На SSR и до mount показываем десктопную версию
+    const isLaptop = mounted ? isLaptopQuery : false;
     return (
         <>
-            {(!isLaptop || isLaptop === undefined) && (
+            {!isLaptop && (
                 <svg
                     {...props}
                     width="1284"
@@ -41,7 +50,7 @@ const RoadLine = (props: SVGProps<SVGSVGElement>) => {
                     />
                 </svg>
             )}
-            {(isLaptop || isLaptop === undefined) && (
+            {isLaptop && (
                 <svg
                     {...props}
                     width="6"

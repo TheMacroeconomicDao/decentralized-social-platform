@@ -9,6 +9,12 @@
   );
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .sectionWrapper {
   position: relative;
   padding: var(--space-xl) 0;
@@ -57,6 +63,38 @@
     );
     z-index: 1;
   }
+}
+
+// Section headers with numbering
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0 0.5rem;
+  margin-top: var(--space-lg, 2rem);
+}
+
+.sectionNumber {
+  font-size: var(--fs-fluid-xs, 0.75rem);
+  font-weight: 700;
+  color: var(--c-orange);
+  letter-spacing: 0.1em;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+}
+
+.sectionLine {
+  flex: 0 0 40px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(212, 157, 50, 0.5), transparent);
+}
+
+.sectionTitle {
+  font-size: var(--fs-fluid-xs, 0.75rem);
+  font-weight: 600;
+  color: var(--c-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
 }
 
 .loading {

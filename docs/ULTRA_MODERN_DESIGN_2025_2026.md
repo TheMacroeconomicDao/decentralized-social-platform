@@ -499,7 +499,7 @@ const particleFragmentShader = `
 │         3D PERFORMANCE CHECKLIST            │
 ├─────────────────────────────────────────────┤
 │                                             │
-│ ✅ DPR: cap at [1, 1.5] (не 2!)            │
+│ ✅ DPR: cap at [1, 1.5] (не 2!)             │
 │ ✅ frameloop="demand" для статичных сцен    │
 │ ✅ Instancing для повторяющейся геометрии   │
 │ ✅ Points вместо отдельных mesh для частиц  │

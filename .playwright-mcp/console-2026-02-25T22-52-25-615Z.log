@@ -1,0 +1,105 @@
+[    7062ms] [ERROR] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <SegmentViewNode type="page" pagePath="page.tsx">
+      <SegmentTrieNode>
+      <Home>
+        <Home>
+          <Slider path="/images/sl..." mobilePath="/images/sl..." title={"Communit..."}>
+            <AnimatePresence>
+              <PresenceChild isPresent={true} initial={undefined} custom={undefined} presenceAffectsLayout={true} ...>
+                <div className="Slider_Sli...">
+                  <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{type:"spring", ...}} ...>
+                    <div style={{width:"100%", ...}} ref={function useMotionRef.useCallback}>
+                      <SlideImage path="/images/sl..." mobilePath="/images/sl..." title={"Communit..."}>
+                        <SafeImage fill={true} src="/images/sl..." alt={"Communit..."} className="Slider_mas..." ...>
+                          <img
+                            alt={"Community of Progressive Enthusiasts "}
+                            fetchPriority={undefined}
+                            loading={undefined}
+                            width={undefined}
+                            height={undefined}
+                            decoding="async"
+                            data-nimg="fill"
+                            className="Slider_mask_img___xZYk"
+                            style={{
++                             position: "absolute"
+-                             position: "absolute"
++                             height: "100%"
+-                             height: "100%"
++                             width: "100%"
+-                             width: "100%"
++                             left: 0
+-                             left: "0px"
++                             top: 0
+-                             top: "0px"
++                             right: 0
+-                             right: "0px"
++                             bottom: 0
+-                             bottom: "0px"
++                             objectFit: "cover"
++                             objectPosition: "center 26%"
++                             color: "transparent"
+-                             color: "transparent"
+-                             object-fit: "cover"
+-                             object-position: "24% 50%"
+                            }}
++                           sizes="100vw"
+-                           sizes="50vw"
++                           srcSet={"/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 640w, /_n..."}
+-                           srcSet={"/_next/image?url=%2Fimages%2Fslides%2Fmain-slide.jpg&w=384&q=70 384w, /_next/ima..."}
++                           src={"/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=3840&q=75"}
+-                           src={"/_next/image?url=%2Fimages%2Fslides%2Fmain-slide.jpg&w=3840&q=70"}
+                            ref={function}
+                            onLoad={function onLoad}
+                            onError={function onError}
+                          >
+                          ...
+                      ...
+        ...
+    ...
+ @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:56
+[    7116ms] [WARNING] Image with src "/images/slides/main-slide.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7120ms] [WARNING] Image with src "/images/teams/Gyber.jpeg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7132ms] [WARNING] Image with src "/images/teams/Michael_Hypov.jpeg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7137ms] [WARNING] Image with src "/images/teams/Karina.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7138ms] [WARNING] Image with src "/images/teams/Nikita-Juravski.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7138ms] [WARNING] Image with src "/images/teams/Pavel-Anisimov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7420ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ webpack-internal:///(app-pages-browser)/./node_modules/@lit/reactive-element/development/reactive-element.js:62
+[   14828ms] [WARNING] Image with src "/images/teams/Novikov-Egor.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   15093ms] [WARNING] Image with src "/images/teams/Artem-Smirnov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   15480ms] [WARNING] Image with src "/images/teams/Daniil.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   15901ms] [WARNING] Image with src "/images/teams/Dmitrii-Novikov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   16368ms] [WARNING] Image with src "/images/teams/Bogdan.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   16574ms] [WARNING] Image with src "/images/teams/Miracle-Obiekwe.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   16626ms] [WARNING] Image with src "/images/teams/Frank-Zulu.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   16818ms] [WARNING] Image with src "/images/teams/Fuad-Topchiyev.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   16877ms] [WARNING] Image with src "/images/teams/Zeyad-Elshenhab.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   22088ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   22088ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   31100ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   31100ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   49086ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   49086ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   55103ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   55103ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   64101ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   64101ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   79087ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   79087ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   94096ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   94096ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[  109098ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[  109099ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[  127197ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772059952949 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[  127197ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0

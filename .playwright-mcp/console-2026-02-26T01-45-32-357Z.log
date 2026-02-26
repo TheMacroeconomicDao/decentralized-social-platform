@@ -1,0 +1,20 @@
+[     572ms] Unexpected token '{'
+[    1610ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[    1610ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[   24947ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[   24948ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[   85130ms] Unexpected token '{'
+[   86163ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[   86163ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[  103544ms] Unexpected token '{'
+[  103988ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[  103988ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[  181845ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  181846ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  211849ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  211850ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  457820ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  457821ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  582192ms] Unexpected token '{'
+[  583258ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[  583259ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237

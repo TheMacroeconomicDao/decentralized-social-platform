@@ -1,31 +1,19 @@
 .dashboard {
-  padding: 2rem 0;
+  padding: 1rem 0;
 }
 
-.title {
-  font-size: var(--fs-4);
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 3rem;
-  background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-orange) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.metricsGrid {
+.bentoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 3rem;
 }
 
-.metricCard {
-  background: rgba(7, 43, 64, 0.5);
-  border: 1px solid rgba(66, 184, 243, 0.2);
+.statusPanel,
+.categoryPanel {
+  background: rgba(7, 43, 64, 0.4);
+  border: 1px solid rgba(66, 184, 243, 0.15);
   border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
+  padding: 1.5rem;
   backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
@@ -34,64 +22,31 @@
     content: '';
     position: absolute;
     top: 0;
-    left: 20%;
-    right: 20%;
+    left: 10%;
+    right: 10%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(66, 184, 243, 0.5), transparent);
-  }
-
-  &:hover {
-    border-color: rgba(66, 184, 243, 0.5);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(66, 184, 243, 0.1);
+    background: linear-gradient(90deg, transparent, rgba(212, 157, 50, 0.4), rgba(66, 184, 243, 0.4), transparent);
   }
 }
 
-.metricIcon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.metricValue {
-  font-size: var(--fs-5);
-  font-weight: 800;
-  color: var(--c-blue);
-  margin-bottom: 0.5rem;
-}
-
-.metricLabel {
-  color: var(--c-grey);
-  font-size: var(--fs-1);
-  font-weight: 600;
-}
-
-.statusBreakdown {
-  margin-top: 3rem;
-  background: rgba(7, 43, 64, 0.4);
-  border: 1px solid rgba(66, 184, 243, 0.15);
-  border-radius: 16px;
-  padding: 2rem;
-  backdrop-filter: blur(12px);
-}
-
-.subtitle {
-  font-size: var(--fs-3);
+.panelTitle {
+  font-size: var(--fs-2);
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin: 0 0 1.25rem;
   color: var(--c-white);
 }
 
+// Status bars
 .progressBars {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .progressItem {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .progressLabel {
@@ -102,64 +57,84 @@
   font-weight: 600;
 }
 
+.progressCount {
+  color: var(--c-white);
+}
+
 .progressBar {
-  height: 12px;
+  height: 10px;
   background: rgba(7, 43, 64, 0.8);
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
-  border: 1px solid rgba(66, 184, 243, 0.15);
+  border: 1px solid rgba(66, 184, 243, 0.1);
 }
 
 .progressFill {
   height: 100%;
-  border-radius: 6px;
+  border-radius: 5px;
 }
 
 .progressFill.production {
   background: linear-gradient(90deg, var(--c-blue) 0%, #00d4ff 100%);
-  box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.25);
 }
 
 .progressFill.development {
-  background: linear-gradient(90deg, var(--c-orange) 0%, #ff6b35 100%);
-  box-shadow: 0 0 12px rgba(255, 107, 53, 0.3);
+  background: linear-gradient(90deg, var(--c-orange) 0%, #f0c060 100%);
+  box-shadow: 0 0 10px rgba(212, 157, 50, 0.25);
 }
 
 .progressFill.testnet {
-  background: linear-gradient(90deg, #f5576c 0%, #ff6b7d 100%);
-  box-shadow: 0 0 12px rgba(245, 87, 108, 0.3);
+  background: linear-gradient(90deg, #b366ff 0%, #d49dff 100%);
+  box-shadow: 0 0 10px rgba(179, 102, 255, 0.25);
+}
+
+// Category breakdown
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--fs-1);
+  color: var(--c-grey);
+}
+
+.categoryDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.categoryName {
+  flex: 1;
+  font-weight: 500;
+}
+
+.categoryCount {
+  font-weight: 700;
+  color: var(--c-white);
+  min-width: 1.5rem;
+  text-align: right;
 }
 
 @media screen and (max-width: 768px) {
-  .dashboard {
-    padding: 1.5rem 0;
-  }
-
-  .title {
-    font-size: var(--fs-3);
-    margin-bottom: 2rem;
-  }
-
-  .metricsGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .bentoGrid {
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  .metricCard {
-    padding: 1.5rem;
+  .statusPanel,
+  .categoryPanel {
+    padding: 1.25rem;
   }
 
-  .metricValue {
-    font-size: var(--fs-3);
-  }
-
-  .statusBreakdown {
-    padding: 1.5rem;
-  }
-}
-
-@media screen and (max-width: 576px) {
-  .metricsGrid {
-    grid-template-columns: 1fr;
+  .panelTitle {
+    font-size: var(--fs-1);
   }
 }

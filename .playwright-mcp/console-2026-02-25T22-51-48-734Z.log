@@ -1,0 +1,86 @@
+[    6852ms] [WARNING] Image with src "/images/slides/aic-slide-2.jpg" is using quality "70" which is not configured in images.qualities. This config will be required starting in Next.js 16.
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7285ms] Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RedirectBoundary>
+      <RedirectErrorBoundary router={{...}}>
+        <InnerLayoutRouter url="/aic" tree={[...]} cacheNode={{lazyData:null, ...}} segmentPath={[...]}>
+          <SegmentViewNode type="page" pagePath="aic/page.tsx">
+            <SegmentTrieNode>
+            <AIC>
+              <Slider>
+              <div>
+              <div>
+              <AIC>
+                <TechnicalRoadmapSection>
+                  <div className="TechnicalR...">
+                    <h2>
+                    <TechnicalRoadmap>
+                      <div className="TechnicalR...">
+                        ...
+                          <motion.div initial="initialLaptop" whileInView="viewLaptop" variants={{...}} ...>
+                            <div style={{width:"100%", ...}} ref={function useMotionRef.useCallback}>
+                              <div>
+                              <div>
+                              <RoadLine className="Card_Line_...">
+                                <svg
+                                  className="Card_Line__duZtv"
++                                 width="6"
+-                                 width="1284"
++                                 height="80"
+-                                 height="488"
++                                 viewBox="0 0 6 80"
+-                                 viewBox="0 0 1284 488"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <motion.line x1="0" y1="0" x2="0" y2="80" stroke="#71B7FF" strokeWidth="6" ...>
++                                   <line
++                                     x1="0"
++                                     y1="0"
++                                     x2="0"
++                                     y2="80"
++                                     stroke="#71B7FF"
++                                     strokeWidth="6"
++                                     pathLength={1}
++                                     strokeDashoffset="0px"
++                                     strokeDasharray="0px 1px"
++                                     style={{}}
++                                     ref={function useMotionRef.useCallback}
++                                   >
+-                                   <path
+-                                     d="M1171.17 2.80078H1228.54L1282 71.1539V125.185V162.201L1228.54 230.554H1182.21..."
+-                                     stroke="#71B7FF"
+-                                     stroke-width="4"
+-                                     pathLength="1"
+-                                     stroke-dashoffset="0px"
+-                                     stroke-dasharray="0px 1px"
+-                                   >
+                        ...
+              ...
+          ...
+        ...
+
+    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:4506:11)
+    at beginWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:11107:17)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:872:30)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15727:22)
+    at workLoopConcurrentByScheduler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15721:9)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15696:15)
+    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14990:13)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16816:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)
+[    7037ms] [WARNING] Image with src "/images/slides/aic-slide-2.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    7590ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ webpack-internal:///(app-pages-browser)/./node_modules/@lit/reactive-element/development/reactive-element.js:62
+[   33986ms] [WARNING] Image with src "/images/slides/aic-mobile-slide-2.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15

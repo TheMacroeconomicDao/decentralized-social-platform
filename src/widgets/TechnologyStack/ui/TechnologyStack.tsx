@@ -4,20 +4,11 @@ import { motion } from 'framer-motion';
 import { getAllTechnologies } from '@/shared/lib/ecosystem-data';
 import styles from './TechnologyStack.module.scss';
 
-const categoryVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring' as const, stiffness: 200, damping: 20 },
-  },
-};
-
 const tagContainerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.03, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.02, delayChildren: 0.1 },
   },
 };
 
@@ -28,6 +19,16 @@ const tagVariants = {
     scale: 1,
     transition: { type: 'spring' as const, stiffness: 400, damping: 20 },
   },
+};
+
+const categoryColors: Record<string, string> = {
+  Frontend: '#42b8f3',
+  Backend: '#d49d32',
+  Blockchain: '#f5576c',
+  Database: '#4caf50',
+  Infrastructure: '#9c27b0',
+  'AI/ML': '#00d4ff',
+  Other: '#ff9800',
 };
 
 export function TechnologyStack() {
@@ -64,85 +65,63 @@ export function TechnologyStack() {
   );
 
   const other = technologies.filter(tech =>
-    !frontend.includes(tech) &&
-    !backend.includes(tech) &&
-    !blockchain.includes(tech) &&
-    !database.includes(tech) &&
-    !infrastructure.includes(tech) &&
-    !aiMl.includes(tech)
+    !frontend.includes(tech) && !backend.includes(tech) && !blockchain.includes(tech) &&
+    !database.includes(tech) && !infrastructure.includes(tech) && !aiMl.includes(tech)
   );
 
-  const techCategories = {
-    'Frontend': frontend,
-    'Backend': backend,
-    'Blockchain': blockchain,
-    'Database': database,
-    'Infrastructure': infrastructure,
-    'AI/ML': aiMl,
-    'Other': other,
-  };
+  const techCategories: [string, string[]][] = [
+    ['Frontend', frontend],
+    ['Backend', backend],
+    ['Blockchain', blockchain],
+    ['Database', database],
+    ['Infrastructure', infrastructure],
+    ['AI/ML', aiMl],
+    ['Other', other],
+  ].filter(([, techs]) => (techs as string[]).length > 0) as [string, string[]][];
 
   return (
-    <div className={styles.stack}>
-      <motion.h2
-        className={styles.title}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ type: 'spring' as const, stiffness: 200, damping: 20 }}
-      >
-        Technology Stack
-      </motion.h2>
-      <motion.p
-        className={styles.subtitle}
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ type: 'spring' as const, stiffness: 200, damping: 20, delay: 0.1 }}
-      >
-        {technologies.length}+ modern technologies powering the ecosystem
-      </motion.p>
+    <motion.div
+      className={styles.stack}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ type: 'spring' as const, stiffness: 150, damping: 20 }}
+    >
+      <div className={styles.header}>
+        <span className={styles.count}>{technologies.length}+</span>
+        <span className={styles.label}>technologies powering the ecosystem</span>
+      </div>
 
       <div className={styles.categories}>
-        {Object.entries(techCategories).map(([category, techs]) => {
-          if (techs.length === 0) return null;
-
-          return (
+        {techCategories.map(([category, techs]) => (
+          <div key={category} className={styles.row}>
+            <span
+              className={styles.categoryLabel}
+              style={{ color: categoryColors[category] }}
+            >
+              {category}
+            </span>
             <motion.div
-              key={category}
-              className={styles.category}
-              variants={categoryVariants}
+              className={styles.tags}
+              variants={tagContainerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <h3 className={styles.categoryTitle}>{category}</h3>
-              <motion.div
-                className={styles.techGrid}
-                variants={tagContainerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                {techs.map((tech, index) => (
-                  <motion.div
-                    key={index}
-                    className={styles.techItem}
-                    variants={tagVariants}
-                    whileHover={{
-                      scale: 1.08,
-                      y: -3,
-                      transition: { type: 'spring' as const, stiffness: 400, damping: 15 },
-                    }}
-                  >
-                    {tech}
-                  </motion.div>
-                ))}
-              </motion.div>
+              {techs.map((tech, index) => (
+                <motion.span
+                  key={index}
+                  className={styles.tag}
+                  variants={tagVariants}
+                  style={{ '--tag-color': categoryColors[category] } as React.CSSProperties}
+                >
+                  {tech}
+                </motion.span>
+              ))}
             </motion.div>
-          );
-        })}
+          </div>
+        ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

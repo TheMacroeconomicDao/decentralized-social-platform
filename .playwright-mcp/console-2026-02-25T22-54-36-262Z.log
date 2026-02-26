@@ -1,0 +1,97 @@
+[    4001ms] [ERROR] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <SegmentViewNode type="page" pagePath="page.tsx">
+      <SegmentTrieNode>
+      <Home>
+        <Home>
+          <Slider path="/images/sl..." mobilePath="/images/sl..." title={"Communit..."}>
+            <AnimatePresence>
+              <PresenceChild isPresent={true} initial={undefined} custom={undefined} presenceAffectsLayout={true} ...>
+                <div className="Slider_Sli...">
+                  <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{type:"spring", ...}} ...>
+                    <div style={{width:"100%", ...}} ref={function useMotionRef.useCallback}>
+                      <SlideImage path="/images/sl..." mobilePath="/images/sl..." title={"Communit..."}>
+                        <SafeImage fill={true} src="/images/sl..." alt={"Communit..."} className="Slider_mas..." ...>
+                          <img
+                            alt={"Community of Progressive Enthusiasts "}
+                            fetchPriority={undefined}
+                            loading={undefined}
+                            width={undefined}
+                            height={undefined}
+                            decoding="async"
+                            data-nimg="fill"
+                            className="Slider_mask_img___xZYk"
+                            style={{
++                             position: "absolute"
+-                             position: "absolute"
++                             height: "100%"
+-                             height: "100%"
++                             width: "100%"
+-                             width: "100%"
++                             left: 0
+-                             left: "0px"
++                             top: 0
+-                             top: "0px"
++                             right: 0
+-                             right: "0px"
++                             bottom: 0
+-                             bottom: "0px"
++                             objectFit: "cover"
++                             objectPosition: "center 26%"
++                             color: "transparent"
+-                             color: "transparent"
+-                             object-fit: "cover"
+-                             object-position: "24% 50%"
+                            }}
++                           sizes="100vw"
+-                           sizes="50vw"
++                           srcSet={"/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 640w, /_n..."}
+-                           srcSet={"/_next/image?url=%2Fimages%2Fslides%2Fmain-slide.jpg&w=384&q=70 384w, /_next/ima..."}
++                           src={"/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=3840&q=75"}
+-                           src={"/_next/image?url=%2Fimages%2Fslides%2Fmain-slide.jpg&w=3840&q=70"}
+                            ref={function}
+                            onLoad={function onLoad}
+                            onError={function onError}
+                          >
+                          ...
+                      ...
+        ...
+    ...
+ @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:56
+[    4062ms] [WARNING] Image with src "/images/slides/main-slide.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    4091ms] [WARNING] Image with src "/images/teams/Gyber.jpeg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    4091ms] [WARNING] Image with src "/images/teams/Michael_Hypov.jpeg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    4102ms] [WARNING] Image with src "/images/teams/Karina.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    4102ms] [WARNING] Image with src "/images/teams/Nikita-Juravski.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    4102ms] [WARNING] Image with src "/images/teams/Pavel-Anisimov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[    4669ms] [WARNING] Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information. @ webpack-internal:///(app-pages-browser)/./node_modules/@lit/reactive-element/development/reactive-element.js:62
+[    7050ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[    7052ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[   12677ms] [WARNING] Image with src "/images/teams/Novikov-Egor.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   13359ms] [WARNING] Image with src "/images/teams/Artem-Smirnov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   14093ms] [WARNING] Image with src "/images/teams/Daniil.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   14444ms] [WARNING] Image with src "/images/teams/Dmitrii-Novikov.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   14509ms] [WARNING] Image with src "/images/teams/Bogdan.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   14559ms] [WARNING] Image with src "/images/teams/Miracle-Obiekwe.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   14592ms] [WARNING] Image with src "/images/teams/Frank-Zulu.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   19050ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   19050ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772060080701 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   28052ms] [WARNING] The resource http://localhost:3000/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   28052ms] [WARNING] The resource http://localhost:3000/_next/static/css/app/layout.css?v=1772060080701 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/:0
+[   35485ms] [WARNING] Image with src "/images/slides/main-slide.jpg" is using quality "70" which is not configured in images.qualities. This config will be required starting in Next.js 16.
+Read more: https://nextjs.org/docs/messages/next-image-unconfigured-qualities @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   36617ms] [WARNING] Image with src "/images/teams/Fuad-Topchiyev.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   36830ms] [WARNING] Image with src "/images/teams/ChimdaluNnenne.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   36868ms] [WARNING] Image with src "/images/teams/IrinaChekalina.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15
+[   37008ms] [WARNING] Image with src "/images/teams/Zeyad-Elshenhab.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/shared/lib/utils/warn-once.js:15

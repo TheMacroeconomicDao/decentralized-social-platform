@@ -1,0 +1,51 @@
+[     481ms] Unexpected token '{'
+[    1418ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[    1418ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[   22258ms] Unexpected token '{'
+[   23418ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[   23424ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[   74038ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[   74040ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[   84019ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[   98034ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[   98035ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  131037ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  131037ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  144023ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  204023ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  233035ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  233036ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  264024ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  266037ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  266038ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  302050ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  302051ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  324026ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  380042ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  380043ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  384029ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  444027ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  446036ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  446037ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  485041ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  485041ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  504033ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  564033ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  593043ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  593045ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  624045ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  632053ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  632054ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  684037ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  704051ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  704052ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  725062ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  725069ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  744037ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  804038ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  848048ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=48&q=75:0
+[  848048ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  851056ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=32&q=75:0
+[  851056ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/app/page-d910b7d9e190f998.js:0
+[  864040ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.
+[  924040ms] Failed to update a ServiceWorker for scope ('https://gyber.org/') with script ('Unknown'): The object is in an invalid state.

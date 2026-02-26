@@ -1,0 +1,3 @@
+[    1161ms] Unexpected token '{'
+[    2228ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[    2229ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-c6b6451956911f70.js:829

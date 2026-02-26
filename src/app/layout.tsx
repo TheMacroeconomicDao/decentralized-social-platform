@@ -68,7 +68,7 @@ export default async function RootLayout({
   
   // Передаем cookie в Web3Provider, который сам создаст initialState
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <ServiceWorkerScript />
       </head>

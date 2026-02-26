@@ -3,6 +3,7 @@ import { useMediaQuery } from "@/shared/hooks/mediaQuery/useMediaQuery";
 import { ItemProps } from "./types";
 
 import { motion, Variants } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const lineVariants: Variants = {
     initialLaptop: {
@@ -19,10 +20,17 @@ const lineVariants: Variants = {
 };
 
 const StartItem = (props: ItemProps) => {
-    const isLaptop = useMediaQuery("(max-width: 1280px)");
+    const isLaptopQuery = useMediaQuery("(max-width: 1280px)");
+    const [mounted, setMounted] = useState(false);
+    
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    
+    const isLaptop = mounted ? isLaptopQuery : false;
     return (
         <>
-            {(!isLaptop || isLaptop === undefined) && (
+            {!isLaptop && (
                 <svg
                     {...props}
                     width="572"

@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "standalone",
+    // Allow Turbopack (Next.js 16 default) alongside webpack config
+    turbopack: {},
     experimental: {
         // Отключаем проблемное кеширование если есть
         webpackBuildWorker: false,
@@ -14,6 +16,7 @@ const nextConfig = {
         formats: ['image/avif', 'image/webp'],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+        qualities: [70, 75, 85],
         minimumCacheTTL: 60 * 60 * 24 * 30, // 30 дней
         dangerouslyAllowSVG: true,
         remotePatterns: [

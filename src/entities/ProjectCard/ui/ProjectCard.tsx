@@ -18,6 +18,7 @@ const statusLabels: Record<string, string> = {
 
 export function ProjectCard({ project, onSelect }: ProjectCardProps) {
   const category = CATEGORIES[project.category];
+  const connectionCount = project.connections?.length ?? 0;
 
   return (
     <div
@@ -32,13 +33,17 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
         </span>
       </div>
 
-      <div className={styles.category}>
-        <span className={styles.categoryBadge}>{category.name}</span>
-      </div>
-
       <p className={styles.description}>{project.description}</p>
 
-      {project.progress && project.status === 'development' && (
+      {project.keyFeatures && project.keyFeatures.length > 0 && (
+        <ul className={styles.features}>
+          {project.keyFeatures.slice(0, 3).map((feature, index) => (
+            <li key={index} className={styles.featureItem}>{feature}</li>
+          ))}
+        </ul>
+      )}
+
+      {project.progress && project.status !== 'production' && (
         <div className={styles.progress}>
           <div className={styles.progressLabel}>
             <span>Progress</span>
@@ -56,18 +61,20 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
         </div>
       )}
 
-      <div className={styles.technologies}>
-        <div className={styles.techLabel}>Technologies:</div>
+      <div className={styles.footer}>
         <div className={styles.techList}>
-          {project.technologies.slice(0, 4).map((tech, index) => (
-            <span key={index} className={styles.techTag}>
-              {tech}
-            </span>
+          {project.technologies.slice(0, 3).map((tech, index) => (
+            <span key={index} className={styles.techTag}>{tech}</span>
           ))}
-          {project.technologies.length > 4 && (
-            <span className={styles.techTag}>+{project.technologies.length - 4}</span>
+          {project.technologies.length > 3 && (
+            <span className={styles.techTag}>+{project.technologies.length - 3}</span>
           )}
         </div>
+        {connectionCount > 0 && (
+          <span className={styles.connections}>
+            {connectionCount} link{connectionCount > 1 ? 's' : ''}
+          </span>
+        )}
       </div>
     </div>
   );

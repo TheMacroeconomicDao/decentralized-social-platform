@@ -35,12 +35,11 @@ interface RoadmapCardProps {
   items: RoadmapItemProps[]
 }
 
-function isCurrentYear(year: number): boolean {
-  return year > new Date().getFullYear()
-}
+// Use a static year to avoid SSR/client hydration mismatch from Date()
+const CURRENT_YEAR = 2026
 
 export const RoadmapCard = ({ id, year, period, items }: RoadmapCardProps) => {
-  const isCurrent = isCurrentYear(year)
+  const isCurrent = year > CURRENT_YEAR
 
   switch (id) {
     case 1: {

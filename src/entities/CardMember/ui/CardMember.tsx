@@ -29,7 +29,7 @@ export const CardMember = (props: CardMemberProps) => {
         style={{ width: '100%' }}
       >
         <div className={cls.avatar} style={{ position: 'relative' }}>
-          <a href={link}>
+          <a href={link} style={{ position: 'relative', display: 'block', width: '100%', height: '100%' }}>
             <SafeImage
               fill={true}
               src={avatarSrc}

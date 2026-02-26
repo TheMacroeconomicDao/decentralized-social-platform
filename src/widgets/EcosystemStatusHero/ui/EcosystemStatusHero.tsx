@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ecosystemMetrics } from '@/shared/lib/ecosystem-data';
+import { ecosystemMetrics, getProjectsByStatus } from '@/shared/lib/ecosystem-data';
 import { AnimatedCounter } from '@/shared/ui/AnimatedCounter';
 import styles from './EcosystemStatusHero.module.scss';
 
@@ -38,11 +38,15 @@ const cardVariants = {
   })
 };
 
+const productionCount = getProjectsByStatus('production').length;
+const devCount = getProjectsByStatus('development').length;
+const testnetCount = getProjectsByStatus('testnet').length;
+
 const metrics = [
-  { value: ecosystemMetrics.totalProjects, suffix: '+', label: 'Projects', sub: `${ecosystemMetrics.productionReady} Production Ready` },
-  { value: null, display: ecosystemMetrics.developmentCost, label: 'Development Cost', sub: 'estimated' },
-  { value: ecosystemMetrics.technologies, suffix: '+', label: 'Technologies', sub: 'modern stack' },
-  { value: ecosystemMetrics.teamSize, suffix: '+', label: 'Team', sub: 'experts' },
+  { value: productionCount, label: 'Live', sub: 'in production', accent: 'cyan' as const },
+  { value: devCount, label: 'In Dev', sub: 'building now', accent: 'gold' as const },
+  { value: testnetCount, label: 'Testnet', sub: 'testing', accent: 'purple' as const },
+  { value: ecosystemMetrics.technologies, suffix: '+', label: 'Technologies', sub: 'modern stack', accent: 'cyan' as const },
 ];
 
 export function EcosystemStatusHero() {
@@ -54,16 +58,15 @@ export function EcosystemStatusHero() {
       animate="visible"
     >
       <motion.div variants={itemVariants} className={styles.eyebrow}>
-        GYBERNATY · DECENTRALIZED ECOSYSTEM · 2026
+        Decentralized Ecosystem · 2026
       </motion.div>
 
       <motion.h1 variants={itemVariants} className={styles.title}>
-        GYBERNATY ECOSYSTEM
+        Gybernaty Ecosystem
       </motion.h1>
 
-      <motion.p variants={itemVariants} className={styles.subtitle}>
-        A comprehensive decentralized ecosystem of {ecosystemMetrics.totalProjects}+ interconnected projects,
-        combining cutting-edge Web3, AI and blockchain technologies
+      <motion.p variants={itemVariants} className={styles.valueProp}>
+        {ecosystemMetrics.totalProjects} interconnected projects across AI, DeFi, Blockchain & Web3 — from autonomous trading agents to enterprise infrastructure
       </motion.p>
 
       <div className={styles.metricsGrid}>
@@ -80,12 +83,9 @@ export function EcosystemStatusHero() {
               transition: { type: 'spring', stiffness: 400, damping: 17 },
             }}
           >
-            <div className={styles.metricCard}>
+            <div className={`${styles.metricCard} ${styles[m.accent]}`}>
               <div className={styles.metricValue}>
-                {m.value !== null
-                  ? <AnimatedCounter end={m.value} suffix={m.suffix ?? ''} />
-                  : m.display
-                }
+                <AnimatedCounter end={m.value} suffix={m.suffix ?? ''} />
               </div>
               <div className={styles.metricLabel}>{m.label}</div>
               <div className={styles.metricSubtext}>{m.sub}</div>
@@ -93,6 +93,11 @@ export function EcosystemStatusHero() {
           </motion.div>
         ))}
       </div>
+
+      <motion.div variants={itemVariants} className={styles.scrollHint}>
+        Explore the ecosystem
+        <span className={styles.scrollArrow}>↓</span>
+      </motion.div>
     </motion.div>
   );
 }

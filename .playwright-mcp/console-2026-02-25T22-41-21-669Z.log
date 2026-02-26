@@ -1,0 +1,4 @@
+[     974ms] Unexpected token '{'
+[    2030ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[    2031ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-c6b6451956911f70.js:829
+[   16531ms] [WARNING] The resource https://gyber.org/_next/image?url=%2Fimages%2Fslides%2Fmain-mobile-slide.jpg&w=640&q=75 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://gyber.org/:0

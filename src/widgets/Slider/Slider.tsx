@@ -51,7 +51,7 @@ export const Slider = (props: SliderProps) => {
                   bounce: 0.2,
                   duration: 1,
               }}
-                style={{ width: '100%' }}
+                style={{ width: '100%', height: '100%', position: 'relative' }}
             >
             <SlideImage
                 path={path}

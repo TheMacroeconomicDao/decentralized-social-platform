@@ -1,0 +1,32 @@
+[     587ms] Unexpected token '{'
+[    1932ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[    1933ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[    5764ms] Unexpected token '{'
+[    6524ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rD (https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2382:40960)
+    at oZ (https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2382:90464)
+    at lw (https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2382:120580)
+    at https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2382:116628
+    at ll (https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2382:116729)
+    at lX (https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2382:138832)
+    at MessagePort.T (https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2625:120558)
+[    6364ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[    6365ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[   15713ms] Unexpected token '{'
+[   15986ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://pulse.walletconnect.org/e?projectId=21fef48091f12692cad574a6f7753643&st=appkit&sv=html-core-1.7.8:0
+[   15986ms] [ERROR] Origin https://gyber.org not found on Allowlist - update configuration on cloud.reown.com @ https://gyber.org/_next/static/chunks/vendors-97c0a012db32cbd3.js:2237
+[   55120ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=96&q=75:0
+[   55123ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[   84999ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=64&q=75:0
+[   85000ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  118052ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=96&q=75:0
+[  118053ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  445879ms] [ERROR] Failed to load resource: net::ERR_TIMED_OUT @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fzrx.svg&w=96&q=75:0
+[  448175ms] [ERROR] Failed to load resource: net::ERR_TIMED_OUT @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Ftech%2Frust.svg&w=64&q=75:0
+[  448175ms] [WARNING] SafeImage: Failed to load /images/icons/flying/tech/rust.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  457661ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=64&q=75:0
+[  457663ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  466046ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=96&q=75:0
+[  466047ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0
+[  477993ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://gyber.org/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Fethereum.svg&w=96&q=75:0
+[  477994ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/ethereum.svg, using fallback @ https://gyber.org/_next/static/chunks/30-b6afee1cf6f5280f.js:0

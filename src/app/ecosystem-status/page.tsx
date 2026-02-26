@@ -50,63 +50,85 @@ const TechnologyStack = dynamic(
   { ssr: false }
 );
 
+function SectionHeader({ number, title }: { number: string; title: string }) {
+  return (
+    <motion.div
+      className={styles.sectionHeader}
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+    >
+      <span className={styles.sectionNumber}>{number}</span>
+      <span className={styles.sectionLine} />
+      <span className={styles.sectionTitle}>{title}</span>
+    </motion.div>
+  );
+}
+
 export default function EcosystemStatusPage() {
   return (
     <DynamicLighting color="66, 184, 243" intensity={0.1} radius={1200}>
       <div className={styles.page}>
         <Container>
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <Section className={styles.sectionWrapper}>
-              <EcosystemStatusHero />
-            </Section>
-          </motion.div>
+          <div className={styles.content}>
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Section className={styles.sectionWrapper}>
+                <EcosystemStatusHero />
+              </Section>
+            </motion.div>
 
-          <motion.div
-            className={styles.visualizationSection}
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            <Ecosystem3DVisualization />
-          </motion.div>
+            <SectionHeader number="01" title="Network" />
+            <motion.div
+              className={styles.visualizationSection}
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              <Ecosystem3DVisualization />
+            </motion.div>
 
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-          >
-            <Section className={styles.sectionWrapper}>
-              <MetricsDashboard />
-            </Section>
-          </motion.div>
+            <SectionHeader number="02" title="Overview" />
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+            >
+              <Section className={styles.sectionWrapper}>
+                <MetricsDashboard />
+              </Section>
+            </motion.div>
 
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            <Section className={styles.sectionWrapper}>
-              <ProjectsGrid />
-            </Section>
-          </motion.div>
+            <SectionHeader number="03" title="Projects" />
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              <Section className={styles.sectionWrapper}>
+                <ProjectsGrid />
+              </Section>
+            </motion.div>
 
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            <Section className={styles.sectionWrapper}>
-              <TechnologyStack />
-            </Section>
-          </motion.div>
+            <SectionHeader number="04" title="Stack" />
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
+              <Section className={styles.sectionWrapper}>
+                <TechnologyStack />
+              </Section>
+            </motion.div>
+          </div>
         </Container>
       </div>
     </DynamicLighting>

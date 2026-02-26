@@ -33,12 +33,12 @@
   animation: glass-shimmer 6s ease-in-out infinite;
 }
 
-.subtitle {
-  font-size: var(--fs-fluid-lg, clamp(1.2rem, 1.08rem + 0.58vw, 1.563rem));
+.valueProp {
+  font-size: var(--fs-fluid-md, clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem));
   color: var(--c-grey);
-  max-width: 760px;
+  max-width: 680px;
   margin: 0 auto var(--space-xl, 3rem);
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
 .metricsGrid {
@@ -110,6 +110,86 @@
   color: var(--c-grey);
   font-size: var(--fs-fluid-xs, 0.75rem);
   opacity: 0.7;
+}
+
+// Accent variants — colored top lines and value colors
+.metricCard.cyan {
+  &::before {
+    background: linear-gradient(90deg, transparent, rgba(66, 184, 243, 0.6), transparent);
+  }
+
+  .metricValue {
+    background: linear-gradient(135deg, #42b8f3 0%, #00d4ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+.metricCard.gold {
+  border-color: rgba(212, 157, 50, 0.2);
+
+  &::before {
+    background: linear-gradient(90deg, transparent, rgba(212, 157, 50, 0.6), transparent);
+  }
+
+  .metricValue {
+    background: linear-gradient(135deg, #d49d32 0%, #f0c060 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &:hover {
+    border-color: rgba(212, 157, 50, 0.4);
+    box-shadow:
+      var(--shadow-medium, 0 12px 40px rgba(0, 16, 25, 0.5)),
+      0 0 20px rgba(212, 157, 50, 0.2);
+  }
+}
+
+.metricCard.purple {
+  border-color: rgba(179, 102, 255, 0.2);
+
+  &::before {
+    background: linear-gradient(90deg, transparent, rgba(179, 102, 255, 0.6), transparent);
+  }
+
+  .metricValue {
+    background: linear-gradient(135deg, #b366ff 0%, #d49dff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &:hover {
+    border-color: rgba(179, 102, 255, 0.4);
+    box-shadow:
+      var(--shadow-medium, 0 12px 40px rgba(0, 16, 25, 0.5)),
+      0 0 20px rgba(179, 102, 255, 0.2);
+  }
+}
+
+.scrollHint {
+  margin-top: var(--space-xl, 3rem);
+  color: var(--c-grey);
+  font-size: var(--fs-fluid-xs, 0.8rem);
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.scrollArrow {
+  display: inline-block;
+  animation: bounce-arrow 2s ease-in-out infinite;
+}
+
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 @media screen and (max-width: 768px) {

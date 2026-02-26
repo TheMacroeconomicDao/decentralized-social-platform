@@ -1,0 +1,3 @@
+[      45ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/image?url=%2Fimages%2Ficons%2Fflying%2Fcrypto%2Finternet.svg&w=32&q=75:0
+[      45ms] [WARNING] SafeImage: Failed to load /images/icons/flying/crypto/internet.svg, using fallback @ webpack-internal:///(app-pages-browser)/./src/shared/ui/SafeImage/SafeImage.tsx:19
+[     942ms] Unexpected token '{'

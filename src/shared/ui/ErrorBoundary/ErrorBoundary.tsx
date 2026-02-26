@@ -23,6 +23,12 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+
+    // Auto-recover after a brief delay — prevents permanent error state
+    // that blocks SPA navigation when transient errors occur
+    setTimeout(() => {
+      this.setState({ hasError: false, error: undefined });
+    }, 100);
   }
 
   public render() {
@@ -31,20 +37,21 @@ export class ErrorBoundary extends Component<Props, State> {
         <div style={{
           padding: '20px',
           textAlign: 'center',
-          background: '#f8f9fa',
-          border: '1px solid #dee2e6',
+          background: 'rgba(0,0,0,0.8)',
+          border: '1px solid rgba(255,255,255,0.1)',
           borderRadius: '8px',
-          margin: '20px'
+          margin: '20px',
+          color: 'white',
         }}>
-          <h2 style={{ color: '#dc3545', marginBottom: '10px' }}>Something went wrong</h2>
-          <p style={{ color: '#6c757d', marginBottom: '15px' }}>
+          <h2 style={{ color: '#d49d32', marginBottom: '10px' }}>Something went wrong</h2>
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '15px' }}>
             {this.state.error?.message || 'An unexpected error occurred'}
           </p>
           <button
-            onClick={() => this.setState({ hasError: false })}
+            onClick={() => this.setState({ hasError: false, error: undefined })}
             style={{
               padding: '8px 16px',
-              backgroundColor: '#007bff',
+              backgroundColor: '#d49d32',
               color: 'white',
               border: 'none',
               borderRadius: '4px',
@@ -59,4 +66,4 @@ export class ErrorBoundary extends Component<Props, State> {
 
     return this.props.children;
   }
-} 
+}

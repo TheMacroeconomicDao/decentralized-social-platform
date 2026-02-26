@@ -91,22 +91,40 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
   // Skip non-GET requests and chrome-extension requests
   if (request.method !== 'GET' || url.protocol === 'chrome-extension:') {
     return;
   }
-  
+
+  // CRITICAL: Never cache Next.js internal requests — they handle their own caching
+  // This includes RSC payloads, navigation data, HMR, and webpack chunks
+  if (
+    url.pathname.startsWith('/_next/') ||
+    url.pathname.startsWith('/__next') ||
+    url.searchParams.has('_rsc') ||
+    request.headers.get('RSC') === '1' ||
+    request.headers.get('Next-Router-State-Tree') ||
+    request.headers.get('Next-Router-Prefetch') ||
+    url.pathname.endsWith('.json')
+  ) {
+    return;
+  }
+
+  // Skip third-party requests — only cache same-origin
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   // Determine caching strategy
   if (CACHE_STRATEGIES.images.test(url.pathname)) {
     event.respondWith(handleImageRequest(request));
-  } else if (CACHE_STRATEGIES.static.test(url.pathname)) {
-    event.respondWith(handleStaticRequest(request));
   } else if (CACHE_STRATEGIES.api.test(url.href)) {
     event.respondWith(handleApiRequest(request));
   } else if (CACHE_STRATEGIES.pages.test(url.href)) {
     event.respondWith(handlePageRequest(request));
   } else {
+    // For all other requests (HTML pages, etc.) use network-first
     event.respondWith(handleDefaultRequest(request));
   }
 });
@@ -139,29 +157,6 @@ async function handleImageRequest(request) {
         headers: { 'Content-Type': 'image/svg+xml' }
       }
     );
-  }
-}
-
-// Static assets caching
-async function handleStaticRequest(request) {
-  const cache = await caches.open(STATIC_CACHE);
-  const cachedResponse = await cache.match(request);
-  
-  if (cachedResponse) {
-    return cachedResponse;
-  }
-  
-  try {
-    const response = await fetch(request);
-    
-    if (response.ok) {
-      cache.put(request, response.clone());
-    }
-    
-    return response;
-  } catch (error) {
-    swLogger.error('Static asset fetch failed', error);
-    throw error;
   }
 }
 
@@ -230,16 +225,21 @@ async function handlePageRequest(request) {
   }
 }
 
-// Default request handler
+// Default request handler — network first, cache fallback for offline
 async function handleDefaultRequest(request) {
   try {
-    return await fetch(request);
+    const response = await fetch(request);
+    return response;
   } catch (error) {
-    swLogger.log('Default fetch failed', error);
-    
-    // Try to find in any cache
-    const response = await caches.match(request);
-    return response || new Response('Resource unavailable offline', { status: 503 });
+    swLogger.log('Default fetch failed, trying offline fallback');
+
+    // For navigation requests, serve offline page
+    if (request.mode === 'navigate') {
+      const offlineResponse = await caches.match('/offline.html');
+      return offlineResponse || new Response('Offline', { status: 503 });
+    }
+
+    return new Response('Resource unavailable offline', { status: 503 });
   }
 }
 

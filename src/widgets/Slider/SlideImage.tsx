@@ -1,6 +1,4 @@
-'use client'
 import { SafeImage } from '@/shared/ui/SafeImage'
-import { useIsMobile } from '@/shared/hooks/mediaQuery/useMediaQuery'
 import cls from './Slider.module.scss'
 
 interface SlideImageProps {
@@ -9,41 +7,30 @@ interface SlideImageProps {
   title?: string
 }
 
+// Use CSS to switch between desktop/mobile images — avoids JS hydration flicker
+// and the double-render that caused layout shifts on Community page.
 const SlideImage = ({ path, mobilePath, title }: SlideImageProps) => {
-  const isMobile = useIsMobile()
-
   return (
     <>
-      {(!isMobile || isMobile === undefined) && (
-        <SafeImage
-          fill={true}
-          src={path}
-          alt={title || 'slide'}
-          style={{
-            objectFit: 'cover',
-            objectPosition: '24% 50%',
-          }}
-          className={cls.mask_img}
-          quality={70}
-          priority
-          sizes={isMobile ? '100vw' : '50vw'}
-        />
-      )}
-
-      {(isMobile || isMobile === undefined) && (
-        <SafeImage
-          fill={true}
-          src={mobilePath}
-          alt={title || 'slide'}
-          className={cls.mask_img}
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center 26%',
-          }}
-          priority
-          sizes={isMobile ? '100vw' : '50vw'}
-        />
-      )}
+      <SafeImage
+        fill={true}
+        src={path}
+        alt={title || 'slide'}
+        style={{ objectFit: 'cover', objectPosition: '24% 50%' }}
+        className={`${cls.mask_img} ${cls.desktopImage}`}
+        quality={70}
+        priority
+        sizes="(max-width: 768px) 0px, 50vw"
+      />
+      <SafeImage
+        fill={true}
+        src={mobilePath}
+        alt={title || 'slide'}
+        className={`${cls.mask_img} ${cls.mobileImage}`}
+        style={{ objectFit: 'cover', objectPosition: 'center 26%' }}
+        priority
+        sizes="(max-width: 768px) 100vw, 0px"
+      />
     </>
   )
 }

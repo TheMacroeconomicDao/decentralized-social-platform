@@ -63,8 +63,11 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ isOpen, onStart }) =
                         <a href="https://t.me/HeadsHub" target="_blank" rel="noopener noreferrer">
                             📱 Telegram Community
                         </a>
-                        <a href="https://github.com/GyberExperiment" target="_blank" rel="noopener noreferrer">
+                        <a href="https://github.com/TheMacroeconomicDao" target="_blank" rel="noopener noreferrer">
                             💻 GitHub
+                        </a>
+                        <a href="https://themacroeconomicdao.github.io/GYBER_EXPERIMENT_DOCS/" target="_blank" rel="noopener noreferrer">
+                            📄 Documentation
                         </a>
                     </div>
                 </div>

@@ -1,8 +1,27 @@
+/* Desktop image: hidden on mobile, visible on desktop */
+.desktopImage {
+  display: none;
+}
+
+/* Mobile image: visible on mobile, hidden on desktop */
+.mobileImage {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .desktopImage {
+    display: block;
+  }
+  .mobileImage {
+    display: none;
+  }
+}
+
 .Slider {
   position: relative;
   width: 100%;
-  /* Mobile First: начинаем с меньшей высоты */
-  height: 260px;
+  /* Stable height: avoids 260px→500px jump that caused Community page dancing */
+  height: clamp(260px, 40vw, 500px);
   overflow: hidden;
   margin-bottom: 2rem;
 }
@@ -57,10 +76,9 @@
   }
 }
 
-/* Десктоп (900px+) */
+/* Десктоп (900px+) — height now handled by clamp() above */
 @media (min-width: 900px) {
   .Slider {
-    height: 500px;
     margin-bottom: 0;
   }
 }

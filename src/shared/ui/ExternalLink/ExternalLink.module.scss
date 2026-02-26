@@ -1,13 +1,15 @@
+/* ═══ ULTRA MODERN EXTERNAL LINK — Glassmorphism 3.0 ═══ */
+
 .ExternalLink {
   background: none;
   border: none;
   user-select: none;
   text-decoration: none;
-  border-radius: 8px;
-  padding: 14px 60px;
+  border-radius: 14px;
+  padding: 14px 56px;
   font-family: inherit;
   font-size: inherit;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--c-white);
   outline: none;
   cursor: pointer;
@@ -16,47 +18,174 @@
   white-space: nowrap;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
   &:hover {
-    filter: brightness(90%);
+    transform: translateY(-3px) scale(1.03);
+    filter: brightness(115%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+
+  /* Shine sweep */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+    transition: left 0.6s ease;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    left: 100%;
   }
 }
+
 .default {
-  border-radius: 26px;
+  border-radius: 24px;
 }
+
 .orange {
-  background: linear-gradient(161deg, #4a4b08 0%, #a46b17 100%);
-  box-shadow: 2px 12px 8px 4px #041c30, 2px -5px 7px 2px #10436d,
-    1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+  background: linear-gradient(145deg, #5a4b08 0%, #b47b17 50%, #a46b17 100%);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 2px rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(212, 157, 50, 0.25);
+
+  &:hover {
+    background: linear-gradient(145deg, #6a5b18 0%, #c48b27 50%, #b47b27 100%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15),
+      var(--glow-orange-strong),
+      0 0 0 1px rgba(212, 157, 50, 0.5);
+  }
 }
+
 .blue {
-  background: linear-gradient(161deg, #105390 0%, #4d7da9 100%);
-  box-shadow: 2px 12px 8px 4px #041c30, 2px -5px 7px 2px #10436d,
-    1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+  background: linear-gradient(145deg, #105390 0%, #3a7ab8 50%, #4d7da9 100%);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 2px rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(66, 184, 243, 0.2);
+
+  &:hover {
+    background: linear-gradient(145deg, #2063a0 0%, #4a8ac8 50%, #5d8daa 100%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15),
+      var(--glow-blue-strong),
+      0 0 0 1px rgba(66, 184, 243, 0.45);
+  }
 }
 
 .green_blue {
-  background: linear-gradient(161deg, #109034 0%, #4d7da9 91.23%);
-  box-shadow: 2px 12px 8px 4px #041c30, 2px -5px 7px 2px #10436d,
-    1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+  background: linear-gradient(145deg, #109034 0%, #2a8a5a 50%, #4d7da9 100%);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(16, 144, 52, 0.2);
+
+  &:hover {
+    background: linear-gradient(145deg, #20A044 0%, #3a9a6a 50%, #5d8db9 100%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 2px rgba(255, 255, 255, 0.12),
+      0 0 25px rgba(16, 144, 52, 0.4),
+      0 0 0 1px rgba(16, 144, 52, 0.45);
+  }
 }
+
 .fire {
-  background: linear-gradient(97deg, #907C10 0.89%, #A53434 90.47%);
-  box-shadow: 2px 12px 8px 4px #041C30, 2px -5px 7px 2px #10436D, 1px 1px 1px 0px rgba(255, 255, 255, 0.21) inset;
+  background: linear-gradient(125deg, #907C10 0%, #C54444 50%, #A53434 100%);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(165, 52, 52, 0.25);
+
+  &:hover {
+    background: linear-gradient(125deg, #A08C20 0%, #D55454 50%, #B54444 100%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 2px rgba(255, 255, 255, 0.12),
+      0 0 25px rgba(197, 68, 68, 0.45),
+      0 0 0 1px rgba(165, 52, 52, 0.45);
+  }
 }
 
 .clear {
   padding: 0;
   border-radius: 0;
+  box-shadow: none;
+
+  &:hover {
+    transform: none;
+    filter: brightness(115%);
+    box-shadow: none;
+  }
+
+  &::before {
+    display: none;
+  }
 }
 
+/* ═══ RESPONSIVE ═══ */
 @media screen and (max-width: 490px) {
-    .ExternalLink {
-      padding: 14px 30px;
+  .ExternalLink {
+    padding: 14px 28px;
+    border-radius: 12px;
+  }
 
+  .clear {
+    padding: 0;
+    border-radius: 0;
+  }
+}
+
+/* Accessibility */
+.ExternalLink:focus-visible {
+  outline: 2px solid var(--c-orange);
+  outline-offset: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ExternalLink {
+    transition: none;
+
+    &:hover {
+      transform: none;
     }
-    .clear {
-      padding: 0;
-      border-radius: 0;
+
+    &::before {
+      display: none;
     }
+  }
 }

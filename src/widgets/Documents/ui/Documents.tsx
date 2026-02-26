@@ -2,99 +2,125 @@
 import {Button, ThemeButton} from "@/shared/ui/Button/Button";
 import cls from "./Documents.module.scss"
 import {useState} from "react";
-import {motion, Variants} from "framer-motion";
+import {motion, Variants, AnimatePresence} from "framer-motion";
 import {SquareTimes} from "@/shared/ui/SvgIcons";
 import ExternalLink, {ThemeExternalLink} from "@/shared/ui/ExternalLink/ExternalLink";
 
 const list:Variants = {
     visible: {
         opacity: 1,
+        y: 0,
+        scale: 1,
         transition: {
             when: "beforeChildren",
-            staggerChildren: 0.1,
+            staggerChildren: 0.08,
+            type: "spring",
+            stiffness: 300,
+            damping: 24,
         },
     },
     hidden: {
         opacity: 0,
+        y: -8,
+        scale: 0.95,
         transition: {
             when: "afterChildren",
+            duration: 0.2,
         },
+    },
+    exit: {
+        opacity: 0,
+        y: -8,
+        scale: 0.95,
+        transition: { duration: 0.15 },
     },
 }
 
 const item:Variants = {
-    visible: {opacity: 1, x: 0},
+    visible: {
+        opacity: 1,
+        x: 0,
+        filter: "blur(0px)",
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 20,
+        },
+    },
     hidden: {
         opacity: 0,
-        x: 20,
-        transition: {
-            type: "spring", stiffness: 300,
-        },
+        x: 16,
+        filter: "blur(4px)",
     },
 }
 
 const documentsVariants = {
     visible: {
         opacity: 1,
-        x: 0
+        x: 0,
     },
     hidden: {
         display: "none",
         opacity: 0,
-        x: 50
+        x: 50,
     },
 }
+
 interface DocumentsProps {
     isShow: boolean;
     handleClick: () => void;
 }
-  
-  const Documents = ({ isShow, handleClick }: DocumentsProps) => {
+
+const Documents = ({ isShow, handleClick }: DocumentsProps) => {
     return (
         <div className={cls.wrapper}>
-            {isShow &&
-                <div className={cls.documents}>
+            <AnimatePresence>
+                {isShow && (
                     <motion.div
-                        initial={"hidden"}
-                        animate={"visible"}
+                        className={cls.dropdown}
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
                         variants={list}
-                        style={{ width: '100%', height: '100%' }}
                     >
                         <motion.span variants={item}>
                             <ExternalLink
-                                className={cls.pdf}
-                                href="https://github.com/GyberExperiment/live-papers/wiki"
+                                className={cls.docLink}
+                                href="https://github.com/TheMacroeconomicDao/GYBER_EXPERIMENT_DOCS"
                                 target="_blank"
                                 theme={ThemeExternalLink.CLEAR}>
+                                <span className={cls.docIcon}>📄</span>
+                                Docs
+                            </ExternalLink>
+                        </motion.span>
+                        <motion.span variants={item}>
+                            <ExternalLink
+                                className={cls.docLink}
+                                href="https://themacroeconomicdao.github.io/GYBER_EXPERIMENT_DOCS/"
+                                target="_blank"
+                                theme={ThemeExternalLink.CLEAR}>
+                                <span className={cls.docIcon}>📋</span>
                                 White Paper
                             </ExternalLink>
                         </motion.span>
-                        {/* <motion.span variants={item}>
-                            <ExternalLink
-                                className={cls.pdf}
-                                href="/documents/gyber_pitch_deck.pdf"
-                                target="_blank"
-                                theme={ThemeExternalLink.CLEAR}>
-                                Pitch Deck
-                            </ExternalLink>
-                        </motion.span> */}
                     </motion.div>
-                </div>
-            }
+                )}
+            </AnimatePresence>
             <Button onClick={handleClick} theme={ThemeButton.CLEAR}>
-                <span className={cls.pdf}>
+                <span className={cls.triggerBtn}>
                     <motion.span
-                        initial={"visible"}
+                        initial="visible"
                         animate={isShow ? "hidden" : "visible"}
                         variants={documentsVariants}>
-                        Documents
+                        Docs
                     </motion.span>
                 </span>
                 {isShow
                     ?
                     <motion.div
-                        initial={{opacity: 0, x: 0}}
-                        animate={{opacity: 0.5, x: 10}}
+                        initial={{opacity: 0, rotate: -90}}
+                        animate={{opacity: 0.7, rotate: 0, x: 8}}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
                         <SquareTimes/>
                     </motion.div>

@@ -1,7 +1,7 @@
 'use client'
 import { classNames } from "@/shared/lib/classNames/classNames";
 import cls from "./Header-Enhanced.module.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ButtonEnhanced } from "@/shared/ui/Button/Button-Enhanced";
 import { ThemeButton } from "@/shared/ui/Button/Button";
 import { Logo } from "@/shared/ui/Logo/Logo";
@@ -44,18 +44,12 @@ const itemVariants: Variants = {
     }
 };
 
+// ClientHeader already guards against SSR — no second mounted guard needed here.
 export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
     const [isShow, setIsShow] = useState<boolean>(false);
     const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
-    const [mounted, setMounted] = useState<boolean>(false);
-    
-    // Always call useUnitProfile unconditionally (Rules of Hooks)
-    const { profile, isWalletConnected } = useUnitProfile();
-    
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-    
+    const { profile } = useUnitProfile();
+
     const handleClick = () => {
         setIsShow(() => !isShow)
     }
@@ -67,29 +61,7 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
     const handleWalletModalClose = () => {
         setIsWalletModalOpen(false);
     }
-    
-    // Don't render anything until mounted to prevent hydration mismatch
-    if (!mounted) {
-        return (
-            <div className={classNames(cls.Header, {}, [className])}>
-                <Link href={'/'}>
-                    <Logo>Gyber</Logo>
-                </Link>
-                <div className={cls.btnGroup}>
-                    <ButtonEnhanced 
-                        theme={ThemeButton.BLUE} 
-                        disabled={true}
-                        className={cls.walletButton}
-                    >
-                        🔗 Loading...
-                    </ButtonEnhanced>
-                    <Documents handleClick={() => {}} isShow={false} />
-                    <NavbarTablet />
-                </div>
-            </div>
-        );
-    }
-    
+
     return (
         <>
             <motion.div

@@ -44,9 +44,9 @@ Gybernaty - это прогрессивное Rocket-Science сообществ�
 5. **Contact** - Telegram mini-app для превращения Telegram в полноценную соцсеть
 
 ПОЛЕЗНЫЕ ССЫЛКИ:
-- Документация: https://github.com/GyberExperiment/live-papers/wiki
+- Документация: https://themacroeconomicdao.github.io/GYBER_EXPERIMENT_DOCS/
 - Telegram: https://t.me/HeadsHub
-- GitHub: https://github.com/GyberExperiment
+- GitHub: https://github.com/TheMacroeconomicDao
 
 Ты здесь, чтобы помочь участникам сообщества Gybernaty развивать инновационные проекты и продвигать децентрализованное будущее!`;
 

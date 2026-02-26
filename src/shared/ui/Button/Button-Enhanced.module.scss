@@ -1,13 +1,14 @@
-/* БАЗОВЫЕ СТИЛИ - СОХРАНЯЕМ с улучшениями */
+/* ═══ ULTRA MODERN BUTTON — Glassmorphism 3.0 + Neomorphism ═══ */
+
 .Button {
   background: none;
   border: none;
   user-select: none;
-  border-radius: 12px; /* Увеличиваем для более современного вида */
-  padding: clamp(12px, 2vw, 14px) clamp(30px, 8vw, 60px);
+  border-radius: 14px;
+  padding: clamp(12px, 2vw, 14px) clamp(28px, 7vw, 56px);
   font-family: inherit;
   font-size: var(--fs-fluid-base);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--c-white);
   outline: none;
   cursor: pointer;
@@ -16,26 +17,39 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  
-  /* ДОБАВЛЯЕМ: Premium transitions */
-  transition: var(--transition-smooth);
-  
-  /* ДОБАВЛЯЕМ: Base neomorphic effects */
-  box-shadow: var(--shadow-soft);
-  
-  /* ДОБАВЛЯЕМ: Premium hover effects */
+  letter-spacing: 0.02em;
+
+  /* Premium transitions */
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Neomorphic base shadow */
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Hover: lift + glow */
   &:hover {
     transform: translateY(-3px) scale(1.03);
-    filter: brightness(110%);
-    box-shadow: var(--shadow-medium);
+    filter: brightness(115%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
-  
+
+  /* Active: press */
   &:active {
     transform: translateY(-1px) scale(1.01);
-    box-shadow: var(--shadow-soft);
+    filter: brightness(105%);
+    box-shadow:
+      var(--shadow-soft),
+      inset 0 2px 4px rgba(0, 0, 0, 0.15);
   }
-  
-  /* ДОБАВЛЯЕМ: Ripple effect */
+
+  /* Ripple effect on click */
   &::after {
     content: '';
     position: absolute;
@@ -43,199 +57,210 @@
     left: 50%;
     width: 0;
     height: 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    transition: width 0.4s ease, height 0.4s ease;
+    transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
   }
-  
+
   &:active::after {
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
+    opacity: 1;
   }
 }
 
-/* СОХРАНЯЕМ: Существующие темы с улучшениями */
+/* ─── Theme: Default ─── */
 .default {
-  border-radius: 26px;
-  background: linear-gradient(135deg, #4a4b08 0%, #6b6b08 100%);
-  box-shadow: var(--shadow-soft), var(--shadow-inset);
-  
-  &:hover {
-    background: linear-gradient(135deg, #5a5b08 0%, #7b7b08 100%);
-    box-shadow: var(--shadow-medium), var(--shadow-inset), var(--glow-orange);
-  }
-}
-
-.orange {
-  background: linear-gradient(161deg, #4a4b08 0%, #a46b17 100%);
-  box-shadow: 
+  border-radius: 24px;
+  background: linear-gradient(145deg, #4a4b08 0%, #6b6b08 100%);
+  box-shadow:
     var(--shadow-soft),
-    var(--shadow-inset),
-    0 0 0 1px rgba(212, 157, 50, 0.2);
-  
-  /* ДОБАВЛЯЕМ: Enhanced orange glow */
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(107, 107, 8, 0.3);
+
   &:hover {
-    background: linear-gradient(161deg, #5a5b08 0%, #b47b27 100%);
-    box-shadow: 
+    background: linear-gradient(145deg, #5a5b18 0%, #7b7b18 100%);
+    box-shadow:
       var(--shadow-medium),
-      var(--shadow-inset),
+      inset 0 1px 2px rgba(255, 255, 255, 0.12),
       var(--glow-orange),
-      0 0 0 1px rgba(212, 157, 50, 0.4);
-  }
-  
-  &:active {
-    background: linear-gradient(161deg, #3a3b08 0%, #946b17 100%);
+      0 0 0 1px rgba(107, 107, 8, 0.5);
   }
 }
 
+/* ─── Theme: Orange (Primary CTA) ─── */
+.orange {
+  background: linear-gradient(145deg, #5a4b08 0%, #b47b17 50%, #a46b17 100%);
+  box-shadow:
+    var(--shadow-soft),
+    inset 0 1px 2px rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(212, 157, 50, 0.25);
+
+  &:hover {
+    background: linear-gradient(145deg, #6a5b18 0%, #c48b27 50%, #b47b27 100%);
+    box-shadow:
+      var(--shadow-medium),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15),
+      var(--glow-orange-strong),
+      0 0 0 1px rgba(212, 157, 50, 0.5);
+  }
+
+  &:active {
+    background: linear-gradient(145deg, #4a3b08 0%, #946b17 50%, #845b17 100%);
+  }
+}
+
+/* ─── Theme: Blue (Secondary) ─── */
 .blue {
-  background: linear-gradient(161deg, #105390 0%, #4d7da9 100%);
-  box-shadow: 
+  background: linear-gradient(145deg, #105390 0%, #3a7ab8 50%, #4d7da9 100%);
+  box-shadow:
     var(--shadow-soft),
-    var(--shadow-inset),
+    inset 0 1px 2px rgba(255, 255, 255, 0.12),
     0 0 0 1px rgba(66, 184, 243, 0.2);
-  
-  /* ДОБАВЛЯЕМ: Enhanced blue glow */
+
   &:hover {
-    background: linear-gradient(161deg, #206390 0%, #5d8da9 100%);
-    box-shadow: 
+    background: linear-gradient(145deg, #2063a0 0%, #4a8ac8 50%, #5d8daa 100%);
+    box-shadow:
       var(--shadow-medium),
-      var(--shadow-inset),
-      var(--glow-blue),
-      0 0 0 1px rgba(66, 184, 243, 0.4);
+      inset 0 1px 2px rgba(255, 255, 255, 0.15),
+      var(--glow-blue-strong),
+      0 0 0 1px rgba(66, 184, 243, 0.45);
   }
-  
+
   &:active {
-    background: linear-gradient(161deg, #004380 0%, #3d6da9 100%);
+    background: linear-gradient(145deg, #004380 0%, #2a6a98 50%, #3d6da9 100%);
   }
 }
 
+/* ─── Theme: Fire ─── */
 .fire {
-  background: linear-gradient(97deg, #907C10 0.89%, #A53434 90.47%);
-  box-shadow: 
+  background: linear-gradient(125deg, #907C10 0%, #C54444 50%, #A53434 100%);
+  box-shadow:
     var(--shadow-soft),
-    var(--shadow-inset),
-    0 0 0 1px rgba(165, 52, 52, 0.2);
-  
-  /* ДОБАВЛЯЕМ: Fire glow effect */
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(165, 52, 52, 0.25);
+
   &:hover {
-    background: linear-gradient(97deg, #A08C20 0.89%, #B54444 90.47%);
-    box-shadow: 
+    background: linear-gradient(125deg, #A08C20 0%, #D55454 50%, #B54444 100%);
+    box-shadow:
       var(--shadow-medium),
-      var(--shadow-inset),
-      0 0 20px rgba(165, 52, 52, 0.4),
-      0 0 0 1px rgba(165, 52, 52, 0.4);
+      inset 0 1px 2px rgba(255, 255, 255, 0.12),
+      0 0 25px rgba(197, 68, 68, 0.45),
+      0 0 0 1px rgba(165, 52, 52, 0.45);
   }
-  
+
   &:active {
-    background: linear-gradient(97deg, #806C10 0.89%, #953434 90.47%);
+    background: linear-gradient(125deg, #806C10 0%, #A53434 50%, #953434 100%);
   }
 }
 
+/* ─── Theme: Green-Blue ─── */
 .green_blue {
-  background: linear-gradient(161deg, #109034 0%, #4d7da9 91.23%);
-  box-shadow: 
+  background: linear-gradient(145deg, #109034 0%, #2a8a5a 50%, #4d7da9 100%);
+  box-shadow:
     var(--shadow-soft),
-    var(--shadow-inset),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
     0 0 0 1px rgba(16, 144, 52, 0.2);
-  
-  /* ДОБАВЛЯЕМ: Green-blue glow */
+
   &:hover {
-    background: linear-gradient(161deg, #20A044 0%, #5d8da9 91.23%);
-    box-shadow: 
+    background: linear-gradient(145deg, #20A044 0%, #3a9a6a 50%, #5d8db9 100%);
+    box-shadow:
       var(--shadow-medium),
-      var(--shadow-inset),
-      0 0 20px rgba(16, 144, 52, 0.4),
-      0 0 0 1px rgba(16, 144, 52, 0.4);
+      inset 0 1px 2px rgba(255, 255, 255, 0.12),
+      0 0 25px rgba(16, 144, 52, 0.4),
+      0 0 0 1px rgba(16, 144, 52, 0.45);
   }
-  
+
   &:active {
-    background: linear-gradient(161deg, #008024 0%, #3d6da9 91.23%);
+    background: linear-gradient(145deg, #008024 0%, #1a7a4a 50%, #3d6da9 100%);
   }
 }
 
+/* ─── Theme: Clear (Ghost) ─── */
 .clear {
   padding: 0;
   border-radius: 0;
   box-shadow: none;
   background: transparent;
-  
+
   &:hover {
     transform: none;
-    filter: brightness(110%);
+    filter: brightness(115%);
     box-shadow: none;
   }
-  
+
   &:active {
     transform: none;
     box-shadow: none;
   }
-  
+
   &::after {
     display: none;
   }
 }
 
+/* ─── Disabled ─── */
 .disabled {
-  background: linear-gradient(161deg, #4e4e4e 0%, #10436d 100%);
+  background: linear-gradient(145deg, #3e3e3e 0%, #10436d 100%);
   cursor: not-allowed;
-  
+  opacity: 0.6;
+
   &:hover {
     transform: none;
     filter: none;
     box-shadow: var(--shadow-soft);
   }
-  
+
   &:active {
     transform: none;
   }
-  
+
   &::after {
     display: none;
   }
 }
 
-/* МОБИЛЬНАЯ АДАПТАЦИЯ */
+/* ═══ RESPONSIVE ═══ */
+
+/* Mobile */
 @media screen and (max-width: 490px) {
   .Button {
-    padding: clamp(12px, 3vw, 14px) clamp(20px, 6vw, 30px);
+    padding: clamp(12px, 3vw, 14px) clamp(20px, 6vw, 28px);
     width: 100%;
     font-size: var(--fs-fluid-sm);
-    
-    /* ДОБАВЛЯЕМ: Touch-friendly improvements */
-    min-height: 44px; /* Apple guidelines */
-    border-radius: 10px;
-    
+    min-height: 44px;
+    border-radius: 12px;
+
     &:hover {
-      /* Уменьшаем hover эффекты на мобильных */
       transform: translateY(-1px) scale(1.01);
     }
   }
-  
+
   .clear {
     padding: 0;
     border-radius: 0;
     min-height: auto;
+    width: auto;
   }
 }
 
-/* ПЛАНШЕТНАЯ АДАПТАЦИЯ */
+/* Tablet */
 @media screen and (min-width: 491px) and (max-width: 768px) {
   .Button {
-    padding: clamp(12px, 2.5vw, 14px) clamp(25px, 7vw, 50px);
+    padding: clamp(12px, 2.5vw, 14px) clamp(24px, 6vw, 48px);
     font-size: var(--fs-fluid-base);
-    
+
     &:hover {
       transform: translateY(-2px) scale(1.02);
     }
   }
 }
 
-/* DESKTOP ENHANCEMENTS */
+/* Desktop: shine sweep on hover */
 @media screen and (min-width: 769px) {
   .Button {
-    /* ДОБАВЛЯЕМ: Shine effect для desktop */
     &::before {
       content: '';
       position: absolute;
@@ -246,49 +271,50 @@
       background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.08),
         transparent
       );
       transition: left 0.6s ease;
+      z-index: 1;
+      pointer-events: none;
     }
-    
+
     &:hover::before {
       left: 100%;
     }
-    
+
     &.clear::before {
       display: none;
     }
   }
 }
 
-/* ACCESSIBILITY */
+/* ═══ ACCESSIBILITY ═══ */
 .Button:focus-visible {
   outline: 2px solid var(--c-orange);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-/* HIGH DPI OPTIMIZATIONS */
+/* High DPI */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .Button {
     border: 0.25px solid transparent;
   }
 }
 
-/* REDUCED MOTION */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .Button {
     transition: none;
-    
+
     &:hover {
       transform: none;
-      animation: none;
     }
-    
+
     &:active {
       transform: none;
     }
-    
+
     &::before,
     &::after {
       display: none;
@@ -296,27 +322,17 @@
   }
 }
 
-/* DARK MODE ENHANCEMENTS */
-@media (prefers-color-scheme: dark) {
-  .Button {
-    /* Дополнительные улучшения для темной темы */
-    box-shadow: 
-      var(--shadow-soft),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-}
-
-/* PRINT STYLES */
+/* Print */
 @media print {
   .Button {
     background: transparent !important;
     box-shadow: none !important;
     border: 1px solid #333 !important;
     color: #333 !important;
-    
+
     &::before,
     &::after {
       display: none !important;
     }
   }
-} 
+}

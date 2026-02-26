@@ -2,19 +2,160 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
-.documents {
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
   display: flex;
-  padding: 0 10px;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  min-width: 180px;
+  z-index: 50;
+
+  /* Glassmorphism 3.0 — Level 3 Premium */
+  background: rgba(7, 43, 64, 0.65);
+  -webkit-backdrop-filter: blur(40px) saturate(1.6);
+  backdrop-filter: blur(40px) saturate(1.6);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow:
+    0 12px 40px rgba(0, 16, 25, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  /* Chromatic accent line */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 157, 50, 0.5),
+      rgba(66, 184, 243, 0.5),
+      transparent
+    );
+    border-radius: 1px;
+    pointer-events: none;
+  }
 }
-.pdf {
-    padding: 0 10px 0;
-    font-size: 16px;
-    opacity: .8;
-    transition: ease-in;
-    &:hover {
+
+.docLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: var(--fs-fluid-sm, 14px);
+  font-weight: 500;
+  color: var(--c-white);
+  opacity: 0.85;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+
+  /* Subtle glass hover surface */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    background: linear-gradient(
+      135deg,
+      rgba(66, 184, 243, 0.08),
+      rgba(212, 157, 50, 0.06)
+    );
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    opacity: 1;
+    color: var(--c-orange);
+    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 12px rgba(212, 157, 50, 0.15);
+
+    &::after {
       opacity: 1;
-      color: var(--c-orange);
     }
+  }
+}
+
+.docIcon {
+  font-size: 16px;
+  flex-shrink: 0;
+  filter: grayscale(0.3);
+  transition: filter 0.25s ease;
+
+  .docLink:hover & {
+    filter: grayscale(0);
+  }
+}
+
+.triggerBtn {
+  padding: 0 4px;
+  font-size: var(--fs-fluid-base, 16px);
+  font-weight: 500;
+  opacity: 0.8;
+  letter-spacing: 0.02em;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  /* Underline glow effect */
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(212, 157, 50, 0.6),
+      rgba(66, 184, 243, 0.6)
+    );
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    border-radius: 1px;
+  }
+
+  &:hover {
+    opacity: 1;
+    color: var(--c-orange);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 490px) {
+  .dropdown {
+    min-width: 160px;
+    padding: 6px;
+    border-radius: 12px;
+    right: -10px;
+  }
+
+  .docLink {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Backdrop-filter fallback */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .dropdown {
+    background: rgba(7, 43, 64, 0.92);
+  }
 }

@@ -1,10 +1,13 @@
 .container {
   min-height: 100vh;
+  width: 100%;
   color: white;
   padding: clamp(16px, 4vw, 20px);
   font-family: 'Inter', sans-serif;
   max-width: 1280px;
   margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .noProfile {
@@ -369,11 +372,7 @@
 // Responsive design improvements
 @media (min-width: 640px) {
   .content {
-    grid-template-columns: 1fr 1fr;
-    
-    .rightPanel {
-      grid-column: 1 / -1;
-    }
+    grid-template-columns: 1fr;
   }
   
   .bottomSection {
@@ -416,8 +415,8 @@
 
 @media (min-width: 1024px) {
   .content {
-    grid-template-columns: 350px 1fr 300px;
-    
+    grid-template-columns: 350px 1fr;
+
     .rightPanel {
       grid-column: 2;
     }
@@ -440,7 +439,7 @@
 
 @media (min-width: 1200px) {
   .content {
-    grid-template-columns: 350px 1fr 300px;
+    grid-template-columns: 350px 1fr;
     gap: 30px;
   }
   

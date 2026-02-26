@@ -5,75 +5,34 @@ import { usePathname } from "next/navigation";
 import navbarItems from "../../data/routesData";
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
+import { useRef } from "react";
 
 interface NavbarProps {
     className?: string;
 }
 
-// СОВРЕМЕННАЯ АНИМАЦИЯ ИНДИКАТОРА 2025
-const indicatorVariants: Variants = {
-    hidden: { 
-        scaleX: 0, 
-        opacity: 0,
-        y: -10,
-        rotateX: -90,
-    },
-    visible: { 
-        scaleX: 1, 
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        transition: { 
-            type: 'spring',
-            stiffness: 500, // Высокая упругость
-            damping: 30,    // Контролируемое затухание
-            mass: 0.8,     // Легкость
-            duration: 0.8,
-            ease: [0.25, 0.46, 0.45, 0.94], // Custom cubic-bezier
-        }
-    },
-    hover: {
-        scaleX: 1.05,
-        scaleY: 1.2,
-        y: -2,
-        boxShadow: [
-            "0 0 20px rgba(212, 157, 50, 0.4)",
-            "0 0 40px rgba(212, 157, 50, 0.6)",
-            "0 0 60px rgba(212, 157, 50, 0.4)",
-        ],
-        transition: {
-            type: 'spring',
-            stiffness: 400,
-            damping: 25,
-            repeat: Infinity,
-            repeatType: "reverse",
-            duration: 1.5,
-        }
-    }
-};
-
-// STAGGER АНИМАЦИЯ ДЛЯ ЭЛЕМЕНТОВ НАВБАРА
+// STAGGER АНИМАЦИЯ ДЛЯ ЭЛЕМЕНТОВ НАВБАРА — only on first mount
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
         transition: {
             delayChildren: 0.3,
-            staggerChildren: 0.1, // Поочередное появление
+            staggerChildren: 0.1,
             when: "beforeChildren"
         }
     }
 };
 
 const itemVariants: Variants = {
-    hidden: { 
-        y: -20, 
+    hidden: {
+        y: -20,
         opacity: 0,
         scale: 0.8,
         filter: "blur(4px)"
     },
-    visible: { 
-        y: 0, 
+    visible: {
+        y: 0,
         opacity: 1,
         scale: 1,
         filter: "blur(0px)",
@@ -88,21 +47,24 @@ const itemVariants: Variants = {
 
 export const NavbarEnhanced = ({ className = "" }: NavbarProps) => {
     const pathName = usePathname();
+    const hasAnimated = useRef(false);
+    const shouldAnimate = !hasAnimated.current;
+    if (shouldAnimate) hasAnimated.current = true;
 
     return (
         <motion.div
             className={classNames(cls.Navbar, {}, [className])}
             variants={containerVariants}
-            initial="hidden"
+            initial={shouldAnimate ? "hidden" : false}
             animate="visible"
         >
                 {/* Gradient Line */}
                 <motion.div
                     className={cls.gradientLine}
-                    initial={{ scaleX: 0, opacity: 0 }}
+                    initial={shouldAnimate ? { scaleX: 0, opacity: 0 } : false}
                     animate={{ scaleX: 1, opacity: 1 }}
                     transition={{
-                        delay: 0.5,
+                        delay: shouldAnimate ? 0.5 : 0,
                         type: 'spring',
                         stiffness: 200,
                         damping: 20

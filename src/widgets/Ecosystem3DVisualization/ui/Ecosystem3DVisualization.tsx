@@ -1,30 +1,48 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { Ecosystem3D } from '@/shared/ui/Ecosystem3D/Ecosystem3D';
 import { ecosystemProjects } from '@/shared/lib/ecosystem-data';
-import { EcosystemProject } from '@/shared/types/ecosystem';
+import { CATEGORIES } from '@/shared/types/ecosystem';
 import styles from './Ecosystem3DVisualization.module.scss';
 
-export function Ecosystem3DVisualization() {
-  const [selectedProject, setSelectedProject] = useState<EcosystemProject | null>(null);
+const legendItems = [
+  { label: 'Production', className: 'production' },
+  { label: 'Development', className: 'development' },
+  { label: 'Testnet', className: 'testnet' },
+];
 
-  // Преобразуем данные проектов в формат для Ecosystem3D
+const legendVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.4 },
+  },
+};
+
+const legendItemVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1, transition: { type: 'spring' as const, stiffness: 300, damping: 20 } },
+};
+
+export function Ecosystem3DVisualization() {
   const projectsFor3D = useMemo(() => {
     return ecosystemProjects.map((project, index) => {
-      // Распределяем проекты по орбитам вокруг центра
       const angle = (index / ecosystemProjects.length) * Math.PI * 2;
-      const radius = 3 + (index % 3) * 0.5; // Разные орбиты
-      const height = Math.sin(angle * 2) * 1.5; // Волнообразное распределение
+      const radius = 3 + (index % 3) * 0.5;
+      const height = Math.sin(angle * 2) * 1.5;
 
-      // Преобразуем статус: testnet -> development для Ecosystem3D
-      const status: 'production' | 'development' = project.status === 'production' ? 'production' : 'development';
+      const status: 'production' | 'development' =
+        project.status === 'production' ? 'production' : 'development';
 
       return {
-        id: index + 1,
+        id: project.id,
         name: project.shortName,
-        status: status as 'production' | 'development',
+        status,
         category: project.category,
+        categoryColor: CATEGORIES[project.category].color,
+        connections: project.connections ?? [],
         position: [
           Math.cos(angle) * radius,
           height,
@@ -36,10 +54,24 @@ export function Ecosystem3DVisualization() {
 
   return (
     <div className={styles.visualization}>
-      <h2 className={styles.title}>3D Визуализация экосистемы</h2>
-      <p className={styles.subtitle}>
-        Интерактивная 3D модель взаимосвязей проектов экосистемы Gybernaty
-      </p>
+      <motion.h2
+        className={styles.title}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      >
+        3D Ecosystem Visualization
+      </motion.h2>
+      <motion.p
+        className={styles.subtitle}
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.1 }}
+      >
+        Interactive 3D model of interconnected Gybernaty ecosystem projects
+      </motion.p>
 
       <div className={styles.canvasContainer}>
         <Ecosystem3D
@@ -50,33 +82,24 @@ export function Ecosystem3DVisualization() {
         />
       </div>
 
-      <div className={styles.legend}>
-        <div className={styles.legendItem}>
-          <div className={`${styles.legendDot} ${styles.production}`} />
-          <span>Production Ready</span>
-        </div>
-        <div className={styles.legendItem}>
-          <div className={`${styles.legendDot} ${styles.development}`} />
-          <span>В разработке</span>
-        </div>
-        <div className={styles.legendItem}>
-          <div className={`${styles.legendDot} ${styles.testnet}`} />
-          <span>Testnet</span>
-        </div>
-      </div>
-
-      {selectedProject && (
-        <div className={styles.projectInfo}>
-          <h3>{selectedProject.name}</h3>
-          <p>{selectedProject.description}</p>
-          <button 
-            className={styles.closeButton}
-            onClick={() => setSelectedProject(null)}
+      <motion.div
+        className={styles.legend}
+        variants={legendVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        {legendItems.map((item) => (
+          <motion.div
+            key={item.className}
+            className={styles.legendItem}
+            variants={legendItemVariants}
           >
-            ×
-          </button>
-        </div>
-      )}
+            <div className={`${styles.legendDot} ${styles[item.className]}`} />
+            <span>{item.label}</span>
+          </motion.div>
+        ))}
+      </motion.div>
     </div>
   );
 }

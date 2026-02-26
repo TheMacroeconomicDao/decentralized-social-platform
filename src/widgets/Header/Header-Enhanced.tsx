@@ -1,7 +1,7 @@
 'use client'
 import { classNames } from "@/shared/lib/classNames/classNames";
 import cls from "./Header-Enhanced.module.scss";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ButtonEnhanced } from "@/shared/ui/Button/Button-Enhanced";
 import { ThemeButton } from "@/shared/ui/Button/Button";
 import { Logo } from "@/shared/ui/Logo/Logo";
@@ -18,7 +18,7 @@ interface HeaderProps {
     className?: string;
 }
 
-// Анимации для Header
+// Анимации для Header — only on first mount
 const headerVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
@@ -48,6 +48,9 @@ const itemVariants: Variants = {
 export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
     const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
     const { profile } = useUnitProfile();
+    const hasAnimated = useRef(false);
+    const shouldAnimate = !hasAnimated.current;
+    if (shouldAnimate) hasAnimated.current = true;
 
     const handleWalletClick = () => {
         setIsWalletModalOpen(true);
@@ -62,7 +65,7 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
             <motion.div
                 className={classNames(cls.Header, {}, [className])}
                 variants={headerVariants}
-                initial="hidden"
+                initial={shouldAnimate ? "hidden" : false}
                 animate="visible"
             >
                     {/* Logo */}

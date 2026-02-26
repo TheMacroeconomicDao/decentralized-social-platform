@@ -1,18 +1,20 @@
 // @ts-nocheck
 "use client";
 
-import { Suspense, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, Stars, Text3D } from '@react-three/drei';
+import { Suspense, useMemo, useRef, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Environment, Stars, Line, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import cls from './Ecosystem3D.module.scss';
 
 interface ProjectNode {
-  id: number;
+  id: string;
   name: string;
   status: 'production' | 'development';
   category: string;
   position: [number, number, number];
+  connections?: string[];
+  categoryColor?: string;
 }
 
 interface Ecosystem3DProps {
@@ -22,212 +24,334 @@ interface Ecosystem3DProps {
   className?: string;
 }
 
-// 3D Node компонент для проектов
-const ProjectNode3D = ({ 
-  position, 
-  name, 
-  status 
-}: { 
-  position: [number, number, number]; 
-  name: string; 
+// 3D Node with hover interaction, pulse animation, HTML tooltip
+const ProjectNode3D = ({
+  position,
+  name,
+  status,
+  categoryColor,
+}: {
+  position: [number, number, number];
+  name: string;
   status: string;
+  categoryColor?: string;
 }) => {
-  const color = status === 'production' ? '#00f2fe' : '#f5576c';
-  const emissiveColor = status === 'production' ? '#00d4ff' : '#ff6b7d';
-  
+  const meshRef = useRef<THREE.Mesh>(null);
+  const [hovered, setHovered] = useState(false);
+
+  const color = categoryColor || (status === 'production' ? '#00f2fe' : '#f5576c');
+  const baseColor = new THREE.Color(color);
+
+  // Animate emissive intensity + hover scale
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const mat = meshRef.current.material as THREE.MeshStandardMaterial;
+    mat.emissiveIntensity = 0.3 + Math.sin(state.clock.elapsedTime * 1.5 + position[0]) * 0.2;
+
+    const targetScale = hovered ? 1.4 : 1.0;
+    meshRef.current.scale.lerp(
+      new THREE.Vector3(targetScale, targetScale, targetScale),
+      0.1
+    );
+  });
+
   return (
     <group position={position}>
-      {/* Основная сфера проекта */}
-      <mesh>
-        <sphereGeometry args={[0.3, 16, 16]} />
+      {/* Core sphere */}
+      <mesh
+        ref={meshRef}
+        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+        onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
+      >
+        <sphereGeometry args={[0.3, 24, 24]} />
         <meshStandardMaterial
-          color={color}
-          emissive={emissiveColor}
+          color={baseColor}
+          emissive={baseColor}
           emissiveIntensity={0.3}
-          metalness={0.8}
-          roughness={0.2}
+          metalness={0.9}
+          roughness={0.1}
         />
       </mesh>
-      
-      {/* Свечение вокруг */}
+
+      {/* Outer glow shell */}
       <mesh>
-        <sphereGeometry args={[0.35, 16, 16]} />
+        <sphereGeometry args={[0.42, 16, 16]} />
         <meshStandardMaterial
-          color={emissiveColor}
+          color={baseColor}
           transparent
-          opacity={0.2}
-          emissive={emissiveColor}
-          emissiveIntensity={0.5}
+          opacity={hovered ? 0.35 : 0.15}
+          emissive={baseColor}
+          emissiveIntensity={0.8}
+          depthWrite={false}
         />
       </mesh>
-      
-      {/* Орбитальная линия */}
+
+      {/* Orbital ring */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[0.4, 0.45, 32]} />
+        <ringGeometry args={[0.48, 0.52, 48]} />
         <meshBasicMaterial
           color={color}
           transparent
-          opacity={0.1}
+          opacity={hovered ? 0.5 : 0.12}
           side={THREE.DoubleSide}
         />
       </mesh>
+
+      {/* HTML tooltip on hover */}
+      {hovered && (
+        <Html
+          center
+          distanceFactor={8}
+          position={[0, 0.7, 0]}
+          style={{ pointerEvents: 'none' }}
+        >
+          <div style={{
+            background: 'rgba(7, 43, 64, 0.92)',
+            border: '1px solid rgba(66, 184, 243, 0.6)',
+            borderRadius: '8px',
+            padding: '6px 12px',
+            color: '#e1e1e1',
+            fontSize: '12px',
+            fontWeight: 700,
+            whiteSpace: 'nowrap',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+            letterSpacing: '0.05em',
+          }}>
+            {name}
+          </div>
+        </Html>
+      )}
     </group>
   );
 };
 
-// Центральный узел экосистемы
+// Enhanced central node with animated rings
 const CentralNode = () => {
+  const ring1Ref = useRef<THREE.Mesh>(null);
+  const ring2Ref = useRef<THREE.Mesh>(null);
+  const coreRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (ring1Ref.current) ring1Ref.current.rotation.z += 0.008;
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.x += 0.005;
+      ring2Ref.current.rotation.y += 0.003;
+    }
+    if (coreRef.current) {
+      const mat = coreRef.current.material as THREE.MeshStandardMaterial;
+      mat.emissiveIntensity = 0.5 + Math.sin(state.clock.elapsedTime * 2) * 0.3;
+    }
+  });
+
   return (
     <group position={[0, 0, 0]}>
-      {/* Внутреннее ядро */}
-      <mesh>
+      {/* Inner core */}
+      <mesh ref={coreRef}>
         <sphereGeometry args={[0.5, 32, 32]} />
         <meshStandardMaterial
           color="#d49d32"
           emissive="#ff6b35"
           emissiveIntensity={0.5}
-          metalness={0.9}
-          roughness={0.1}
+          metalness={0.95}
+          roughness={0.05}
         />
       </mesh>
-      
-      {/* Внешнее свечение */}
+
+      {/* Outer glow */}
       <mesh>
-        <sphereGeometry args={[0.6, 32, 32]} />
+        <sphereGeometry args={[0.65, 32, 32]} />
         <meshStandardMaterial
           color="#d49d32"
           transparent
-          opacity={0.3}
+          opacity={0.2}
           emissive="#d49d32"
-          emissiveIntensity={0.8}
+          emissiveIntensity={1.0}
+          depthWrite={false}
         />
       </mesh>
-      
-      {/* Вращающиеся кольца */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.7, 0.05, 16, 100]} />
+
+      {/* Equatorial ring */}
+      <mesh ref={ring1Ref} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.9, 0.04, 16, 100]} />
         <meshStandardMaterial
           color="#42b8f3"
           emissive="#00d4ff"
+          emissiveIntensity={0.6}
+        />
+      </mesh>
+
+      {/* Polar ring */}
+      <mesh ref={ring2Ref} rotation={[0, 0, Math.PI / 4]}>
+        <torusGeometry args={[1.1, 0.025, 16, 100]} />
+        <meshStandardMaterial
+          color="#d49d32"
+          emissive="#ff9800"
           emissiveIntensity={0.4}
+          transparent
+          opacity={0.7}
         />
       </mesh>
     </group>
   );
 };
 
-// Фоновые частицы
+// Background particles
 const BackgroundParticles = () => {
+  const mesh = useRef<THREE.Points>(null);
   const particles = useMemo(() => {
-    const positions = new Float32Array(1000 * 3);
-    for (let i = 0; i < 1000; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    const positions = new Float32Array(1200 * 3);
+    for (let i = 0; i < 1200; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 25;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 25;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 25;
     }
     return positions;
   }, []);
 
+  useFrame((state) => {
+    if (!mesh.current) return;
+    mesh.current.rotation.y = state.clock.elapsedTime * 0.02;
+  });
+
   return (
-    <points>
+    <points ref={mesh}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={1000}
+          count={1200}
           array={particles}
           itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial
         color="#42b8f3"
-        size={0.05}
+        size={0.04}
         sizeAttenuation={true}
         transparent
-        opacity={0.6}
+        opacity={0.5}
+        depthWrite={false}
       />
     </points>
   );
 };
 
-// Основная 3D сцена
-const Scene3D = ({ 
-  projects, 
-  enableControls, 
-  autoRotate 
-}: { 
-  projects: ProjectNode[]; 
-  enableControls: boolean; 
+// Connection lines between projects
+const ConnectionLines = ({ projects }: { projects: ProjectNode[] }) => {
+  const lines = useMemo(() => {
+    const result: { from: [number, number, number]; to: [number, number, number]; color: string }[] = [];
+    const projectMap = new Map(projects.map(p => [p.id, p]));
+
+    projects.forEach(project => {
+      (project.connections ?? []).forEach(targetId => {
+        const target = projectMap.get(targetId);
+        if (target) {
+          result.push({
+            from: project.position,
+            to: target.position,
+            color: project.categoryColor || '#42b8f3',
+          });
+        }
+      });
+    });
+    return result;
+  }, [projects]);
+
+  return (
+    <>
+      {lines.map((line, i) => (
+        <Line
+          key={i}
+          points={[line.from, line.to]}
+          color={line.color}
+          lineWidth={0.8}
+          transparent
+          opacity={0.15}
+        />
+      ))}
+    </>
+  );
+};
+
+// Main 3D scene
+const Scene3D = ({
+  projects,
+  enableControls,
+  autoRotate
+}: {
+  projects: ProjectNode[];
+  enableControls: boolean;
   autoRotate: boolean;
 }) => {
   return (
     <>
-      {/* Освещение */}
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={1} color="#42b8f3" />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#d49d32" />
-      <directionalLight position={[0, 10, 0]} intensity={0.5} />
-      
-      {/* Фоновые звезды */}
+      {/* Lighting */}
+      <ambientLight intensity={0.25} />
+      <pointLight position={[10, 10, 10]} intensity={0.8} color="#42b8f3" />
+      <pointLight position={[-10, -10, -10]} intensity={0.4} color="#d49d32" />
+      <directionalLight position={[0, 10, 0]} intensity={0.4} />
+
+      {/* Background stars */}
       <Stars
-        radius={15}
+        radius={20}
         depth={50}
-        count={500}
+        count={800}
         factor={4}
         saturation={0.5}
         fade
-        speed={0.5}
+        speed={0.3}
       />
-      
-      {/* Фоновые частицы */}
+
       <BackgroundParticles />
-      
-      {/* Центральный узел */}
       <CentralNode />
-      
-      {/* Проекты как узлы */}
+      <ConnectionLines projects={projects} />
+
+      {/* Project nodes */}
       {projects.map((project) => (
         <ProjectNode3D
           key={project.id}
           position={project.position}
           name={project.name}
           status={project.status}
+          categoryColor={project.categoryColor}
         />
       ))}
-      
-      {/* Управление камерой */}
+
+      {/* Camera controls */}
       {enableControls && (
         <OrbitControls
           enableZoom={true}
           enablePan={false}
           autoRotate={autoRotate}
-          autoRotateSpeed={0.5}
+          autoRotateSpeed={0.4}
           minDistance={5}
           maxDistance={15}
           enableDamping
           dampingFactor={0.05}
         />
       )}
-      
-      {/* Окружающая среда */}
+
       <Environment preset="night" />
     </>
   );
 };
 
-// Основной компонент
+// Main component
 export const Ecosystem3D = ({
   projects = [],
   enableControls = true,
   autoRotate = true,
   className = '',
 }: Ecosystem3DProps) => {
-  // Генерируем позиции для проектов в сферическом распределении
   const positionedProjects = useMemo(() => {
     return projects.map((project, index) => {
+      if (project.position[0] !== 0 || project.position[1] !== 0 || project.position[2] !== 0) {
+        return project;
+      }
       const angle = (index / projects.length) * Math.PI * 2;
       const radius = 3 + Math.random() * 2;
       const height = (Math.random() - 0.5) * 2;
-      
+
       return {
         ...project,
         position: [
@@ -242,9 +366,9 @@ export const Ecosystem3D = ({
   return (
     <div className={`${cls.container} ${className}`}>
       <Canvas
-        camera={{ position: [5, 5, 5], fov: 50 }}
+        camera={{ position: [6, 4, 6], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
       >
         <Suspense fallback={null}>
           <Scene3D
@@ -257,4 +381,3 @@ export const Ecosystem3D = ({
     </div>
   );
 };
-

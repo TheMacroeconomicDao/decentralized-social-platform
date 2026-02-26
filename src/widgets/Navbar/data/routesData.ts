@@ -4,6 +4,7 @@ const navbarItems = [
   { title: "Experiment", link: "/experiment" },
   { title: "Platform", link: "/platform" },
   { title: "AIC", link: "/aic" },
+  { title: "Ecosystem", link: "/ecosystem-status" },
   { title: "Unit Profile", link: "/unit-profile" },
   // { title: "Events", link: "/events" },
   // { title: "Projects", link: "/offering" },

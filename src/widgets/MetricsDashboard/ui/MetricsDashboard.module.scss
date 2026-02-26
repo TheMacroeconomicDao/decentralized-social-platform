@@ -21,19 +21,31 @@
 }
 
 .metricCard {
-  background: rgba(7, 43, 64, 0.6);
-  border: 1px solid rgba(66, 184, 243, 0.3);
-  border-radius: 12px;
+  background: rgba(7, 43, 64, 0.5);
+  border: 1px solid rgba(66, 184, 243, 0.2);
+  border-radius: 16px;
   padding: 2rem;
   text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
 
-.metricCard:hover {
-  border-color: var(--c-blue);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(66, 184, 243, 0.2);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(66, 184, 243, 0.5), transparent);
+  }
+
+  &:hover {
+    border-color: rgba(66, 184, 243, 0.5);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(66, 184, 243, 0.1);
+  }
 }
 
 .metricIcon {
@@ -56,6 +68,11 @@
 
 .statusBreakdown {
   margin-top: 3rem;
+  background: rgba(7, 43, 64, 0.4);
+  border: 1px solid rgba(66, 184, 243, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(12px);
 }
 
 .subtitle {
@@ -90,25 +107,27 @@
   background: rgba(7, 43, 64, 0.8);
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(66, 184, 243, 0.2);
+  border: 1px solid rgba(66, 184, 243, 0.15);
 }
 
 .progressFill {
   height: 100%;
   border-radius: 6px;
-  transition: width 1s ease-out;
 }
 
 .progressFill.production {
   background: linear-gradient(90deg, var(--c-blue) 0%, #00d4ff 100%);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
 }
 
 .progressFill.development {
   background: linear-gradient(90deg, var(--c-orange) 0%, #ff6b35 100%);
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.3);
 }
 
 .progressFill.testnet {
   background: linear-gradient(90deg, #f5576c 0%, #ff6b7d 100%);
+  box-shadow: 0 0 12px rgba(245, 87, 108, 0.3);
 }
 
 @media screen and (max-width: 768px) {
@@ -132,6 +151,10 @@
 
   .metricValue {
     font-size: var(--fs-3);
+  }
+
+  .statusBreakdown {
+    padding: 1.5rem;
   }
 }
 

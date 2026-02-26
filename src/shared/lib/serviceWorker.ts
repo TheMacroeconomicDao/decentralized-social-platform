@@ -5,12 +5,10 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 const SW_PATH = '/sw-advanced.js';
-const SW_VERSION = '2.0.0';
 
 // Глобальные ссылки для cleanup
 let updateInterval: NodeJS.Timeout | null = null;
 let loadHandler: (() => void) | null = null;
-let controllerChangeHandler: (() => void) | null = null;
 let isRegistered = false;
 
 /**
@@ -18,10 +16,10 @@ let isRegistered = false;
  */
 export function registerServiceWorker(): void {
   if (typeof window === 'undefined') return;
-  
+
   // Предотвращаем множественную регистрацию
   if (isRegistered) return;
-  
+
   // Регистрируем только в production или если явно включено
   if (!isProduction && !process.env.NEXT_PUBLIC_ENABLE_SW) {
     return;
@@ -32,71 +30,47 @@ export function registerServiceWorker(): void {
     if (loadHandler) {
       window.removeEventListener('load', loadHandler);
     }
-    
+
     loadHandler = () => {
       navigator.serviceWorker
-        .register(SW_PATH, {
-          scope: '/',
-        })
+        .register(SW_PATH, { scope: '/' })
         .then((registration) => {
           isRegistered = true;
-          
-          // Успешная регистрация
+
           if (isProduction) {
-            // В production логируем только критические ошибки
-            const updateFoundHandler = () => {
+            registration.addEventListener('updatefound', () => {
               const newWorker = registration.installing;
               if (newWorker) {
-                const stateChangeHandler = () => {
+                newWorker.addEventListener('statechange', () => {
                   if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // Новый SW установлен, можно показать уведомление об обновлении
                     handleServiceWorkerUpdate(registration);
                   }
-                  // Удаляем обработчик после использования
-                  newWorker.removeEventListener('statechange', stateChangeHandler);
-                };
-                newWorker.addEventListener('statechange', stateChangeHandler);
+                }, { once: true });
               }
-              // Удаляем обработчик после использования
-              registration.removeEventListener('updatefound', updateFoundHandler);
-            };
-            registration.addEventListener('updatefound', updateFoundHandler);
+            }, { once: true });
           }
 
           // Очищаем предыдущий interval если есть
           if (updateInterval) {
             clearInterval(updateInterval);
           }
-          
-          // Проверка обновлений каждые 60 секунд
+
+          // Проверка обновлений каждые 5 минут (не 60 секунд)
           updateInterval = setInterval(() => {
-            registration.update();
-          }, 60000);
+            registration.update().catch(() => {
+              // Silently ignore update errors (InvalidStateError, etc.)
+            });
+          }, 300000);
         })
-        .catch((error: Error) => {
-          // Ошибка регистрации - логируем только в development
-          if (!isProduction) {
-            // eslint-disable-next-line no-console
-            console.warn('Service Worker registration failed:', error);
-          }
+        .catch(() => {
+          // Silently fail — SW is non-critical
         });
     };
-    
+
     window.addEventListener('load', loadHandler);
 
-    // Обработка обновлений Service Worker
-    if (controllerChangeHandler) {
-      navigator.serviceWorker.removeEventListener('controllerchange', controllerChangeHandler);
-    }
-    
-    let refreshing = false;
-    controllerChangeHandler = () => {
-      if (refreshing) return;
-      refreshing = true;
-      window.location.reload();
-    };
-    
-    navigator.serviceWorker.addEventListener('controllerchange', controllerChangeHandler);
+    // NOTE: removed controllerchange → window.location.reload()
+    // It was causing unexpected full-page reloads during SPA navigation
   }
 }
 
@@ -104,48 +78,34 @@ export function registerServiceWorker(): void {
  * Обработка обновления Service Worker
  */
 function handleServiceWorkerUpdate(registration: ServiceWorkerRegistration): void {
-  // Можно показать уведомление пользователю о доступном обновлении
-  // Пока просто обновляем страницу при следующем взаимодействии
   if (registration.waiting) {
     registration.waiting.postMessage({ type: 'SKIP_WAITING' });
   }
 }
 
 /**
- * Отключение Service Worker (для тестирования)
+ * Отключение Service Worker
  */
 export function unregisterServiceWorker(): void {
-  // Очищаем interval
   if (updateInterval) {
     clearInterval(updateInterval);
     updateInterval = null;
   }
-  
-  // Очищаем event listeners
+
   if (loadHandler) {
     window.removeEventListener('load', loadHandler);
     loadHandler = null;
   }
-  
-  if (controllerChangeHandler) {
-    navigator.serviceWorker.removeEventListener('controllerchange', controllerChangeHandler);
-    controllerChangeHandler = null;
-  }
-  
+
   isRegistered = false;
-  
+
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready
       .then((registration) => {
         registration.unregister();
       })
-      .catch((error: Error) => {
-        if (!isProduction) {
-          // eslint-disable-next-line no-console
-          console.warn('Service Worker unregistration failed:', error);
-        }
+      .catch(() => {
+        // Silently fail
       });
   }
 }
-
-

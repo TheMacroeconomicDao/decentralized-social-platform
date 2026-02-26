@@ -1,101 +1,129 @@
 .hero {
   text-align: center;
-  padding: 3rem 0;
+  padding: var(--space-2xl) 0 var(--space-xl);
+}
+
+.eyebrow {
+  font-size: var(--fs-fluid-xs, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm, 1rem);
+  opacity: 0.85;
 }
 
 .title {
-  font-size: var(--fs-6);
+  font-size: var(--fs-fluid-hero, clamp(3rem, 2.4rem + 2.93vw, 5rem));
   font-weight: 900;
-  background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-orange) 100%);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-md, 1.5rem);
+  background: linear-gradient(
+    135deg,
+    var(--c-white) 0%,
+    var(--c-blue) 40%,
+    var(--c-orange) 70%,
+    var(--c-white) 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
+  animation: glass-shimmer 6s ease-in-out infinite;
 }
 
 .subtitle {
-  font-size: var(--fs-2);
+  font-size: var(--fs-fluid-lg, clamp(1.2rem, 1.08rem + 0.58vw, 1.563rem));
   color: var(--c-grey);
-  max-width: 800px;
-  margin: 0 auto 3rem;
-  line-height: 1.6;
+  max-width: 760px;
+  margin: 0 auto var(--space-xl, 3rem);
+  line-height: 1.75;
 }
 
 .metricsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md, 1.5rem);
+  margin-top: var(--space-lg, 2rem);
 }
 
 .metricCard {
-  background: rgba(7, 43, 64, 0.6);
-  border: 1px solid rgba(66, 184, 243, 0.3);
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
+  background: var(--glass-bg-strong, rgba(7, 43, 64, 0.35));
+  backdrop-filter: var(--glass-blur, blur(25px) saturate(1.4));
+  -webkit-backdrop-filter: var(--glass-blur, blur(25px) saturate(1.4));
+  border: 1px solid rgba(66, 184, 243, 0.2);
+  border-radius: 16px;
+  padding: var(--space-lg, 2rem) var(--space-md, 1.5rem);
   text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-soft, 0 8px 32px rgba(0, 16, 25, 0.37));
 
-.metricCard:hover {
-  border-color: var(--c-blue);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(66, 184, 243, 0.2);
+  // Chromatic top line (design doc §3.2)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 157, 50, 0.5),
+      rgba(66, 184, 243, 0.5),
+      transparent
+    );
+  }
+
+  &:hover {
+    border-color: rgba(66, 184, 243, 0.4);
+    box-shadow:
+      var(--shadow-medium, 0 12px 40px rgba(0, 16, 25, 0.5)),
+      var(--glow-blue, 0 0 20px rgba(66, 184, 243, 0.3));
+  }
 }
 
 .metricValue {
-  font-size: var(--fs-5);
-  font-weight: 800;
+  font-size: var(--fs-fluid-2xl, clamp(1.728rem, 1.51rem + 1.07vw, 2.441rem));
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: var(--space-xs, 0.5rem);
   background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-orange) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
 }
 
 .metricLabel {
-  color: var(--c-grey);
-  font-size: var(--fs-xs);
+  color: var(--c-white);
+  font-size: var(--fs-fluid-sm, 0.875rem);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-bottom: var(--space-xs, 0.5rem);
 }
 
 .metricSubtext {
   color: var(--c-grey);
-  font-size: var(--fs-s);
+  font-size: var(--fs-fluid-xs, 0.75rem);
   opacity: 0.7;
 }
 
 @media screen and (max-width: 768px) {
   .hero {
-    padding: 2rem 0;
-  }
-
-  .title {
-    font-size: var(--fs-4);
-  }
-
-  .subtitle {
-    font-size: var(--fs-1);
-    margin-bottom: 2rem;
+    padding: var(--space-xl, 2rem) 0;
   }
 
   .metricsGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: var(--space-sm, 1rem);
   }
 
   .metricCard {
-    padding: 1.5rem 1rem;
-  }
-
-  .metricValue {
-    font-size: var(--fs-3);
+    padding: var(--space-md, 1.5rem) var(--space-sm, 1rem);
   }
 }
 

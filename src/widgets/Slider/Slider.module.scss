@@ -20,8 +20,10 @@
 .Slider {
   position: relative;
   width: 100%;
-  /* Stable height: avoids 260px→500px jump that caused Community page dancing */
-  height: clamp(260px, 40vw, 500px);
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  height: clamp(260px, 30vw, 400px);
   overflow: hidden;
   margin-bottom: 2rem;
 }

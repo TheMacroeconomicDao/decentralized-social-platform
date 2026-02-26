@@ -40,6 +40,17 @@
       }
     }
     
+    .docsLink {
+      font-size: clamp(0.875rem, 2vw, 1rem);
+      color: var(--c-white);
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
     .dappButton {
       /* Дополнительные стили для Dapp кнопки при необходимости */
       position: relative;

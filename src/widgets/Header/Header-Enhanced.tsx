@@ -7,7 +7,7 @@ import { ThemeButton } from "@/shared/ui/Button/Button";
 import { Logo } from "@/shared/ui/Logo/Logo";
 import { NavbarTablet } from "../Navbar";
 import Link from "next/link";
-import Documents from "@/widgets/Documents/ui/Documents";
+import ExternalLink, { ThemeExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { motion, Variants } from "framer-motion";
 import { WalletAuthModal } from "@/features/WalletAuth/ui/WalletAuthModal/WalletAuthModal";
 import { UnitProfileCard } from "@/features/WalletAuth/ui/UnitProfileCard/UnitProfileCard";
@@ -46,13 +46,8 @@ const itemVariants: Variants = {
 
 // ClientHeader already guards against SSR — no second mounted guard needed here.
 export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
-    const [isShow, setIsShow] = useState<boolean>(false);
     const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
     const { profile } = useUnitProfile();
-
-    const handleClick = () => {
-        setIsShow(() => !isShow)
-    }
 
     const handleWalletClick = () => {
         setIsWalletModalOpen(true);
@@ -112,15 +107,22 @@ export const HeaderEnhanced = ({ className = "" }: HeaderProps) => {
                                 )}
                             </motion.div>
 
-                            {/* Documents Button */}
+                            {/* Docs Link */}
                             <motion.div
-                                whileHover={{ 
+                                whileHover={{
                                     scale: 1.02,
                                     transition: { duration: 0.2 }
                                 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <Documents handleClick={handleClick} isShow={isShow} />
+                                <ExternalLink
+                                    href="https://themacroeconomicdao.github.io/GYBER_EXPERIMENT_DOCS/"
+                                    target="_blank"
+                                    theme={ThemeExternalLink.CLEAR}
+                                    className={cls.docsLink}
+                                >
+                                    Docs
+                                </ExternalLink>
                             </motion.div>
                             
                             {/* NavbarTablet */}

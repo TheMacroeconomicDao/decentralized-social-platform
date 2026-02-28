@@ -24,16 +24,15 @@
     height: 700px;
   }
   
-  // Glassmorphism эффект
+  // Top edge glow line
   &::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(66, 184, 243, 0.5), transparent);
     pointer-events: none;
     z-index: 1;
   }

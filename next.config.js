@@ -31,6 +31,7 @@ const nextConfig = {
     // Оптимизация bundle
     productionBrowserSourceMaps: false,
     async headers() {
+        const isDev = process.env.NODE_ENV !== 'production';
         return [
             // Security headers for all routes
             {
@@ -42,13 +43,16 @@ const nextConfig = {
                     },
                 ],
             },
-            // Static assets — immutable (hashed filenames)
+            // Static assets — immutable only in production (content-hashed filenames).
+            // In dev, filenames are NOT hashed so immutable would serve stale code forever.
             {
                 source: '/_next/static/(.*)',
                 headers: [
                     {
                         key: 'Cache-Control',
-                        value: 'public, max-age=31536000, immutable',
+                        value: isDev
+                            ? 'no-store, must-revalidate'
+                            : 'public, max-age=31536000, immutable',
                     },
                 ],
             },
@@ -73,21 +77,8 @@ const nextConfig = {
             };
         }
         
+        // Dev: use default memory cache (filesystem cache can serve stale modules)
         if (dev) {
-            // Улучшаем стабильность кеширования в dev режиме
-            config.cache = {
-                type: 'filesystem',
-                buildDependencies: {
-                    config: [__filename],
-                },
-                // Добавляем более безопасные настройки
-                compression: false, // Отключаем сжатие чтобы избежать проблем с rename
-                // Ограничиваем размер кеша для экономии памяти
-                maxMemoryGenerations: 1,
-                maxAge: 1000 * 60 * 60 * 24, // 24 часа
-            };
-            
-            // Ограничиваем количество модулей в памяти
             config.optimization = {
                 ...config.optimization,
                 removeAvailableModules: true,
@@ -96,30 +87,9 @@ const nextConfig = {
             };
         }
         
-        // Оптимизация для production
-        if (!dev && !isServer) {
-            config.optimization = {
-                ...config.optimization,
-                moduleIds: 'deterministic',
-                runtimeChunk: 'single',
-                splitChunks: {
-                    chunks: 'all',
-                    cacheGroups: {
-                        vendor: {
-                            test: /[\\/]node_modules[\\/]/,
-                            name: 'vendors',
-                            priority: 10,
-                            reuseExistingChunk: true,
-                        },
-                        common: {
-                            minChunks: 2,
-                            priority: 5,
-                            reuseExistingChunk: true,
-                        },
-                    },
-                },
-            };
-        }
+        // NOTE: Do NOT override splitChunks or runtimeChunk in Next.js —
+        // Next.js manages its own chunk splitting for client-side routing.
+        // Custom runtimeChunk: 'single' was breaking SPA navigation.
         
         // Полностью отключаем кеш webpack для production из-за нехватки места на диске
         if (!dev) {

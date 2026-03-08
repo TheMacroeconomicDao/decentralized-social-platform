@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useUnitProfile } from '@/shared/hooks/useUnitProfile';
+import { useDUNACLA } from '@/shared/hooks/useDUNACLA';
 import { WalletAuthModal } from '@/features/WalletAuth/ui/WalletAuthModal/WalletAuthModal';
+import { DUNACLAAcceptor } from '@/features/WalletAuth/ui/DUNACLAAcceptor/DUNACLAAcceptor';
 import { TeamsContribute } from '@/features/UnitProfile/ui/TeamsContribute/TeamsContribute';
 import { Button, ThemeButton } from '@/shared/ui/Button/Button';
 import cls from './page.module.scss';
@@ -13,13 +15,22 @@ export default function UnitProfilePage() {
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('Dashboard');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  
-  // Always call useUnitProfile unconditionally
+  const [showCLAModal, setShowCLAModal] = useState(false);
+
+  // Always call hooks unconditionally
   const { profile } = useUnitProfile();
+  const { claAccepted, isCLARequired } = useDUNACLA();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Show CLA modal automatically when profile exists but CLA not yet accepted
+  useEffect(() => {
+    if (mounted && profile && isCLARequired && !claAccepted) {
+      setShowCLAModal(true);
+    }
+  }, [mounted, profile, isCLARequired, claAccepted]);
 
   if (!mounted) {
     return (
@@ -55,7 +66,26 @@ export default function UnitProfilePage() {
   }
 
   return (
+    <>
     <div className={cls.container}>
+      {/* CLA Status Banner */}
+      <div className={cls.claBanner}>
+        {claAccepted ? (
+          <span className={cls.claBadgeOk}>
+            CLA Accepted — DUNA-CLA v{claAccepted.version}
+            {claAccepted.githubUsername && ` · @${claAccepted.githubUsername}`}
+          </span>
+        ) : (
+          <button
+            type="button"
+            className={cls.claBadgeWarn}
+            onClick={() => setShowCLAModal(true)}
+          >
+            IP Assignment Required — Accept DUNA-CLA
+          </button>
+        )}
+      </div>
+
       <div className={cls.header}>
         <h1 className={cls.title}>UNIT PROFILE</h1>
         <div className={cls.walletAddress}>
@@ -226,5 +256,23 @@ export default function UnitProfilePage() {
         </div>
       </div>
     </div>
+
+    {/* CLA Modal Overlay */}
+    {showCLAModal && (
+      <div className={cls.claModalOverlay} role="presentation">
+        <div className={cls.claModalBox}>
+          <button
+            type="button"
+            className={cls.claModalClose}
+            onClick={() => setShowCLAModal(false)}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+          <DUNACLAAcceptor onSuccess={() => setShowCLAModal(false)} />
+        </div>
+      </div>
+    )}
+    </>
   );
 } 

@@ -1,3 +1,107 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// DUNA-CLA Status Banner & Modal
+// ─────────────────────────────────────────────────────────────────────────────
+
+.claBanner {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(12px, 3vw, 20px);
+}
+
+.claBadgeOk {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 20px;
+  font-size: 12px;
+  color: #86efac;
+  font-weight: 500;
+
+  &::before {
+    content: '✓';
+    font-size: 11px;
+  }
+}
+
+.claBadgeWarn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(212, 157, 50, 0.12);
+  border: 1px solid rgba(212, 157, 50, 0.4);
+  border-radius: 20px;
+  font-size: 12px;
+  color: #f4c430;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &::before {
+    content: '!';
+    font-size: 11px;
+  }
+
+  &:hover {
+    background: rgba(212, 157, 50, 0.22);
+    transform: translateY(-1px);
+  }
+}
+
+.claModalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.claModalBox {
+  position: relative;
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 157, 50, 0.35) transparent;
+}
+
+.claModalClose {
+  position: sticky;
+  top: 8px;
+  float: right;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 8px 0 auto;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 .container {
   min-height: 100vh;
   width: 100%;

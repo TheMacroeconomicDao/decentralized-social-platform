@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useUnitProfile } from '@/shared/hooks/useUnitProfile';
+import { useDUNACLA } from '@/shared/hooks/useDUNACLA';
+import { DUNACLAAcceptor } from '../DUNACLAAcceptor/DUNACLAAcceptor';
 import { Button, ThemeButton } from '@/shared/ui/Button/Button';
 import cls from './UnitProfileCreator.module.scss';
 import { classNames } from '@/shared/lib/classNames/classNames';
@@ -12,12 +14,16 @@ interface UnitProfileCreatorProps {
   onCancel?: () => void;
 }
 
+type Step = 'unitname' | 'cla';
+
 export const UnitProfileCreator = ({ className, onSuccess, onCancel }: UnitProfileCreatorProps) => {
+  const [step, setStep] = useState<Step>('unitname');
   const [unitname, setUnitname] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState('');
-  
+
   const { createUnitProfile, checkUnitnameAvailability, isLoading, error, clearError } = useUnitProfile();
+  const { claAccepted } = useDUNACLA();
 
   const validateUnitname = (name: string): boolean => {
     if (name.length < 3) {
@@ -72,7 +78,7 @@ export const UnitProfileCreator = ({ className, onSuccess, onCancel }: UnitProfi
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateUnitname(unitname)) {
       return;
     }
@@ -82,12 +88,21 @@ export const UnitProfileCreator = ({ className, onSuccess, onCancel }: UnitProfi
 
     try {
       await createUnitProfile(unitname);
-      onSuccess?.();
+      // If CLA already accepted for this wallet, skip the CLA step
+      if (claAccepted) {
+        onSuccess?.();
+      } else {
+        setStep('cla');
+      }
     } catch (err) {
       console.error('Failed to create unit profile:', err);
     } finally {
       setIsValidating(false);
     }
+  };
+
+  const handleCLASuccess = () => {
+    onSuccess?.();
   };
 
   const handleCancel = () => {
@@ -96,6 +111,16 @@ export const UnitProfileCreator = ({ className, onSuccess, onCancel }: UnitProfi
     clearError();
     onCancel?.();
   };
+
+  // CLA step — shown after profile creation if CLA was not yet accepted
+  if (step === 'cla') {
+    return (
+      <DUNACLAAcceptor
+        className={className}
+        onSuccess={handleCLASuccess}
+      />
+    );
+  }
 
   return (
     <div className={classNames(cls.UnitProfileCreator, {}, [className || ''])}>

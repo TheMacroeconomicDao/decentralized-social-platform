@@ -1,0 +1,182 @@
+# 🔧 ЗАДАЧА: Исправление отображения Michael Hypov и проблем с центрированием
+
+## 📋 КОНТЕКСТ ПРОЕКТА
+
+**Проект**: DSP (Decentralized Social Platform)  
+**URL Production**: https://gyber.org  
+**Текущий коммит**: `3f126c38`  
+**Ветка**: `main`  
+**Архитектура**: Next.js 15, Feature-Sliced Design
+
+---
+
+## 🐛 ОПИСАНИЕ ПРОБЛЕМ
+
+### Проблема 1: Michael Hypov не отображается на сайте
+
+**Симптомы**:
+- На странице https://gyber.org в секции "Our Team" отсутствует карточка Michael Hypov
+- В коде данные присутствуют (проверено)
+- Фото существует локально: `public/images/teams/Michael_Hypov.jpeg`
+- Deployment использует правильный образ: `dsp-prod:3f126c38`
+
+**Ожидаемое поведение**:
+- Michael Hypov должен отображаться вторым в списке команды (после Lll CIlician)
+
+### Проблема 2: Элементы не выровнены по центру
+
+**Симптомы**:
+- Сетка команды в секции "Our Team" смещена влево
+- Карточки команды обрезаются слева (частично не видны)
+- Текстовая секция "Revolution in corporate development" не центрирована
+- Подзаголовок выровнен по левому краю вместо центра
+
+**Ожидаемое поведение**:
+- Все элементы должны быть центрированы горизонтально
+- Сетка команды должна быть симметрично расположена
+- Текстовые секции должны быть выровнены по центру
+
+---
+
+## 📊 СОБРАННЫЕ ДАННЫЕ
+
+### Данные о Michael Hypov
+
+**Файл**: `src/widgets/Team/data/teams.ts`
+
+**Текущие данные в коде**:
+```typescript
+{
+  id: 2,
+  avatarSrc: '/images/teams/Michael_Hypov.jpeg',
+  fullName: 'Michael Hypov',
+  skills: 'CMO of Gybernaty, CEO of TechHy, Co-Founder of Maximus Marketing Swarm',
+  link: 'https://t.me/Hypov',
+}
+```
+
+**Позиция в массиве**: Второй элемент (после объекта с id: 1 - Lll CIlician)
+
+**Фото**: 
+- Путь: `public/images/teams/Michael_Hypov.jpeg`
+- Размер: 169KB
+- Формат: JPEG
+- Статус: Файл существует локально
+
+### Компоненты и файлы
+
+**Компонент Team**:
+- Файл компонента: `src/widgets/Team/ui/Team.tsx`
+- Файл стилей: `src/widgets/Team/ui/Team.module.scss`
+- Данные: `src/widgets/Team/data/teams.ts`
+
+**Компонент Substrate** (текстовая секция):
+- Файл компонента: `src/shared/ui/Substrate/Substrate.tsx`
+- Файл стилей: `src/shared/ui/Substrate/Substrate.module.scss`
+
+**Главная страница**:
+- Файл: `src/app/page.tsx`
+- Использует компоненты: `<Substrate />` и `<Team />`
+
+### Текущее состояние деплоя
+
+**Проверено**:
+- ✅ Коммит в репозитории: `3f126c38`
+- ✅ Образ в deployment: `ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:3f126c38`
+- ✅ Поды работают: 3/3 Running
+- ✅ Главная страница отвечает: HTTP 200
+- ✅ Данные Michael Hypov в коде: присутствуют
+- ✅ Фото существует локально
+
+**Проблемы**:
+- ❌ Michael Hypov не отображается на сайте (возможно кеш, проблема сборки или рендеринга)
+- ❌ Элементы не центрированы (Team wrapper и Substrate)
+
+---
+
+## 🎯 ЗАДАЧА
+
+**Твоя задача**:
+
+1. **Изучить проблему основательно**:
+   - Проанализировать код компонентов Team и Substrate
+   - Проверить стили и их влияние на отображение
+   - Найти причину почему Michael Hypov не отображается
+   - Найти причину проблем с центрированием
+
+2. **Найти все проблемы**:
+   - Проверить логику рендеринга данных
+   - Проверить CSS стили на всех разрешениях
+   - Проверить возможные конфликты стилей
+   - Проверить кеширование и сборку
+
+3. **Устранить проблемы**:
+   - Исправить отображение Michael Hypov
+   - Исправить центрирование всех элементов
+   - Убедиться что изменения работают на всех разрешениях
+   - Убедиться что не сломаны другие компоненты
+
+4. **Протестировать и задеплоить**:
+   - Протестировать локально
+   - Закоммитить изменения
+   - Собрать образ
+   - Задеплоить в production
+   - Проверить результат на https://gyber.org
+
+---
+
+## 📁 КЛЮЧЕВЫЕ ФАЙЛЫ ДЛЯ ИЗУЧЕНИЯ
+
+1. `src/widgets/Team/data/teams.ts` - данные команды
+2. `src/widgets/Team/ui/Team.tsx` - компонент команды
+3. `src/widgets/Team/ui/Team.module.scss` - стили команды
+4. `src/shared/ui/Substrate/Substrate.tsx` - компонент текстовой секции
+5. `src/shared/ui/Substrate/Substrate.module.scss` - стили текстовой секции
+6. `src/app/page.tsx` - главная страница
+7. `src/entities/CardMember/ui/CardMember.tsx` - карточка участника
+8. `public/images/teams/Michael_Hypov.jpeg` - фото участника
+
+---
+
+## ✅ КРИТЕРИИ УСПЕХА
+
+После исправлений должно быть:
+
+- [ ] Michael Hypov отображается на странице вторым после Lll CIlician
+- [ ] Сетка команды правильно центрирована на всех разрешениях
+- [ ] Текстовая секция Substrate центрирована
+- [ ] Подзаголовок "Revolution in corporate development" центрирован
+- [ ] Нет обрезанных карточек слева
+- [ ] Все элементы выровнены симметрично
+- [ ] Работает на мобильных, планшетах и десктопах
+- [ ] Не сломаны другие компоненты
+
+---
+
+## 🔍 ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ
+
+**Архитектура проекта**: Feature-Sliced Design  
+**Фреймворк**: Next.js 15 (App Router)  
+**Стили**: SCSS Modules  
+**Деплой**: Kubernetes, образы в GHCR
+
+**Команды для деплоя** (использовать после исправлений):
+```bash
+cd /Users/Gyber/GYBERNATY-ECOSYSTEM/DSP
+git add .
+git commit -m "fix: исправление отображения Michael Hypov и центрирование элементов"
+
+COMMIT_HASH=$(git rev-parse --short HEAD)
+docker build -t ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH -f Dockerfile .
+docker push ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH
+
+kubectl set image deployment/dsp-prod-deployment dsp-prod=ghcr.io/themacroeconomicdao/decentralized-social-platform/dsp-prod:$COMMIT_HASH -n default
+kubectl rollout status deployment/dsp-prod-deployment --timeout=600s -n default
+```
+
+---
+
+**Дата создания**: 30 декабря 2025  
+**Приоритет**: Высокий  
+**Статус**: Требует изучения и исправления
+

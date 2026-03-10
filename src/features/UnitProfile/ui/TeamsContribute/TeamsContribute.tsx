@@ -43,7 +43,7 @@ export const TeamsContribute = ({ className }: TeamsContributeProps) => {
       </div>
 
       <div className={cls.section}>
-        <h4 className={cls.title}>Contribut:</h4>
+        <h4 className={cls.title}>Contributions:</h4>
         <div className={cls.contributeContent}>
           {contributions.map((contribution, index) => (
             <div key={index} className={cls.contributionGroup}>

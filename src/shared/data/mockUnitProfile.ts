@@ -3,20 +3,22 @@ import { UnitProfile } from '@/shared/types/unit-profile';
 export const mockUnitProfile: UnitProfile = {
   address: '0x742d35Cc6634C0532925a3b8D1c9d9e5C13F2c1B',
   unitname: 'CyberPioneer',
-  bio: 'Passionate Web3 developer and blockchain enthusiast. Building the future of decentralized applications with cutting-edge technologies. Always learning, always innovating.',
+  bio: 'Passionate Web3 developer and blockchain enthusiast. Building the future of decentralized applications with cutting-edge technologies.',
   avatar: '/images/teams/member-placeholder.png',
-  ensName: 'cyberpinoeer.eth',
+  fullName: 'Vasiliy Voyt',
+  email: 'cyberunit@gyber.org',
+  unitType: 'Lead Dev',
+  ensName: 'cyberpioneer.eth',
   chainId: 1,
   balance: '2.4567',
   isConnected: true,
-  createdAt: Date.now() - (30 * 24 * 60 * 60 * 1000), // 30 days ago
-  lastLoginAt: Date.now() - (2 * 60 * 60 * 1000), // 2 hours ago
+  createdAt: Date.now() - (30 * 24 * 60 * 60 * 1000),
+  lastLoginAt: Date.now() - (2 * 60 * 60 * 1000),
   socialLinks: {
-    github: 'https://github.com/cyberpinoeer',
-    telegram: '@cyberpinoeer',
-    twitter: 'https://twitter.com/cyberpinoeer',
+    github: 'themacroeconomicdao',
+    telegram: 'cyberpioneer',
+    twitter: 'cyberpioneer_dev',
     discord: 'CyberPioneer#1337',
-    website: 'https://cyberpinoeer.dev',
   },
   preferences: {
     encryptByDefault: true,
@@ -31,18 +33,25 @@ export const mockUnitProfile: UnitProfile = {
     connectionsCount: 156,
     reputation: 892,
   },
-  skills: [
-    'React',
-    'TypeScript',
-    'Solidity',
-    'Web3',
-    'DeFi',
-    'Smart Contracts',
-    'IPFS',
-    'Ethereum',
-    'Next.js',
-    'Node.js'
+  skills: ['React', 'TypeScript', 'Solidity', 'Web3', 'DeFi', 'Smart Contracts', 'IPFS', 'Next.js'],
+  location: 'Decentralized',
+  timezone: 'UTC',
+  specialisation: 'fullstack',
+  qualifications: 'lead',
+  profileVisibility: 'public',
+  languages: ['EN', 'RU'],
+  links: [
+    { id: '1', title: 'Gybernaty', url: 'https://gyber.org' },
+    { id: '2', title: 'GitHub Org', url: 'https://github.com/TheMacroeconomicDao' },
+    { id: '3', title: 'Docs', url: 'https://themacroeconomicdao.github.io/GYBER_EXPERIMENT_DOCS/' },
   ],
-  location: 'San Francisco, CA',
-  timezone: 'PST',
-}; 
+  projects: [
+    { id: '1', title: 'DSP', description: 'Decentralized Social Platform', url: 'https://gyber.org', role: 'Lead Dev' },
+    { id: '2', title: 'LQD', description: 'Liquidity Protocol', role: 'Core Contributor' },
+    { id: '3', title: 'PowerSwapMeta', description: 'DEX Infrastructure', role: 'DevOps' },
+  ],
+  docs: [
+    { id: '1', title: 'DUNA-CLA v1.0', type: 'spec' },
+    { id: '2', title: 'DSP Architecture', type: 'spec', url: 'https://gyber.org/docs' },
+  ],
+};

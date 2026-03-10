@@ -17,11 +17,40 @@ export interface CLARecord {
   timestamp: number;
 }
 
+export type Specialisation = 'frontend' | 'backend' | 'fullstack' | 'devops' | 'blockchain' | 'ai-ml' | 'design' | 'research' | 'pm' | 'other';
+export type QualificationLevel = 'junior' | 'middle' | 'senior' | 'lead' | 'principal';
+export type ProfileVisibility = 'public' | 'community' | 'private';
+
+export interface ProfileLink {
+  id: string;
+  title: string;
+  url: string;
+  icon?: string;
+}
+
+export interface ProfileProject {
+  id: string;
+  title: string;
+  description?: string;
+  url?: string;
+  role?: string;
+}
+
+export interface ProfileDoc {
+  id: string;
+  title: string;
+  url?: string;
+  type?: 'paper' | 'article' | 'spec' | 'other';
+}
+
 export interface UnitProfile {
   address: string;
   unitname: string;
   avatar?: string;
   bio?: string;
+  fullName?: string;
+  email?: string;
+  unitType?: string;
   ensName?: string;
   chainId: number;
   balance?: string;
@@ -48,11 +77,18 @@ export interface UnitProfile {
     connectionsCount: number;
     reputation: number;
   };
-  // CLA acceptance status (DUNA-CLA v1.0)
   claAccepted?: DUNACLA;
   skills?: string[];
   location?: string;
   timezone?: string;
+  specialisation?: Specialisation;
+  stack?: string[];
+  qualifications?: QualificationLevel;
+  profileVisibility?: ProfileVisibility;
+  languages?: string[];
+  links?: ProfileLink[];
+  projects?: ProfileProject[];
+  docs?: ProfileDoc[];
 }
 
 export interface UnitProfileState {

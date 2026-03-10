@@ -3,19 +3,30 @@
 
 import { Suspense, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, Stars, Line, Html } from '@react-three/drei';
+import { OrbitControls, Stars, Line, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import cls from './Ecosystem3D.module.scss';
+
+// ─── Types ───────────────────────────────────────────
 
 interface ProjectNode {
   id: string;
   name: string;
   status: 'production' | 'development' | 'testnet';
   category: string;
+  cluster?: string;
   position: [number, number, number];
   connections?: string[];
   categoryColor?: string;
   isCore?: boolean;
+}
+
+interface ClusterData {
+  id: string;
+  name: string;
+  color: string;
+  position: [number, number, number];
+  radius: number;
 }
 
 interface CoreNode {
@@ -35,19 +46,190 @@ interface CoreNode {
 interface Ecosystem3DProps {
   projects?: ProjectNode[];
   coreComponents?: CoreNode[];
+  clusters?: ClusterData[];
   enableControls?: boolean;
   autoRotate?: boolean;
   className?: string;
 }
 
-// Status color helper
+// ─── Helpers ─────────────────────────────────────────
+
 function getStatusColor(status: string): string {
   if (status === 'testnet') return '#ff9800';
   if (status === 'development') return '#f5576c';
   return '#00f2fe';
 }
 
-// Project node — sphere with always-visible label
+// ─── Cluster Contour ─────────────────────────────────
+// Transparent boundary shell around each cluster with animated ring
+
+const ClusterContour = ({ cluster }: { cluster: ClusterData }) => {
+  const shellRef = useRef<THREE.Mesh>(null);
+  const ringRef = useRef<THREE.Mesh>(null);
+  const color = new THREE.Color(cluster.color);
+
+  useFrame((state) => {
+    if (shellRef.current) {
+      const mat = shellRef.current.material as THREE.MeshBasicMaterial;
+      mat.opacity = 0.04 + Math.sin(state.clock.elapsedTime * 0.5 + cluster.position[0]) * 0.015;
+    }
+    if (ringRef.current) {
+      ringRef.current.rotation.y += 0.003;
+      ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+    }
+  });
+
+  return (
+    <group position={cluster.position}>
+      {/* Transparent sphere boundary */}
+      <mesh ref={shellRef}>
+        <sphereGeometry args={[cluster.radius, 32, 32]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.04}
+          depthWrite={false}
+          side={THREE.BackSide}
+        />
+      </mesh>
+
+      {/* Wireframe contour */}
+      <mesh>
+        <sphereGeometry args={[cluster.radius, 16, 12]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.06}
+          wireframe
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Equatorial ring */}
+      <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[cluster.radius * 0.95, cluster.radius * 1.0, 64]} />
+        <meshBasicMaterial
+          color={cluster.color}
+          transparent
+          opacity={0.1}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Cluster label */}
+      <Html
+        center
+        distanceFactor={12}
+        position={[0, cluster.radius + 0.3, 0]}
+        style={{ pointerEvents: 'none' }}
+      >
+        <div style={{
+          color: cluster.color,
+          fontSize: '9px',
+          fontWeight: 600,
+          whiteSpace: 'nowrap',
+          textTransform: 'uppercase',
+          letterSpacing: '0.12em',
+          opacity: 0.6,
+          textShadow: `0 0 8px ${cluster.color}60, 0 0 16px rgba(0,0,0,0.9)`,
+        }}>
+          {cluster.name}
+        </div>
+      </Html>
+    </group>
+  );
+};
+
+// ─── Data Flow Particles ─────────────────────────────
+// Animated particles moving along connection paths
+
+const DataFlowParticle = ({
+  from,
+  to,
+  color,
+  speed,
+  offset,
+}: {
+  from: [number, number, number];
+  to: [number, number, number];
+  color: string;
+  speed: number;
+  offset: number;
+}) => {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    const t = ((state.clock.elapsedTime * speed + offset) % 1);
+    ref.current.position.set(
+      from[0] + (to[0] - from[0]) * t,
+      from[1] + (to[1] - from[1]) * t,
+      from[2] + (to[2] - from[2]) * t,
+    );
+    // Fade at edges
+    const mat = ref.current.material as THREE.MeshBasicMaterial;
+    mat.opacity = Math.sin(t * Math.PI) * 0.7;
+  });
+
+  return (
+    <mesh ref={ref}>
+      <sphereGeometry args={[0.04, 8, 8]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={0.5}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+};
+
+const DataFlowLines = ({ projects }: { projects: ProjectNode[] }) => {
+  const flows = useMemo(() => {
+    const result: { from: [number, number, number]; to: [number, number, number]; color: string }[] = [];
+    const projectMap = new Map(projects.map(p => [p.id, p]));
+    const seen = new Set<string>();
+
+    projects.forEach(project => {
+      (project.connections ?? []).forEach(targetId => {
+        const key = [project.id, targetId].sort().join('-');
+        if (seen.has(key)) return;
+        seen.add(key);
+        const target = projectMap.get(targetId);
+        if (target) {
+          const isCross = project.cluster !== target.cluster;
+          if (isCross || project.isCore || target.isCore) {
+            result.push({
+              from: project.position,
+              to: target.position,
+              color: project.isCore || target.isCore ? '#ff6b35' : '#42b8f3',
+            });
+          }
+        }
+      });
+    });
+    return result;
+  }, [projects]);
+
+  return (
+    <>
+      {flows.map((flow, i) => (
+        <DataFlowParticle
+          key={`flow-${i}`}
+          from={flow.from}
+          to={flow.to}
+          color={flow.color}
+          speed={0.15 + (i % 5) * 0.04}
+          offset={i * 0.37}
+        />
+      ))}
+    </>
+  );
+};
+
+// ─── Project Node ────────────────────────────────────
+
 const ProjectNode3D = ({
   position,
   name,
@@ -66,7 +248,7 @@ const ProjectNode3D = ({
 
   const color = isCore ? '#ff6b35' : (categoryColor || '#00f2fe');
   const baseColor = new THREE.Color(color);
-  const size = isCore ? 0.4 : 0.25;
+  const size = isCore ? 0.4 : 0.22;
 
   useFrame((state) => {
     if (!meshRef.current) return;
@@ -82,7 +264,6 @@ const ProjectNode3D = ({
 
   return (
     <group position={position}>
-      {/* Core sphere */}
       <mesh
         ref={meshRef}
         onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
@@ -98,20 +279,20 @@ const ProjectNode3D = ({
         />
       </mesh>
 
-      {/* Outer glow shell */}
+      {/* Glow shell */}
       <mesh>
         <sphereGeometry args={[size * 1.5, 16, 16]} />
         <meshStandardMaterial
           color={baseColor}
           transparent
-          opacity={hovered ? 0.3 : (isCore ? 0.2 : 0.1)}
+          opacity={hovered ? 0.3 : (isCore ? 0.18 : 0.08)}
           emissive={baseColor}
           emissiveIntensity={isCore ? 1.0 : 0.6}
           depthWrite={false}
         />
       </mesh>
 
-      {/* Orbital ring for core */}
+      {/* Core orbital ring */}
       {isCore && (
         <mesh rotation={[Math.PI / 2, 0, 0]}>
           <ringGeometry args={[size * 1.7, size * 1.85, 48]} />
@@ -124,11 +305,11 @@ const ProjectNode3D = ({
         </mesh>
       )}
 
-      {/* Always-visible label */}
+      {/* Label */}
       <Html
         center
         distanceFactor={10}
-        position={[0, size + 0.25, 0]}
+        position={[0, size + 0.2, 0]}
         style={{ pointerEvents: 'none' }}
       >
         <div style={{
@@ -145,12 +326,12 @@ const ProjectNode3D = ({
         </div>
       </Html>
 
-      {/* Extended tooltip on hover */}
+      {/* Status tooltip on hover */}
       {hovered && (
         <Html
           center
           distanceFactor={8}
-          position={[0, size + 0.65, 0]}
+          position={[0, size + 0.55, 0]}
           style={{ pointerEvents: 'none' }}
         >
           <div style={{
@@ -178,7 +359,8 @@ const ProjectNode3D = ({
   );
 };
 
-// Core infrastructure node with octahedron shape
+// ─── Core Node (Octahedron) ──────────────────────────
+
 const CoreNode3D = ({
   position,
   name,
@@ -207,7 +389,6 @@ const CoreNode3D = ({
 
   return (
     <group position={position}>
-      {/* Main core octahedron */}
       <mesh
         ref={meshRef}
         onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
@@ -248,7 +429,7 @@ const CoreNode3D = ({
         />
       </mesh>
 
-      {/* Neural pulse wireframe */}
+      {/* Wireframe shell */}
       <mesh>
         <sphereGeometry args={[0.55, 8, 8]} />
         <meshBasicMaterial
@@ -259,7 +440,7 @@ const CoreNode3D = ({
         />
       </mesh>
 
-      {/* Always-visible label */}
+      {/* Label */}
       <Html
         center
         distanceFactor={8}
@@ -331,7 +512,8 @@ const CoreNode3D = ({
   );
 };
 
-// Neural connections between core components
+// ─── Neural Connections (core-to-core) ───────────────
+
 const NeuralConnections = ({ components }: { components: CoreNode[] }) => {
   const connectionSet = new Set<string>();
   const connections: [number, number][] = [];
@@ -356,7 +538,6 @@ const NeuralConnections = ({ components }: { components: CoreNode[] }) => {
         const toNode = components[to];
         if (!fromNode || !toNode) return null;
 
-        // Gradient: use average of two colors
         const midColor = new THREE.Color(fromNode.color).lerp(new THREE.Color(toNode.color), 0.5);
 
         return (
@@ -378,90 +559,11 @@ const NeuralConnections = ({ components }: { components: CoreNode[] }) => {
   );
 };
 
-// Layer visualization rings
-const LayerRings = () => {
-  const ring1Ref = useRef<THREE.Mesh>(null);
-  const ring2Ref = useRef<THREE.Mesh>(null);
-  const ring3Ref = useRef<THREE.Mesh>(null);
+// ─── Connection Lines (project-to-project) ───────────
 
-  useFrame(() => {
-    if (ring1Ref.current) ring1Ref.current.rotation.y += 0.002;
-    if (ring2Ref.current) ring2Ref.current.rotation.y -= 0.0015;
-    if (ring3Ref.current) ring3Ref.current.rotation.y += 0.001;
-  });
-
-  return (
-    <group>
-      {/* Inner core ring */}
-      <mesh ref={ring1Ref} rotation={[Math.PI / 2.2, 0, Math.PI / 8]}>
-        <ringGeometry args={[1.0, 1.08, 64]} />
-        <meshBasicMaterial color="#ff6b35" transparent opacity={0.06} side={THREE.DoubleSide} />
-      </mesh>
-
-      {/* Middle ring */}
-      <mesh ref={ring2Ref} rotation={[Math.PI / 2.5, 0, 0]}>
-        <ringGeometry args={[2.2, 2.32, 64]} />
-        <meshBasicMaterial color="#42b8f3" transparent opacity={0.05} side={THREE.DoubleSide} />
-      </mesh>
-
-      {/* Outer ring */}
-      <mesh ref={ring3Ref} rotation={[Math.PI / 3, 0, Math.PI / 5]}>
-        <ringGeometry args={[3.8, 3.95, 64]} />
-        <meshBasicMaterial color="#00d4ff" transparent opacity={0.04} side={THREE.DoubleSide} />
-      </mesh>
-    </group>
-  );
-};
-
-// Background particles
-const BackgroundParticles = () => {
-  const mesh = useRef<THREE.Points>(null);
-  const particles = useMemo(() => {
-    const positions = new Float32Array(800 * 3);
-    // Deterministic seed-based positions
-    for (let i = 0; i < 800; i++) {
-      const seed = i * 1.618033988749; // golden ratio
-      const x = Math.sin(seed * 127.1) * 15;
-      const y = Math.cos(seed * 311.7) * 15;
-      const z = Math.sin(seed * 74.7 + 1.3) * 15;
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
-    }
-    return positions;
-  }, []);
-
-  useFrame((state) => {
-    if (!mesh.current) return;
-    mesh.current.rotation.y = state.clock.elapsedTime * 0.015;
-  });
-
-  return (
-    <points ref={mesh}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={800}
-          array={particles}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        color="#42b8f3"
-        size={0.035}
-        sizeAttenuation
-        transparent
-        opacity={0.45}
-        depthWrite={false}
-      />
-    </points>
-  );
-};
-
-// Connection lines between projects
 const ConnectionLines = ({ projects }: { projects: ProjectNode[] }) => {
   const lines = useMemo(() => {
-    const result: { from: [number, number, number]; to: [number, number, number]; color: string; isCore: boolean }[] = [];
+    const result: { from: [number, number, number]; to: [number, number, number]; color: string; isCore: boolean; isCross: boolean }[] = [];
     const projectMap = new Map(projects.map(p => [p.id, p]));
     const seen = new Set<string>();
 
@@ -474,11 +576,13 @@ const ConnectionLines = ({ projects }: { projects: ProjectNode[] }) => {
         const target = projectMap.get(targetId);
         if (target) {
           const isCoreConn = project.isCore || target.isCore;
+          const isCross = project.cluster !== target.cluster;
           result.push({
             from: project.position,
             to: target.position,
-            color: isCoreConn ? '#ff6b35' : (project.categoryColor || '#42b8f3'),
+            color: isCoreConn ? '#ff6b35' : (isCross ? '#42b8f3' : (project.categoryColor || '#42b8f3')),
             isCore: isCoreConn,
+            isCross,
           });
         }
       });
@@ -493,24 +597,73 @@ const ConnectionLines = ({ projects }: { projects: ProjectNode[] }) => {
           key={i}
           points={[line.from, line.to]}
           color={line.color}
-          lineWidth={line.isCore ? 1.5 : 0.8}
+          lineWidth={line.isCore ? 1.5 : (line.isCross ? 1.0 : 0.6)}
           transparent
-          opacity={line.isCore ? 0.35 : 0.18}
+          opacity={line.isCore ? 0.3 : (line.isCross ? 0.2 : 0.12)}
+          dashed={line.isCross}
+          dashScale={line.isCross ? 3 : 1}
+          dashSize={0.08}
+          dashOffset={0}
         />
       ))}
     </>
   );
 };
 
-// Main 3D scene
+// ─── Background Particles ────────────────────────────
+
+const BackgroundParticles = () => {
+  const mesh = useRef<THREE.Points>(null);
+  const particles = useMemo(() => {
+    const positions = new Float32Array(600 * 3);
+    for (let i = 0; i < 600; i++) {
+      const seed = i * 1.618033988749;
+      positions[i * 3] = Math.sin(seed * 127.1) * 18;
+      positions[i * 3 + 1] = Math.cos(seed * 311.7) * 18;
+      positions[i * 3 + 2] = Math.sin(seed * 74.7 + 1.3) * 18;
+    }
+    return positions;
+  }, []);
+
+  useFrame((state) => {
+    if (!mesh.current) return;
+    mesh.current.rotation.y = state.clock.elapsedTime * 0.012;
+  });
+
+  return (
+    <points ref={mesh}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={600}
+          array={particles}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        color="#42b8f3"
+        size={0.03}
+        sizeAttenuation
+        transparent
+        opacity={0.4}
+        depthWrite={false}
+      />
+    </points>
+  );
+};
+
+// ─── Main Scene ──────────────────────────────────────
+
 const Scene3D = ({
   projects,
   coreComponents,
+  clusters,
   enableControls,
-  autoRotate
+  autoRotate,
 }: {
   projects: ProjectNode[];
   coreComponents?: CoreNode[];
+  clusters?: ClusterData[];
   enableControls: boolean;
   autoRotate: boolean;
 }) => {
@@ -522,11 +675,10 @@ const Scene3D = ({
       <pointLight position={[-10, -10, -10]} intensity={0.35} color="#d49d32" />
       <directionalLight position={[0, 10, 0]} intensity={0.3} />
 
-      {/* Background stars */}
       <Stars
-        radius={25}
+        radius={30}
         depth={50}
-        count={600}
+        count={500}
         factor={4}
         saturation={0.5}
         fade
@@ -535,10 +687,14 @@ const Scene3D = ({
 
       <BackgroundParticles />
 
+      {/* Cluster contours */}
+      {clusters && clusters.map((cluster) => (
+        <ClusterContour key={cluster.id} cluster={cluster} />
+      ))}
+
       {/* Core infrastructure */}
       {coreComponents && coreComponents.length > 0 && (
         <>
-          <LayerRings />
           <NeuralConnections components={coreComponents} />
           {coreComponents.map((component) => (
             <CoreNode3D key={component.id} {...component} />
@@ -546,7 +702,11 @@ const Scene3D = ({
         </>
       )}
 
+      {/* Project connections */}
       <ConnectionLines projects={projects} />
+
+      {/* Data flow particles on cross-cluster connections */}
+      <DataFlowLines projects={projects} />
 
       {/* Project nodes */}
       {projects.map((project) => (
@@ -566,23 +726,23 @@ const Scene3D = ({
           enableZoom
           enablePan={false}
           autoRotate={autoRotate}
-          autoRotateSpeed={0.35}
-          minDistance={4}
-          maxDistance={14}
+          autoRotateSpeed={0.3}
+          minDistance={5}
+          maxDistance={16}
           enableDamping
           dampingFactor={0.05}
         />
       )}
-
-      <Environment preset="night" />
     </>
   );
 };
 
-// Main component
+// ─── Export ──────────────────────────────────────────
+
 export const Ecosystem3D = ({
   projects = [],
   coreComponents,
+  clusters,
   enableControls = true,
   autoRotate = true,
   className = '',
@@ -590,7 +750,7 @@ export const Ecosystem3D = ({
   return (
     <div className={`${cls.container} ${className}`}>
       <Canvas
-        camera={{ position: [5, 3.5, 5], fov: 50 }}
+        camera={{ position: [6, 4, 6], fov: 50 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 1.5]}
       >
@@ -598,6 +758,7 @@ export const Ecosystem3D = ({
           <Scene3D
             projects={projects}
             coreComponents={coreComponents}
+            clusters={clusters}
             enableControls={enableControls}
             autoRotate={autoRotate}
           />

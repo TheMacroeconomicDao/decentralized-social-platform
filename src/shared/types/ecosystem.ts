@@ -47,6 +47,7 @@ export interface EcosystemProject {
   technologies: string[];
   position?: [number, number, number]; // для 3D визуализации
   connections?: string[]; // ID связанных проектов
+  cluster?: ClusterId; // Cluster from real directory structure
   progress?: number; // процент готовности (для development)
   website?: string;
   github?: string;
@@ -130,6 +131,94 @@ export const CATEGORIES: Record<ProjectCategory, CategoryInfo> = {
   },
 };
 
+/**
+ * Ecosystem clusters — maps to real GYBERNATY-ECOSYSTEM directory structure
+ */
+export type ClusterId =
+  | 'csc'           // CSC/ — Core Social Components
+  | 'market'        // MarketProjects/ — Market-facing products
+  | 'nesx'          // NESX/ — Enterprise monorepo (GPROD)
+  | 'zwm'           // ZWM/ — Distributed work management
+  | 'partners'      // StrategicPartners/ — Canton, KIKIMORA, TechHy
+  | 'foundation'    // CybersociumFoundation/ — Research & governance
+  | 'infra';        // Standalone infra: cag-chains, cruster, dev-ops, open-processor
+
+export interface EcosystemCluster {
+  id: ClusterId;
+  name: string;
+  directory: string;       // Real directory name in GYBERNATY-ECOSYSTEM
+  description: string;
+  color: string;
+  position: [number, number, number]; // Cluster center in 3D space
+  radius: number;          // Cluster contour radius
+}
+
+export const CLUSTERS: Record<ClusterId, EcosystemCluster> = {
+  csc: {
+    id: 'csc',
+    name: 'Core Social Components',
+    directory: 'CSC',
+    description: 'DSP, Smart Contracts, Experiment Docs',
+    color: '#00d4ff',
+    position: [0, 0, 0],
+    radius: 1.8,
+  },
+  market: {
+    id: 'market',
+    name: 'Market Projects',
+    directory: 'MarketProjects',
+    description: 'LQD, G-Wallet, PSWMeta, Maximus, Trader-Agent',
+    color: '#d49d32',
+    position: [3.5, 0.3, 1.5],
+    radius: 2.4,
+  },
+  nesx: {
+    id: 'nesx',
+    name: 'NESX Enterprise',
+    directory: 'NESX',
+    description: 'GPROD enterprise monorepo',
+    color: '#4caf50',
+    position: [-3.0, 0.5, -1.5],
+    radius: 1.2,
+  },
+  zwm: {
+    id: 'zwm',
+    name: 'ZWM',
+    directory: 'ZWM',
+    description: 'Distributed work management (Rust)',
+    color: '#ff6b35',
+    position: [-2.5, -1.0, 2.5],
+    radius: 1.0,
+  },
+  partners: {
+    id: 'partners',
+    name: 'Strategic Partners',
+    directory: 'StrategicPartners',
+    description: 'Canton, KIKIMORA, TechHy',
+    color: '#f5576c',
+    position: [2.0, -1.2, -3.0],
+    radius: 1.8,
+  },
+  foundation: {
+    id: 'foundation',
+    name: 'Cybersocium Foundation',
+    directory: 'CybersociumFoundation',
+    description: 'Research, governance, macroeconomic DAO',
+    color: '#9c27b0',
+    position: [-1.5, 1.5, -3.0],
+    radius: 1.4,
+  },
+  infra: {
+    id: 'infra',
+    name: 'Infrastructure',
+    directory: '(standalone)',
+    description: 'CAG-Chains, Cruster, DevOps, Open Processor',
+    color: '#42b8f3',
+    position: [0, -1.5, 3.5],
+    radius: 2.0,
+  },
+};
+
 export const CORE_COMPONENTS: CoreComponentInfo[] = [
   {
     id: "dsp",
@@ -186,7 +275,7 @@ export const CORE_COMPONENTS: CoreComponentInfo[] = [
     function: "DAO governance, treasury management, voting, economic policy",
     layer: "blockchain",
     color: "#ff6b35",
-    position: [0, -1.0, -1.0],
+    position: [-1.5, 1.5, -3.0],
     concept: "Управление Экосистемой",
     value:
       "Децентрализованное управление, казначейство, экономическая политика",

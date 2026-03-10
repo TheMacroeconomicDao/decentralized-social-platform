@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Ecosystem3D } from '@/shared/ui/Ecosystem3D/Ecosystem3D';
 import { ecosystemProjects } from '@/shared/lib/ecosystem-data';
-import { CATEGORIES, CORE_COMPONENTS } from '@/shared/types/ecosystem';
+import { CATEGORIES, CLUSTERS, CORE_COMPONENTS, ClusterId } from '@/shared/types/ecosystem';
 import styles from './Ecosystem3DVisualization.module.scss';
 
 const legendItems = [
@@ -27,75 +27,66 @@ const legendItemVariants = {
 };
 
 /**
- * Deterministic position calculation based on category grouping
- * Core projects at center, others arranged by category in sectors
+ * Cluster-based position calculation.
+ * Projects are placed within their cluster's sphere, distributed evenly.
  */
-const CATEGORY_ANGLES: Record<string, number> = {
-  'ai-content': 0,
-  'defi-finance': Math.PI * 0.35,
-  'crypto-wallets': Math.PI * 0.7,
-  'blockchain-infra': Math.PI * 1.05,
-  'web3-apps': Math.PI * 1.4,
-  'trading-analytics': Math.PI * 1.6,
-  'enterprise-infra': Math.PI * 1.85,
-};
-
 function calculatePosition(
   project: typeof ecosystemProjects[0],
-  indexInCategory: number,
-  categoryCount: number,
+  indexInCluster: number,
+  clusterCount: number,
 ): [number, number, number] {
-  // Core projects near center
-  if (project.isCore) {
-    if (project.id === 'dsp') return [0, 0.2, 0];
-    if (project.id === 'gprod') return [0.9, -0.1, 0.6];
+  const clusterId = project.cluster as ClusterId | undefined;
+  const cluster = clusterId ? CLUSTERS[clusterId] : null;
+
+  if (!cluster) {
+    // Fallback: place at origin
     return [0, 0, 0];
   }
 
-  const baseAngle = CATEGORY_ANGLES[project.category] ?? 0;
-  const hasConnections = (project.connections?.length ?? 0) > 0;
+  // Core projects get fixed positions near cluster center
+  if (project.isCore) {
+    if (project.id === 'dsp') return [cluster.position[0], cluster.position[1] + 0.2, cluster.position[2]];
+    if (project.id === 'gprod') return [cluster.position[0], cluster.position[1] + 0.1, cluster.position[2] + 0.3];
+    return cluster.position;
+  }
 
-  // Connected projects closer to center, isolated further
-  const radius = hasConnections ? 2.5 + indexInCategory * 0.6 : 3.8 + indexInCategory * 0.5;
-
-  // Spread projects within their category sector
-  const angleSpread = 0.35;
-  const angle = baseAngle + (indexInCategory - (categoryCount - 1) / 2) * angleSpread;
-
-  // Slight height variation based on index
-  const height = (indexInCategory % 3 - 1) * 0.5;
+  // Distribute non-core projects around the cluster center
+  // Use golden angle distribution for even spacing within sphere
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~2.399
+  const theta = goldenAngle * indexInCluster;
+  const r = cluster.radius * 0.6 * (0.5 + (indexInCluster / Math.max(clusterCount, 1)) * 0.5);
+  const phi = Math.acos(1 - 2 * ((indexInCluster + 0.5) / Math.max(clusterCount, 1)));
 
   return [
-    Math.cos(angle) * radius,
-    height,
-    Math.sin(angle) * radius,
+    cluster.position[0] + r * Math.sin(phi) * Math.cos(theta),
+    cluster.position[1] + r * Math.cos(phi) * 0.6, // Flatten vertically
+    cluster.position[2] + r * Math.sin(phi) * Math.sin(theta),
   ];
 }
 
 export function Ecosystem3DVisualization() {
-  const projectsFor3D = useMemo(() => {
-    // Group by category to know index within category
-    const categoryIndices = new Map<string, number>();
-    const categoryCounts = new Map<string, number>();
+  const { projectsFor3D, clustersFor3D } = useMemo(() => {
+    // Count projects per cluster
+    const clusterIndices = new Map<string, number>();
+    const clusterCounts = new Map<string, number>();
 
-    // Count projects per category (excluding core)
     ecosystemProjects.forEach(p => {
-      if (!p.isCore) {
-        categoryCounts.set(p.category, (categoryCounts.get(p.category) ?? 0) + 1);
+      if (!p.isCore && p.cluster) {
+        clusterCounts.set(p.cluster, (clusterCounts.get(p.cluster) ?? 0) + 1);
       }
     });
 
-    return ecosystemProjects.map((project) => {
-      let indexInCat = 0;
-      if (!project.isCore) {
-        indexInCat = categoryIndices.get(project.category) ?? 0;
-        categoryIndices.set(project.category, indexInCat + 1);
+    const projects = ecosystemProjects.map((project) => {
+      let indexInCluster = 0;
+      if (!project.isCore && project.cluster) {
+        indexInCluster = clusterIndices.get(project.cluster) ?? 0;
+        clusterIndices.set(project.cluster, indexInCluster + 1);
       }
 
       const position = calculatePosition(
         project,
-        indexInCat,
-        categoryCounts.get(project.category) ?? 1,
+        indexInCluster,
+        clusterCounts.get(project.cluster ?? '') ?? 1,
       );
 
       return {
@@ -103,12 +94,23 @@ export function Ecosystem3DVisualization() {
         name: project.shortName,
         status: project.status as 'production' | 'development' | 'testnet',
         category: project.category,
+        cluster: project.cluster,
         categoryColor: CATEGORIES[project.category].color,
         isCore: project.isCore,
         connections: project.connections ?? [],
         position,
       };
     });
+
+    const clusters = Object.values(CLUSTERS).map(c => ({
+      id: c.id,
+      name: c.name,
+      color: c.color,
+      position: c.position,
+      radius: c.radius,
+    }));
+
+    return { projectsFor3D: projects, clustersFor3D: clusters };
   }, []);
 
   return (
@@ -129,13 +131,14 @@ export function Ecosystem3DVisualization() {
         viewport={{ once: true }}
         transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.1 }}
       >
-        5 ядровых компонентов и 14 продуктов — наведите на узлы, чтобы раскрыть архитектуру
+        {ecosystemProjects.length} проектов в 7 кластерах — наведите на узлы, чтобы раскрыть архитектуру
       </motion.p>
 
       <div className={styles.canvasContainer}>
         <Ecosystem3D
           projects={projectsFor3D}
           coreComponents={CORE_COMPONENTS}
+          clusters={clustersFor3D}
           enableControls
           autoRotate
           className={styles.canvas}
@@ -162,6 +165,29 @@ export function Ecosystem3DVisualization() {
             </motion.div>
           ))}
         </div>
+
+        <div className={styles.legendGroup}>
+          <span className={styles.legendLabel}>Кластеры</span>
+          {Object.values(CLUSTERS).map((cluster) => (
+            <motion.div
+              key={cluster.id}
+              className={styles.legendItem}
+              variants={legendItemVariants}
+            >
+              <div
+                className={styles.legendDot}
+                style={{
+                  background: cluster.color,
+                  borderColor: cluster.color,
+                  boxShadow: `0 0 6px ${cluster.color}60`,
+                  borderRadius: '3px',
+                }}
+              />
+              <span>{cluster.name}</span>
+            </motion.div>
+          ))}
+        </div>
+
         <div className={styles.legendGroup}>
           <span className={styles.legendLabel}>Neural Core</span>
           {CORE_COMPONENTS.map((comp) => (

@@ -22,6 +22,9 @@ export const UnitProfileEditor = ({
 }: UnitProfileEditorProps) => {
   const [formData, setFormData] = useState({
     bio: profile.bio || '',
+    fullName: profile.fullName || '',
+    email: profile.email || '',
+    unitType: profile.unitType || '',
     location: profile.location || '',
     skills: profile.skills?.join(', ') || '',
     socialLinks: {
@@ -82,14 +85,22 @@ export const UnitProfileEditor = ({
       newErrors.bio = 'Bio must be less than 500 characters';
     }
 
-    // Validate URLs
-    const urlFields = ['github', 'twitter', 'discord', 'website'];
-    urlFields.forEach(field => {
-      const url = formData.socialLinks[field as keyof typeof formData.socialLinks];
-      if (url && !isValidUrl(url)) {
-        newErrors[`socialLinks.${field}`] = 'Please enter a valid URL';
-      }
-    });
+    // Validate URLs (only website requires full URL, others accept usernames)
+    if (formData.socialLinks.website && !isValidUrl(formData.socialLinks.website)) {
+      newErrors['socialLinks.website'] = 'Please enter a valid URL';
+    }
+
+    // Validate GitHub (username or URL)
+    const github = formData.socialLinks.github;
+    if (github && !isValidUsername(github) && !isValidUrl(github)) {
+      newErrors['socialLinks.github'] = 'Please enter a valid username or URL';
+    }
+
+    // Validate Twitter (username or URL)
+    const twitter = formData.socialLinks.twitter;
+    if (twitter && !isValidUsername(twitter) && !isValidUrl(twitter)) {
+      newErrors['socialLinks.twitter'] = 'Please enter a valid username or URL';
+    }
 
     // Validate Telegram (can be username or URL)
     const telegram = formData.socialLinks.telegram;
@@ -99,6 +110,10 @@ export const UnitProfileEditor = ({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const isValidUsername = (string: string): boolean => {
+    return /^@?[a-zA-Z0-9_-]{1,39}(\/[a-zA-Z0-9_.-]+)*$/.test(string);
   };
 
   const isValidUrl = (string: string): boolean => {
@@ -127,6 +142,9 @@ export const UnitProfileEditor = ({
     try {
       const updatedData: Partial<UnitProfile> = {
         bio: formData.bio || undefined,
+        fullName: formData.fullName || undefined,
+        email: formData.email || undefined,
+        unitType: formData.unitType || undefined,
         location: formData.location || undefined,
         skills: formData.skills ? formData.skills.split(',').map(s => s.trim()).filter(Boolean) : undefined,
         socialLinks: {
@@ -165,6 +183,42 @@ export const UnitProfileEditor = ({
         <div className={cls.section}>
           <h3 className={cls.sectionTitle}>📝 Basic Information</h3>
           
+          <div className={cls.inputGroup}>
+            <label htmlFor="fullName" className={cls.label}>Full Name</label>
+            <input
+              id="fullName"
+              type="text"
+              value={formData.fullName}
+              onChange={(e) => handleInputChange('fullName', e.target.value)}
+              placeholder="Your full name (optional)"
+              className={cls.input}
+            />
+          </div>
+
+          <div className={cls.inputGroup}>
+            <label htmlFor="email" className={cls.label}>Email</label>
+            <input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              placeholder="your@email.com (optional)"
+              className={cls.input}
+            />
+          </div>
+
+          <div className={cls.inputGroup}>
+            <label htmlFor="unitType" className={cls.label}>Unit Type / Role</label>
+            <input
+              id="unitType"
+              type="text"
+              value={formData.unitType}
+              onChange={(e) => handleInputChange('unitType', e.target.value)}
+              placeholder="e.g. Lead Dev, Researcher, Designer"
+              className={cls.input}
+            />
+          </div>
+
           <div className={cls.inputGroup}>
             <label htmlFor="bio" className={cls.label}>Bio</label>
             <textarea
@@ -220,10 +274,10 @@ export const UnitProfileEditor = ({
               </label>
               <input
                 id="github"
-                type="url"
+                type="text"
                 value={formData.socialLinks.github}
                 onChange={(e) => handleSocialLinkChange('github', e.target.value)}
-                placeholder="https://github.com/username"
+                placeholder="username or https://github.com/username"
                 className={classNames(cls.input, {
                   [cls.error]: !!errors['socialLinks.github']
                 })}
@@ -260,10 +314,10 @@ export const UnitProfileEditor = ({
               </label>
               <input
                 id="twitter"
-                type="url"
+                type="text"
                 value={formData.socialLinks.twitter}
                 onChange={(e) => handleSocialLinkChange('twitter', e.target.value)}
-                placeholder="https://twitter.com/username"
+                placeholder="username or https://x.com/username"
                 className={classNames(cls.input, {
                   [cls.error]: !!errors['socialLinks.twitter']
                 })}

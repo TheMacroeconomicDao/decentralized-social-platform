@@ -9,19 +9,102 @@
 
 Ты реализуешь **Phase 1 (Foundation)** интеграции модуля Oracle в Decentralized Social Platform (DSP).
 
-**Обязательно прочитай перед началом работы:**
-- `ORACLE/PRD-ORACLE-DSP-INTEGRATION.md` — полный PRD (§1-§17, ~2250 строк). Это твой единственный источник истины. Все типы, API, схемы, Helm values, Ansible playbooks, архитектура — там.
-- `GPROD/apps/backend/src/` — существующий NestJS backend (модули: auth, users, projects, health)
-- `GPROD/apps/backend/prisma/` — существующие миграции Prisma
-- `GPROD/packages/shared-types/src/` — shared types package (monorepo)
-- `src/shared/types/unit-profile.ts` — текущий UnitProfile interface
-- `src/shared/types/ipfs-storage.ts` — DDP типы (уже готовы)
-- `src/features/UnitProfile/ui/` — текущие компоненты (Editor, View, TeamsContribute)
-- `ORACLE/openclaw-k8s/helm/values.yaml` — текущий SmartOracle Helm config
+Oracle — персональный AI-ассистент каждого участника (Unit) экосистемы Gybernaty.
+Каждый Unit получает изолированный AI-агент (PicoClaw), развёрнутый в Kubernetes namespace.
+
+### Архитектура проекта (ВАЖНО — прочитай внимательно)
+
+**DSP Frontend** (`/Users/Gyber/GYBERNATY-ECOSYSTEM/CSC/DSP/`):
+- Next.js 16 App Router + React 19 + TypeScript
+- Feature-Sliced Design (FSD): `src/app/`, `src/widgets/`, `src/features/`, `src/shared/`
+- Web3 auth: wagmi v2 + viem v2 + RainbowKit v2 (SIWE — Sign-In With Ethereum)
+- SCSS modules, Framer Motion, Three.js / React Three Fiber
+- Деплой: Docker → k3s via GitHub Actions
+
+**GPROD Backend** (`/Users/Gyber/GYBERNATY-ECOSYSTEM/CSC/DSP/GPROD/`):
+- **Отдельный git репозиторий** (https://github.com/TheMacroeconomicDao/gprod-monorepo.git)
+- Monorepo (pnpm workspaces): `apps/backend`, `apps/frontend`, `packages/shared-types`, `packages/ui-components`
+- NestJS 11, Prisma 6 + PostgreSQL, Express 5
+- ES Modules (`"type": "module"`)
+- Auth: JWT + Local strategy (passport-jwt, passport-local, argon2)
+- Guards: `jwt-auth.guard.ts`, `local-auth.guard.ts` в `modules/auth/guards/`
+- Existing modules: `auth`, `users`, `projects`, `health`
+- Common: `middleware/` (request-logger, rate-limiter), `interceptors/`, `filters/`, `helpers/` (EnvHelper), `logger/` (winston), `database/` (PrismaService)
+- Swagger: @nestjs/swagger v11.1.6
+
+**Существующие Prisma модели** (`GPROD/apps/backend/prisma/schema.prisma`):
+```prisma
+model User {
+  id, username, email, password, isActive, createdAt, updatedAt
+  roles String[] @default(["user"])
+  refreshTokens RefreshToken[]
+}
+model Project { id, title, description, ownerId → User }
+model RefreshToken { id, token (unique), userId → User, createdAt, expiresAt }
+```
+
+**Существующие shared types** (`GPROD/packages/shared-types/src/index.ts`):
+- `User`, `UserRole` (ADMIN, USER, MANAGER)
+- `Project`, `ProjectStatus` (ACTIVE, INACTIVE, ARCHIVED)
+- `ApiResponse<T>`, `PaginatedResponse<T>`, `HealthCheckResponse`
+
+**ORACLE** (`/Users/Gyber/GYBERNATY-ECOSYSTEM/CSC/DSP/ORACLE/`):
+- `PRD-ORACLE-DSP-INTEGRATION.md` — полный PRD (§1-§17, ~2250 строк). **Единственный источник истины.**
+- `openclaw-k8s/` — существующий SmartOracle deployment (workspace, skills, k8s configs)
+- `GYBERNATY_ECOSYSTEM_AGENT.md` — спецификация Oracle как агента экосистемы
+
+**UnitProfile** (`src/shared/types/unit-profile.ts`):
+```typescript
+interface UnitProfile {
+  address: string;           // wallet address (0x...)
+  unitname: string;
+  avatar?: string;
+  bio?: string;
+  fullName?: string;
+  email?: string;
+  unitType?: string;
+  ensName?: string;
+  chainId: number;
+  balance?: string;
+  isConnected: boolean;
+  createdAt: number;
+  lastLoginAt: number;
+  socialLinks?: { telegram?, github?, twitter?, discord?, website? };
+  preferences: { encryptByDefault, allowDirectMessages, showOnlineStatus, theme, language };
+  stats: { messagesCount, chatsCount, connectionsCount, reputation };
+  claAccepted?: DUNACLA;
+  skills?: string[];
+  location?: string;
+  timezone?: string;
+  specialisation?: Specialisation;
+  qualifications?: QualificationLevel;
+  profileVisibility?: ProfileVisibility;
+  languages?: string[];
+  links?: ProfileLink[];
+  projects?: ProfileProject[];
+  docs?: ProfileDoc[];
+  // oracle?: OracleStatus — НЕТ, нужно добавить
+}
+```
+
+**ВАЖНО — Auth bridge:**
+DSP использует wallet auth (SIWE — EIP-4361), а GPROD backend — JWT с username/password. Для Oracle нужен **bridge**: GPROD должен принимать wallet address через SIWE verification (или X-Wallet-Address header с signature verification). В Phase 1 добавь поле `walletAddress` к модели User в Prisma и поддержку wallet-based auth в JWT payload.
 
 ---
 
-## Задача: Phase 1 — Foundation (4 deliverables)
+## Обязательно прочитай перед началом работы
+
+1. `ORACLE/PRD-ORACLE-DSP-INTEGRATION.md` — полный PRD. Все типы, API, схемы — там.
+2. `GPROD/apps/backend/src/app.module.ts` — текущие imports
+3. `GPROD/apps/backend/src/modules/auth/` — JWT guard, strategies
+4. `GPROD/apps/backend/prisma/schema.prisma` — текущие модели
+5. `GPROD/packages/shared-types/src/index.ts` — текущие shared types
+6. `src/shared/types/unit-profile.ts` — текущий UnitProfile
+7. `ORACLE/openclaw-k8s/` — SmartOracle deployment config (НЕ модифицировать)
+
+---
+
+## Задача: Phase 1 — Foundation (6 deliverables)
 
 ### 1. GPROD Oracle Module (NestJS)
 
@@ -34,7 +117,7 @@ modules/oracle/
 ├── oracle.module.ts
 ├── oracle.controller.ts          — REST API /api/v1/oracle/*
 ├── oracle.service.ts             — бизнес-логика
-├── oracle.gateway.ts             — WebSocket gateway для SSE provisioning
+├── oracle.gateway.ts             — SSE для provisioning progress
 ├── dto/
 │   ├── init-oracle.dto.ts        — InitSelfHostedDto, InitCommunityDto
 │   ├── oracle-status.dto.ts      — OracleStatusResponseDto
@@ -43,7 +126,7 @@ modules/oracle/
 ├── entities/
 │   └── oracle-instance.entity.ts — Prisma model mapping
 ├── guards/
-│   └── oracle-owner.guard.ts     — проверка что запрос от владельца oracle
+│   └── oracle-owner.guard.ts     — проверка владения oracle instance
 └── interfaces/
     └── oracle.interfaces.ts      — internal interfaces
 ```
@@ -62,11 +145,14 @@ modules/oracle/
 | `POST` | `/api/v1/oracle/config/api-key` | Add API key для premium моделей |
 | `GET` | `/api/v1/oracle/health` | Health check (для SmartOracle heartbeat) |
 
-**Все типы запросов/ответов** — PRD §8.1 (копируй точно).
+**Все типы запросов/ответов** — бери из PRD §8.1.
 
 **Prisma schema** — добавь в `GPROD/apps/backend/prisma/schema.prisma`:
 
 ```prisma
+// Расширь User — добавь walletAddress для bridge DSP↔GPROD
+// model User { ... walletAddress String? @unique @map("wallet_address") @db.VarChar(42) }
+
 model OracleInstance {
   id              String    @id @default(uuid())
   unitAddress     String    @unique @map("unit_address") @db.VarChar(42)
@@ -120,26 +206,40 @@ model OracleHealthEvent {
 
 Создай Prisma migration: `npx prisma migrate dev --name add_oracle_module`
 
-**Интеграция в app.module.ts** — добавь `OracleModule` в imports.
+**Интеграция в app.module.ts** — добавь `OracleModule` в imports (после HealthModule).
 
-**Аутентификация** — используй существующий JWT guard из `modules/auth/guards/`. Добавь `@UseGuards(JwtAuthGuard)` на все endpoints. Wallet address извлекай из JWT payload или заголовка `X-Wallet-Address`.
+**Аутентификация** — используй существующий `JwtAuthGuard` из `modules/auth/guards/jwt-auth.guard.ts`. Wallet address извлекай из JWT payload (добавь `walletAddress` в JWT strategy extraction). Для Phase 1 достаточно заголовка `X-Wallet-Address` с валидацией формата (0x + 40 hex chars).
 
 ---
 
 ### 2. Oracle Types в shared-types
 
-**Где:** `GPROD/packages/shared-types/src/oracle.ts`
+**Где:** `GPROD/packages/shared-types/src/oracle.ts` + `src/shared/types/oracle.ts` (DSP frontend)
 
-Скопируй типы из PRD §9.1 (точно как написано):
-- `OracleState`, `OracleTier`, `CloudProvider`, `ProvisioningPhase`
+Скопируй типы из PRD §9.1:
+- `OracleState` = 'provisioning' | 'active' | 'suspended' | 'error' | 'destroying'
+- `OracleTier` = 'community' | 'self-hosted'
+- `CloudProvider` = 'digitalocean' | 'gcp' | 'custom'
+- `ProvisioningPhase` = 'init' | 'server' | 'harden' | 'cluster' | 'deploy' | 'configure' | 'ready'
 - `OracleStatus`, `OracleServer`, `OracleAgent`, `OracleStats`
 - `ProvisioningStatus`, `ProvisioningPhaseStatus`
-- `OracleInitRequest`
+- `OracleInitRequest` (self-hosted + community variants)
 - `OraclePrivacySettings` (из PRD §12.3)
 
-Также создай `src/shared/types/oracle.ts` в DSP (frontend) с теми же типами.
+Расширь `UnitProfile` в `src/shared/types/unit-profile.ts` — добавь:
+```typescript
+oracle?: {
+  state: OracleState;
+  tier: OracleTier;
+  agentName?: string;
+  lastSeen?: number;
+};
+```
 
-Расширь `UnitProfile` в `src/shared/types/unit-profile.ts` — добавь optional поле `oracle` (PRD §9.2).
+Добавь export в `GPROD/packages/shared-types/src/index.ts`:
+```typescript
+export * from './oracle';
+```
 
 ---
 
@@ -153,9 +253,9 @@ model OracleHealthEvent {
 ORACLE/devops-agent/
 ├── SKILL.md                          — OpenClaw skill definition для DevOps Agent
 ├── playbooks/
-│   ├── harden-server.yml             — SSH hardening (из PRD §4.4, Phase 1)
-│   ├── join-cluster.yml              — K3s agent install + node label (Phase 2)
-│   ├── deploy-picoclaw.yml           — Namespace + NetworkPolicy + Helm deploy (Phase 3)
+│   ├── harden-server.yml             — SSH hardening (из PRD §4.4)
+│   ├── join-cluster.yml              — K3s agent install + node label
+│   ├── deploy-picoclaw.yml           — Namespace + NetworkPolicy + Helm deploy
 │   ├── rotate-keys.yml               — SSH key rotation (90 days)
 │   └── decommission.yml              — Drain node + delete namespace + export data
 ├── inventory/
@@ -172,52 +272,7 @@ ORACLE/devops-agent/
 └── requirements.yml                  — Galaxy dependencies
 ```
 
-**SKILL.md** — OpenClaw skill definition:
-```markdown
----
-name: devops-provision
-description: Server provisioning, hardening, K8s management for Oracle instances
-triggers:
-  - "provision server"
-  - "harden server"
-  - "join cluster"
-  - "deploy picoclaw"
-  - "rotate keys"
-  - "decommission"
----
-
-# DevOps Provision Skill
-
-You are the DevOps Agent — a specialized sub-agent of SmartOracle responsible for infrastructure automation.
-
-## Capabilities
-- Server security hardening (SSH key-only, disable password auth)
-- K3s cluster node management (join, label, drain)
-- Kubernetes namespace isolation (NetworkPolicy, ResourceQuota, RBAC)
-- PicoClaw deployment via Helm
-- SSH key rotation (90-day CronJob)
-- Server decommissioning with data export
-
-## Tools
-- Ansible playbooks in `devops-agent/playbooks/`
-- HashiCorp Vault client for secrets
-- @kubernetes/client-node for K8s API
-- Cloud provider SDKs (DigitalOcean, GCP)
-
-## Workflow
-1. Receive provision request from SmartOracle
-2. Execute playbooks in sequence: harden → join → deploy
-3. Report progress via gRPC stream to GPROD
-4. Log all actions to oracle_provisioning_logs
-
-## Security Rules
-- NEVER store SSH keys outside Vault
-- ALWAYS shred temporary key files after Vault storage
-- ALWAYS apply deny-all NetworkPolicy before deploying agent
-- NEVER grant cluster-admin to any PicoClaw instance
-```
-
-Playbooks — бери содержимое из PRD §4.4 (полные YAML с tasks). Адаптируй jinja2 templates из PRD §7.4.
+Playbooks — бери содержимое из PRD §4.4. Адаптируй jinja2 templates из PRD §7.4.
 
 ---
 
@@ -229,8 +284,8 @@ Playbooks — бери содержимое из PRD §4.4 (полные YAML с
 ORACLE/picoclaw/
 ├── helm/
 │   ├── values-template.yaml.hbs      — Handlebars template (из PRD §5.3)
-│   ├── values-community.yaml         — Community tier overrides
-│   └── values-self-hosted.yaml       — Self-hosted tier overrides
+│   ├── values-community.yaml         — Community tier: 250m/512Mi, 2Gi storage
+│   └── values-self-hosted.yaml       — Self-hosted tier: 500m/1Gi, 5Gi storage
 ├── workspace-templates/
 │   ├── USER.md.hbs                   — Generated from UnitProfile
 │   ├── IDENTITY.md.hbs               — Agent identity prompt
@@ -241,38 +296,7 @@ ORACLE/picoclaw/
 └── README.md
 ```
 
-**values-template.yaml.hbs** — из PRD §5.3 (Handlebars template с переменными tier_storage, tier_cpu_request, user_timezone, user_anthropic_key).
-
-**values-community.yaml**:
-```yaml
-resources:
-  requests:
-    cpu: "250m"
-    memory: "512Mi"
-  limits:
-    cpu: "500m"
-    memory: "1Gi"
-persistence:
-  size: "2Gi"
-openclaw:
-  defaultModel:
-    model: "openrouter/qwen/qwen3-coder:free"
-```
-
-**values-self-hosted.yaml**:
-```yaml
-resources:
-  requests:
-    cpu: "500m"
-    memory: "1Gi"
-  limits:
-    cpu: "1000m"
-    memory: "2Gi"
-persistence:
-  size: "5Gi"
-```
-
-**Workspace templates** — генерируй из PRD §5.4. USER.md.hbs должен подставлять unitname, bio, specialisation, skills, social links из UnitProfile.
+USER.md.hbs должен подставлять: unitname, bio, specialisation, skills, socialLinks из UnitProfile.
 
 ---
 
@@ -291,7 +315,7 @@ ORACLE/vault-config/
     └── vault-injector.yaml           — Sidecar injector
 ```
 
-Policies — из PRD §7.3 (HCL файлы).
+Policies — из PRD §7.3.
 
 ---
 
@@ -303,53 +327,56 @@ Policies — из PRD §7.3 (HCL файлы).
 - service OracleOrchestrator
 - ProvisionServer (stream), SuspendAgent, ResumeAgent, DestroyAgent
 - GetAgentHealth, StreamHealthEvents, ListAgents, GetAgentConfig
-- Все message types (ProvisionRequest, ProvisionEvent, AgentRef, AgentStatus, etc.)
 
 ---
 
 ## Технические требования
 
-1. **NestJS** — используй существующий стиль кода из `modules/auth/` и `modules/users/`. ESM modules (`"type": "module"` в package.json). Декораторы NestJS 11.
-2. **Prisma 6** — используй существующий `prisma/schema.prisma`, добавь models в конец. Запусти migration.
+1. **NestJS 11** — используй стиль кода из `modules/auth/` и `modules/users/`. ES Modules, декораторы NestJS 11.
+2. **Prisma 6** — добавь models в существующий `schema.prisma`. Запусти migration.
 3. **Validation** — `class-validator` + `class-transformer` для DTOs (уже в dependencies).
 4. **SSE** — используй `@Sse()` декоратор NestJS для provisioning stream.
-5. **Guards** — переиспользуй `JwtAuthGuard` из auth module.
-6. **Ansible** — production-ready playbooks с error handling, retry logic, tags для partial runs.
-7. **Helm** — Handlebars templates (.hbs) для генерации values.yaml на лету при provision.
-8. **Security** — никаких секретов в коде. Vault paths, не значения. Все credentials через env vars или Vault.
+5. **Guards** — переиспользуй `JwtAuthGuard` из auth module. Добавь `OracleOwnerGuard`.
+6. **Swagger** — добавь `@ApiTags('oracle')` и swagger-декораторы на все endpoints (swagger уже настроен).
+7. **Logging** — используй существующий winston logger из `common/logger/`.
+8. **Ansible** — production-ready playbooks с error handling, retry logic, tags для partial runs.
+9. **Helm** — Handlebars templates (.hbs) для генерации values.yaml при provision.
+10. **Security** — никаких секретов в коде. Vault paths, не значения. Все credentials через env vars или Vault.
 
 ## Порядок выполнения
 
-1. Прочитай PRD целиком (§1-§17)
-2. Прочитай существующий GPROD backend code (app.module.ts, auth module, prisma schema)
-3. Создай shared types (oracle.ts в обоих packages)
-4. Расширь UnitProfile type
-5. Создай Prisma models + migration
-6. Создай NestJS Oracle module (controller → service → gateway → DTOs → guards)
-7. Создай gRPC proto file
-8. Создай DevOps Agent (SKILL.md + playbooks + templates)
-9. Создай PicoClaw Helm chart (values + workspace templates)
-10. Создай Vault config (policies + K8s manifests)
-11. Проверь что всё компилируется: `cd GPROD && pnpm build`
+1. Прочитай PRD целиком (`ORACLE/PRD-ORACLE-DSP-INTEGRATION.md`, §1-§17)
+2. Прочитай GPROD backend: `app.module.ts`, auth module (guards, strategies), prisma schema
+3. Создай shared types (oracle.ts в GPROD/packages/shared-types/src/ и DSP/src/shared/types/)
+4. Расширь UnitProfile type (добавь oracle field)
+5. Расширь User model в Prisma (добавь walletAddress)
+6. Создай OracleInstance + related models в Prisma + migration
+7. Создай NestJS Oracle module (controller → service → gateway → DTOs → guards)
+8. Создай gRPC proto file
+9. Создай DevOps Agent (SKILL.md + playbooks + templates)
+10. Создай PicoClaw Helm chart (values + workspace templates)
+11. Создай Vault config (policies + K8s manifests)
+12. Проверь: `cd GPROD && pnpm install && pnpm build`
 
-## Не делай
+## НЕ делай
 
-- НЕ трогай существующие компоненты DSP (UI будет в Phase 2)
+- НЕ трогай существующие UI компоненты DSP (UI будет в Phase 2)
 - НЕ создавай Docker images
 - НЕ деплой ничего в production
 - НЕ добавляй Co-Authored-By в коммиты
 - НЕ модифицируй SmartOracle workspace (openclaw-k8s/)
 - НЕ выдумывай API endpoints — бери только из PRD §8
+- НЕ удаляй и не модифицируй существующие modules (auth, users, projects, health)
 
 ---
 
 ## Критерии готовности Phase 1
 
 - [ ] `GPROD/apps/backend/src/modules/oracle/` — полный NestJS module с 9 endpoints
-- [ ] `GPROD/apps/backend/prisma/schema.prisma` — 3 новых модели + успешная migration
-- [ ] `GPROD/packages/shared-types/src/oracle.ts` — все Oracle types
-- [ ] `DSP/src/shared/types/oracle.ts` — frontend Oracle types
-- [ ] `DSP/src/shared/types/unit-profile.ts` — расширен oracle полем
+- [ ] `GPROD/apps/backend/prisma/schema.prisma` — 3 новых модели + walletAddress в User + успешная migration
+- [ ] `GPROD/packages/shared-types/src/oracle.ts` — все Oracle types + re-export в index.ts
+- [ ] `src/shared/types/oracle.ts` — frontend Oracle types (копия)
+- [ ] `src/shared/types/unit-profile.ts` — расширен полем `oracle`
 - [ ] `ORACLE/proto/oracle.proto` — gRPC service definition
 - [ ] `ORACLE/devops-agent/` — SKILL.md + 5 playbooks + 4 templates + vars
 - [ ] `ORACLE/picoclaw/` — Helm values + 3 workspace templates + skill

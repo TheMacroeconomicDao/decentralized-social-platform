@@ -2,7 +2,7 @@ import './styles/reset.scss'
 import './styles/global.scss'
 import './styles/global-enhanced.scss'
 import type { Metadata } from 'next'
-import { Montserrat, Grape_Nuts } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import { headers } from 'next/headers'
 import { ClientHeader } from '@/widgets/Header/ClientHeader'
 import { NavbarMobile } from '@/widgets/Navbar'
@@ -30,11 +30,6 @@ function AppContent({ children }: { children: React.ReactNode }) {
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
-})
-
-const grape_nuts = Grape_Nuts({
-  subsets: ['latin'],
-  weight: ['400'],
 })
 
 export const metadata: Metadata = {

@@ -1,6 +1,9 @@
 import { ChatProvider, ChatMessage, ChatProviderType } from './types';
 import { ServerProvider } from './ServerProvider';
 import { PuterProvider } from './PuterProvider';
+import { createLogger } from '@/shared/lib/logger';
+
+const logger = createLogger('ChatProviderManager');
 
 export class ChatProviderManager {
   private providers: Map<ChatProviderType, ChatProvider> = new Map();
@@ -32,14 +35,14 @@ export class ChatProviderManager {
       const provider = this.providers.get(providerType);
       if (provider && provider.isAvailable()) {
         this.currentProvider = provider;
-        console.log(`Using chat provider: ${provider.getName()}`);
+        logger.info(`Using chat provider: ${provider.getName()}`);
         return provider;
       }
     }
 
     // Если все провайдеры недоступны, сбрасываем список неудачных и пробуем снова
     if (this.failedProviders.size > 0) {
-      console.log('All providers failed, resetting failed list and retrying...');
+      logger.info('All providers failed, resetting failed list and retrying...');
       this.failedProviders.clear();
       return this.selectProvider();
     }
@@ -60,7 +63,7 @@ export class ChatProviderManager {
     for (const [type, p] of Array.from(this.providers.entries())) {
       if (p === provider) {
         this.failedProviders.add(type);
-        console.log(`Marked provider ${provider.getName()} as failed`);
+        logger.info(`Marked provider ${provider.getName()} as failed`);
         break;
       }
     }
@@ -79,7 +82,7 @@ export class ChatProviderManager {
         this.clearProviderFailure(provider);
         return result;
       } catch (error) {
-        console.error(`ChatProviderManager attempt ${attempt + 1} failed:`, error);
+        logger.error(`ChatProviderManager attempt ${attempt + 1} failed`, error as Error);
         lastError = error as Error;
         
         // Помечаем текущий провайдер как неудачный
@@ -91,7 +94,7 @@ export class ChatProviderManager {
     }
 
     // Если все провайдеры не сработали, возвращаем fallback сообщение
-    console.error('All chat providers failed:', lastError);
+    logger.error('All chat providers failed', lastError);
     return {
       author: 'Gybernaty AI',
       text: 'Извините, все AI сервисы временно недоступны. Попробуйте позже или обратитесь к сообществу в Telegram: https://t.me/HeadsHub',
@@ -120,7 +123,7 @@ export class ChatProviderManager {
           return result;
         } else {
           // Fallback к обычному сообщению
-          console.warn(`Provider ${provider.getName()} doesn't support streaming, falling back to regular message`);
+          logger.warn(`Provider ${provider.getName()} doesn't support streaming, falling back to regular message`);
           const result = await provider.sendMessage(message);
           
           // Успешный ответ - сбрасываем статус неудачи для этого провайдера
@@ -128,7 +131,7 @@ export class ChatProviderManager {
           return result;
         }
       } catch (error) {
-        console.error(`ChatProviderManager streaming attempt ${attempt + 1} failed:`, error);
+        logger.error(`ChatProviderManager streaming attempt ${attempt + 1} failed`, error as Error);
         lastError = error as Error;
         
         // Помечаем текущий провайдер как неудачный
@@ -140,7 +143,7 @@ export class ChatProviderManager {
     }
 
     // Если все провайдеры не сработали, возвращаем fallback сообщение
-    console.error('All chat providers failed for streaming:', lastError);
+    logger.error('All chat providers failed for streaming', lastError);
     return {
       author: 'Gybernaty AI',
       text: 'Извините, все AI сервисы временно недоступны. Попробуйте позже или обратитесь к сообществу в Telegram: https://t.me/HeadsHub',
@@ -168,7 +171,7 @@ export class ChatProviderManager {
     if (provider && provider.isAvailable()) {
       this.currentProvider = provider;
       this.failedProviders.delete(providerType); // Сбрасываем статус неудачи
-      console.log(`Switched to provider: ${provider.getName()}`);
+      logger.info(`Switched to provider: ${provider.getName()}`);
       return true;
     }
     return false;

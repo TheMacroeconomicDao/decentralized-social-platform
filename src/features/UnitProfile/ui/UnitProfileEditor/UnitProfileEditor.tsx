@@ -6,6 +6,9 @@ import { Button, ThemeButton } from '@/shared/ui/Button/Button';
 import cls from './UnitProfileEditor.module.scss';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { motion } from 'framer-motion';
+import { createLogger } from '@/shared/lib/logger';
+
+const logger = createLogger('UnitProfileEditor');
 
 interface UnitProfileEditorProps {
   profile: UnitProfile;
@@ -159,7 +162,7 @@ export const UnitProfileEditor = ({
 
       await onSave(updatedData);
     } catch (error) {
-      console.error('Failed to save profile:', error);
+      logger.error('Failed to save profile', error as Error);
     } finally {
       setIsLoading(false);
     }

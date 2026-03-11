@@ -1,4 +1,7 @@
 import { ChatProvider, ChatMessage } from './types';
+import { createLogger } from '@/shared/lib/logger';
+
+const logger = createLogger('ServerProvider');
 
 export class ServerProvider implements ChatProvider {
   private readonly apiUrl = '/api/chat';
@@ -80,7 +83,7 @@ export class ServerProvider implements ChatProvider {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Server API error:', response.status, errorData);
+        logger.error(`Server API error: ${response.status}`, errorData);
         
         // Обновляем кэш здоровья при ошибках
         if (response.status === 500) {
@@ -108,7 +111,7 @@ export class ServerProvider implements ChatProvider {
       const data = await response.json();
       return data as ChatMessage;
     } catch (error) {
-      console.error('ServerProvider error:', error);
+      logger.error('ServerProvider error', error as Error);
       
       // Обновляем кэш здоровья при ошибках
       this.healthCheckCache = {
@@ -196,7 +199,7 @@ export class ServerProvider implements ChatProvider {
         avatarSrc: '/gybernaty-ai-avatar.png',
       };
     } catch (error) {
-      console.error('ServerProvider streaming error:', error);
+      logger.error('ServerProvider streaming error', error as Error);
       
       // Обновляем кэш здоровья при ошибках
       this.healthCheckCache = {

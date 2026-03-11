@@ -3,7 +3,7 @@ import {ChangeEvent, useEffect, useRef, useState} from "react";
 
 
 import { currencyDataType } from "../types";
-import cls from './SelectiOption.module.scss';
+import cls from './SelectOption.module.scss';
 
 
 import { currencyData } from "../mockdata/currencydata";

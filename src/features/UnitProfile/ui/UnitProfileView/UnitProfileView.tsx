@@ -7,7 +7,10 @@ import { Button, ThemeButton } from '@/shared/ui/Button/Button';
 import { SafeImage } from '@/shared/ui/SafeImage';
 import { ToastContainer } from '@/shared/ui/Toast';
 import { UnitProfileEditor } from '../UnitProfileEditor/UnitProfileEditor';
+import { createLogger } from '@/shared/lib/logger';
 import cls from './UnitProfileView.module.scss';
+
+const logger = createLogger('UnitProfileView');
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { motion } from 'framer-motion';
 
@@ -63,7 +66,7 @@ export const UnitProfileView = ({ className, editable = true }: UnitProfileViewP
       await navigator.clipboard.writeText(profile.address);
       success('Address copied to clipboard');
     } catch (err) {
-      console.error('Failed to copy address:', err);
+      logger.error('Failed to copy address', err as Error);
       error('Failed to copy address');
     }
   };

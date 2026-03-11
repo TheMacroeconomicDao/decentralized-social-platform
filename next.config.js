@@ -18,11 +18,26 @@ const nextConfig = {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         qualities: [70, 75, 85],
         minimumCacheTTL: 60 * 60 * 24 * 30, // 30 дней
-        dangerouslyAllowSVG: true,
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: '**',
+                hostname: 'avatars.githubusercontent.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'raw.githubusercontent.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'ipfs.io',
+            },
+            {
+                protocol: 'https',
+                hostname: 'gateway.pinata.cloud',
+            },
+            {
+                protocol: 'https',
+                hostname: 'i.imgur.com',
             },
         ],
     },

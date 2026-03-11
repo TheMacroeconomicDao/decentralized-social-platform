@@ -1,0 +1,43 @@
+name: Periodic Healthcheck
+
+on:
+  schedule:
+    - cron: '0 * * * *' # каждый час
+  workflow_dispatch:
+
+env:
+  HOST: api.dev.gprod.build.infra.gyber.org
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Healthcheck
+        id: healthcheck
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" https://${{ env.HOST }}/api/v1/health || true)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+          echo "$BODY" > healthcheck_response.txt
+          echo "Healthcheck status: $STATUS"
+          if [ "$STATUS" != "200" ]; then exit 1; fi
+
+      - name: Telegram Notify Healthcheck Success
+        if: success()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="✅ Периодический healthcheck прошёл!\nРепозиторий: $GITHUB_REPOSITORY\nПодробнее: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\nОтвет healthcheck:\n$(cat healthcheck_response.txt)"
+
+      - name: Telegram Notify Healthcheck Failure
+        if: failure()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="❌ Периодический healthcheck не прошёл!\nРепозиторий: $GITHUB_REPOSITORY\nПодробнее: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\nОтвет healthcheck:\n$(cat healthcheck_response.txt)"

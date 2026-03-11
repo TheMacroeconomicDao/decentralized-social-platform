@@ -1,0 +1,12 @@
+{
+    "jsc": {
+      "target": "es2022",
+      "parser": {
+        "syntax": "typescript",
+        "decorators": true
+      }
+    },
+    "module": {
+      "type": "es6"
+    }
+  }

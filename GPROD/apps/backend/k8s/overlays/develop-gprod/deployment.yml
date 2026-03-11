@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gprod-backend
+  namespace: develop-gprod
+  labels:
+    app: gprod-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gprod-backend
+  template:
+    metadata:
+      labels:
+        app: gprod-backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: backend
+          image: ghcr.io/themacroeconomicdao/gprod-backend:dev
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_NAME
+              value: GPROD API DEV
+            - name: APP_VERSION
+              value: 1.0.0-dev
+            - name: CORS_ENABLED
+              value: "true"
+            - name: CORS_ORIGIN
+              value: https://dev.gprod.build.infra.gyber.org,https://api.dev.gprod.build.infra.gyber.org,https://localhost:3000
+            - name: DOMAIN
+              value: api.dev.gprod.build.infra.gyber.org
+            - name: JWT_EXPIRES
+              value: 1h
+            - name: JWT_REFRESH_EXPIRES
+              value: 30d
+            - name: LOG_LEVEL
+              value: debug
+            - name: NODE_ENV
+              value: development
+            - name: PORT
+              value: "3000"
+            - name: RATE_LIMIT_MAX
+              value: "1000"
+            - name: RATE_LIMIT_WINDOW_MS
+              value: "900000"
+            - name: SUPPORT_EMAIL
+              value: support@gprod.org
+          envFrom:
+            - secretRef:
+                name: gprod-backend-env
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 5 

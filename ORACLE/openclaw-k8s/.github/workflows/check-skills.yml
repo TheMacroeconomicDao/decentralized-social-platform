@@ -1,0 +1,34 @@
+name: Check Skills CLI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4.0.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Check openclaw skills help
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          kubectl exec -n openclaw "$POD" -c openclaw -- openclaw --help 2>&1 || true
+          echo "---"
+          kubectl exec -n openclaw "$POD" -c openclaw -- openclaw skills --help 2>&1 || true
+          echo "---"
+          kubectl exec -n openclaw "$POD" -c openclaw -- openclaw skills 2>&1 || true
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.kube/config

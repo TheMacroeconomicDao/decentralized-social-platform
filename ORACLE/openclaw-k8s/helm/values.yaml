@@ -1,0 +1,89 @@
+image:
+  tag: "2026.3.2"
+
+persistence:
+  enabled: true
+  size: 5Gi
+
+podAnnotations:
+  reloader.stakater.com/auto: "true"
+
+openclaw:
+  timezone: "Europe/Moscow"
+  bind: lan
+  configMode: "merge"
+  agents:
+    defaults:
+      model: "anthropic/claude-sonnet-4-6"
+      timeoutSeconds: 600
+      thinkingDefault: "adaptive"
+
+  configOverrides:
+    ## === GATEWAY ===
+    gateway:
+      controlUi:
+        ## localhost-only access via kubectl port-forward — no external ingress needed
+        dangerouslyAllowHostHeaderOriginFallback: true
+
+    ## === AGENTS ===
+    agents:
+      defaults:
+        ## Cost-optimized fallback: free Qwen3-coder (480B, 255k ctx, tools✓)
+        ## Activated when primary model fails or via /model qwen in chat
+        model:
+          fallbacks:
+            - "openrouter/qwen/qwen3-coder:free"
+            - "openrouter/qwen/qwen3-next-80b-a3b-instruct:free"
+        ## Free vision model for image analysis (Qwen3-VL 235B)
+        imageModel: "openrouter/qwen/qwen3-vl-235b-a22b-thinking"
+        ## Keepalive ping to maintain Telegram connection
+        heartbeat:
+          every: "30m"
+
+    ## === SESSION MANAGEMENT ===
+    session:
+      ## Separate memory per Telegram peer (each user has own context)
+      dmScope: "per-channel-peer"
+      ## Auto-reset session context daily at 3:00 Moscow time
+      reset:
+        mode: "daily"
+        atHour: 3
+
+    ## === CHANNELS ===
+    channels:
+      telegram:
+        enabled: true
+        groupPolicy: "disabled"   # Personal admin agent — DM only (SEC-010 fixed)
+        dmPolicy: "pairing"
+        ## Typing indicators ("...") while bot is thinking
+        streamMode: "partial"
+
+    ## === TOOLS ===
+    tools:
+      media:
+        audio:
+          enabled: true
+          models:
+            - provider: "deepgram"
+              model: "nova-3"
+              language: "ru"
+
+    ## === SKILLS ===
+    ## Allow these bundled skills (no external CLIs needed)
+    skills:
+      allowBundled:
+        - "weather"
+        - "healthcheck"
+        - "skill-creator"
+        - "summarize"
+        - "session-logs"
+        - "github"
+        - "github-issues"
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "2000m"
+    memory: "2Gi"

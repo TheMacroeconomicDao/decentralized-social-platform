@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gprod_test
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    entrypoint: ["/bin/sh"]
+    command: ["/app/automation/scripts/docker-test-runner.sh"]
+    environment:
+      - NODE_ENV=test
+      - PORT=3008
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/gprod_test
+      - JWT_SECRET=test_jwt_secret
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - RUNNING_IN_DOCKER=true
+    depends_on:
+      db:
+        condition: service_healthy

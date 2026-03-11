@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gprod-backend-ingress
+  namespace: develop-gprod
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  labels:
+    app: gprod-backend
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: api.dev.gprod.build.infra.gyber.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gprod-backend
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - api.dev.gprod.build.infra.gyber.org
+      secretName: gprod-dev-tls 

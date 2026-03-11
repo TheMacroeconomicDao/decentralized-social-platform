@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gprod-backend
+  namespace: develop-gprod
+  labels:
+    app: gprod-backend
+spec:
+  selector:
+    app: gprod-backend
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP 

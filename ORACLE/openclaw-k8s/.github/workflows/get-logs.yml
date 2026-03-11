@@ -1,0 +1,30 @@
+name: Get Pod Logs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  logs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4.0.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Get logs
+        run: |
+          kubectl get pods -n openclaw -o wide
+          kubectl logs -n openclaw -l app.kubernetes.io/name=openclaw -c openclaw --tail=30 2>/dev/null || \
+          kubectl logs -n openclaw -l app.kubernetes.io/name=openclaw --previous --tail=30 2>/dev/null || true
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.kube/config

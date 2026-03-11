@@ -1,0 +1,241 @@
+name: Deploy OpenClaw to Kubernetes
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4.0.1
+
+      - name: Setup Helm
+        uses: azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4.3.1
+        with:
+          version: v3.18.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Create namespaces
+        run: |
+          kubectl create namespace openclaw --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create namespace reloader --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Install Reloader
+        run: |
+          helm repo add stakater https://stakater.github.io/stakater-charts
+          helm repo update
+          STATUS=$(helm status reloader -n reloader -o json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['status'])" 2>/dev/null || echo "")
+          if [[ "$STATUS" == "pending-upgrade" || "$STATUS" == "pending-install" || "$STATUS" == "pending-rollback" ]]; then
+            helm rollback reloader -n reloader 2>/dev/null || helm uninstall reloader -n reloader 2>/dev/null || true
+          fi
+          helm upgrade --install reloader stakater/reloader \
+            --namespace reloader \
+            --set reloader.watchGlobally=false \
+            --wait --timeout 2m
+
+      - name: Add OpenClaw Helm repo
+        run: |
+          helm repo add openclaw https://chrisbattarbee.github.io/openclaw-helm
+          helm repo update
+
+      - name: Release OpenClaw Helm lock if stuck
+        run: |
+          STATUS=$(helm status openclaw -n openclaw -o json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin)['info']['status'])" 2>/dev/null || echo "")
+          if [[ "$STATUS" == "pending-upgrade" || "$STATUS" == "pending-install" || "$STATUS" == "pending-rollback" ]]; then
+            helm rollback openclaw -n openclaw 2>/dev/null || helm uninstall openclaw -n openclaw 2>/dev/null || true
+          fi
+
+      - name: Deploy OpenClaw
+        run: |
+          SECRET_FILE=$(mktemp)
+          trap "rm -f $SECRET_FILE" EXIT
+          cat > "$SECRET_FILE" << SECRETEOF
+          credentials:
+            anthropicApiKey: "${{ secrets.CLAUDE_SETUP_TOKEN }}"
+            extraSecrets:
+              TELEGRAM_BOT_TOKEN: "${{ secrets.TELEGRAM_BOT_TOKEN }}"
+              OPENROUTER_API_KEY: "${{ secrets.OPENROUTER_API_KEY }}"
+              DEEPGRAM_API_KEY: "${{ secrets.DEEPGRAM_API_KEY }}"
+              BOT_GITHUB_TOKEN: "${{ secrets.BOT_GITHUB_TOKEN }}"
+              BOT_GITHUB_REPO: "TheMacroeconomicDao/openclaw-k8s"
+          SECRETEOF
+
+          helm upgrade --install openclaw openclaw/openclaw \
+            --namespace openclaw \
+            --values helm/values.yaml \
+            --values "$SECRET_FILE" \
+            --wait \
+            --timeout 5m
+
+      - name: Deploy persist-secret tool to pod
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          echo "Pod: $POD"
+          kubectl exec -n openclaw "$POD" -c openclaw -- mkdir -p /home/openclaw/.openclaw/bin
+          kubectl cp scripts/persist-secret.sh "openclaw/$POD:/home/openclaw/.openclaw/bin/persist-secret" -c openclaw
+          kubectl exec -n openclaw "$POD" -c openclaw -- chmod +x /home/openclaw/.openclaw/bin/persist-secret
+          kubectl cp scripts/vault-sync.sh "openclaw/$POD:/home/openclaw/.openclaw/bin/vault-sync" -c openclaw
+          kubectl exec -n openclaw "$POD" -c openclaw -- chmod +x /home/openclaw/.openclaw/bin/vault-sync
+          echo "Tools deployed: persist-secret, vault-sync"
+
+      - name: Setup workspace (identity, knowledge base, Obsidian vault)
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          WS=/home/openclaw/.openclaw/workspace
+
+          kubectl exec -n openclaw "$POD" -c openclaw -- mkdir -p \
+            $WS/skills/security-audit \
+            $WS/skills/secrets-scan \
+            $WS/skills/cicd-guard \
+            $WS/skills/infra-sentinel \
+            $WS/skills/vuln-report \
+            $WS/vault/300-Research/Security \
+            $WS/vault/.obsidian \
+            $WS/vault/000-Overview \
+            $WS/vault/100-Theory/CyberSocium \
+            $WS/vault/100-Theory/DAO-Design \
+            $WS/vault/200-Projects/TheMacroeconomicDAO \
+            $WS/vault/200-Projects/DSP \
+            $WS/vault/200-Projects/GyberNet \
+            $WS/vault/200-Projects/AiC \
+            $WS/vault/200-Projects/SUMMUM \
+            $WS/vault/300-Research/AI-ML \
+            $WS/vault/300-Research/Blockchain \
+            $WS/vault/300-Research/DeFi-Canton \
+            $WS/vault/300-Research/Swarm-Intelligence \
+            $WS/vault/400-Daily \
+            $WS/vault/500-Archive
+
+          kubectl cp workspace/USER.md "openclaw/$POD:$WS/USER.md" -c openclaw
+          kubectl cp workspace/TOOLS.md "openclaw/$POD:$WS/TOOLS.md" -c openclaw
+          kubectl cp workspace/HEARTBEAT.md "openclaw/$POD:$WS/HEARTBEAT.md" -c openclaw
+          kubectl cp workspace/AGENTS.md "openclaw/$POD:$WS/AGENTS.md" -c openclaw
+
+          # IDENTITY.md — only write if not yet present on PVC
+          EXISTS=$(kubectl exec -n openclaw "$POD" -c openclaw -- \
+            test -f "$WS/IDENTITY.md" && echo "yes" || echo "no")
+          if [ "$EXISTS" = "no" ]; then
+            kubectl cp workspace/IDENTITY.md "openclaw/$POD:$WS/IDENTITY.md" -c openclaw
+            echo "IDENTITY.md written (first deploy)"
+          else
+            echo "IDENTITY.md skipped (already exists on PVC)"
+          fi
+
+          for f in workspace/vault/README.md workspace/vault/.obsidian/app.json \
+                    "workspace/vault/000-Overview/GyberExperiment-MOC.md" \
+                    "workspace/vault/100-Theory/CyberSocium/CyberSocium-Foundation.md"; do
+            target="$WS/${f#workspace/}"
+            EXISTS=$(kubectl exec -n openclaw "$POD" -c openclaw -- test -f "$target" && echo "yes" || echo "no")
+            if [ "$EXISTS" = "no" ]; then
+              kubectl cp "$f" "openclaw/$POD:$target" -c openclaw
+              echo "Created: $target"
+            fi
+          done
+
+          echo "Workspace files deployed"
+
+      - name: Deploy security agent skills
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          WS=/home/openclaw/.openclaw/workspace
+
+          # Skills are always overwritten from repo — source of truth is git
+          kubectl cp workspace/skills/security-audit/SKILL.md \
+            "openclaw/$POD:$WS/skills/security-audit/SKILL.md" -c openclaw
+          kubectl cp workspace/skills/secrets-scan/SKILL.md \
+            "openclaw/$POD:$WS/skills/secrets-scan/SKILL.md" -c openclaw
+          kubectl cp workspace/skills/cicd-guard/SKILL.md \
+            "openclaw/$POD:$WS/skills/cicd-guard/SKILL.md" -c openclaw
+          kubectl cp workspace/skills/infra-sentinel/SKILL.md \
+            "openclaw/$POD:$WS/skills/infra-sentinel/SKILL.md" -c openclaw
+          kubectl cp workspace/skills/vuln-report/SKILL.md \
+            "openclaw/$POD:$WS/skills/vuln-report/SKILL.md" -c openclaw
+
+          echo "Security agent skills deployed: security_audit, secrets_scan, cicd_guard, infra_sentinel, vuln_report"
+
+      - name: Initialize vault git repo (gybernaty-vault)
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          VAULT=/home/openclaw/.openclaw/workspace/vault
+          VAULT_REMOTE="https://github.com/TheMacroeconomicDao/gybernaty-vault.git"
+
+          ALREADY=$(kubectl exec -n openclaw "$POD" -c openclaw -- \
+            test -d "$VAULT/.git" && echo "yes" || echo "no")
+
+          if [ "$ALREADY" = "no" ]; then
+            # Token passed via env variable injected into pod exec — not embedded in remote URL
+            kubectl exec -n openclaw "$POD" -c openclaw \
+              --env="BOT_GITHUB_TOKEN=${{ secrets.BOT_GITHUB_TOKEN }}" -- sh -c "
+              cd $VAULT &&
+              git init -b main &&
+              git config user.email 'oracle@gyber.org' &&
+              git config user.name 'Oracle (SmartOracle Bot)' &&
+              git config credential.helper '!f() { echo username=x-access-token; echo password=\$BOT_GITHUB_TOKEN; }; f' &&
+              git remote add origin '$VAULT_REMOTE' &&
+              git add -A &&
+              git commit -m 'init: Gybernaty R&D vault seed' &&
+              git push -u origin main
+            " 2>&1 || echo "Init push done (or already exists)"
+            echo "Vault git repo initialized"
+          else
+            kubectl exec -n openclaw "$POD" -c openclaw \
+              --env="BOT_GITHUB_TOKEN=${{ secrets.BOT_GITHUB_TOKEN }}" -- sh -c "
+              cd $VAULT &&
+              git config user.email 'oracle@gyber.org' &&
+              git config user.name 'Oracle (SmartOracle Bot)' &&
+              git config credential.helper '!f() { echo username=x-access-token; echo password=\$BOT_GITHUB_TOKEN; }; f' &&
+              git remote set-url origin '$VAULT_REMOTE'
+            " 2>/dev/null || true
+            echo "Vault credential helper updated"
+          fi
+
+      - name: Setup model aliases
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            openclaw models aliases add opus anthropic/claude-opus-4-6 2>/dev/null || true
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            openclaw models aliases add qwen openrouter/qwen/qwen3-coder:free 2>/dev/null || true
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            openclaw models aliases add free openrouter/qwen/qwen3-coder:free 2>/dev/null || true
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            openclaw models aliases add fast openrouter/qwen/qwen3-4b:free 2>/dev/null || true
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            openclaw models aliases add vision openrouter/qwen/qwen3-vl-235b-a22b-thinking 2>/dev/null || true
+          kubectl exec -n openclaw "$POD" -c openclaw -- openclaw models aliases list 2>/dev/null
+          echo "Model aliases configured"
+
+      - name: Show status
+        if: always()
+        run: |
+          echo "=== Pods ==="
+          kubectl get pods -n openclaw -o wide
+          kubectl get pods -n reloader -o wide
+          echo "=== OpenClaw Logs ==="
+          kubectl logs -n openclaw -l app.kubernetes.io/name=openclaw --tail=15 --all-containers || true
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.kube/config

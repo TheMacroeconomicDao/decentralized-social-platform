@@ -1,0 +1,1 @@
+export { TeamsPage } from "./ui/TeamPage";

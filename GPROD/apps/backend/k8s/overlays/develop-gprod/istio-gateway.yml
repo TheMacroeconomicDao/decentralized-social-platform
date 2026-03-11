@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: gprod-backend-gateway
+  namespace: develop-gprod
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: gprod-dev-tls # same TLS secret from cert-manager
+    hosts:
+    - api.dev.gprod.build.infra.gyber.org
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - api.dev.gprod.build.infra.gyber.org
+    # Optional: redirect HTTP to HTTPS
+    # tls:
+    #   httpsRedirect: true
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: gprod-backend-vs
+  namespace: develop-gprod
+spec:
+  hosts:
+  - api.dev.gprod.build.infra.gyber.org
+  gateways:
+  - gprod-backend-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: gprod-backend.develop-gprod.svc.cluster.local
+        port:
+          number: 80 

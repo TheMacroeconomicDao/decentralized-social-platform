@@ -1,0 +1,12 @@
+{
+  "errors": {
+    "message": "Photos can't be loaded in this advertisement. You have already 6.",
+    "fields": {
+      "rental_period_type": { "msg": "Ошибка в поле Тип аренды", "params": {} },
+      "field_name2": { "msg": "field error static {count} text", "params": { "count": 50 } }
+    }
+  },
+  "result": null,
+  "success": false,
+  "result_info": null
+}

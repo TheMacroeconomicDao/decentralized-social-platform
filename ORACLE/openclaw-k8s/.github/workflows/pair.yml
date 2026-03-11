@@ -1,0 +1,51 @@
+name: Pairing Approve
+
+on:
+  workflow_dispatch:
+    inputs:
+      pairing_code:
+        description: "Pairing code from Telegram"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  pair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4.0.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Check pod status
+        run: |
+          kubectl get pods -n openclaw -o wide
+          kubectl get pods -n openclaw -l app.kubernetes.io/name=openclaw \
+            -o jsonpath='{.items[0].status.phase}'
+          echo ""
+
+      - name: Approve pairing
+        env:
+          PAIRING_CODE: ${{ github.event.inputs.pairing_code }}
+        run: |
+          # Validate — pairing codes must be alphanumeric only
+          if ! echo "$PAIRING_CODE" | grep -qE '^[a-zA-Z0-9_-]+$'; then
+            echo "ERROR: Invalid pairing code format"
+            exit 1
+          fi
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          echo "Pod: $POD"
+          kubectl wait pod/"$POD" -n openclaw --for=condition=Ready --timeout=120s || true
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            openclaw pairing approve telegram "$PAIRING_CODE"
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.kube/config

@@ -1,0 +1,6 @@
+resources:
+  - deployment.yml
+  - service.yml
+  - istio-gateway.yml
+  # Temporary disable Traefik Ingress, use Istio Gateway instead
+  # - ingress.yml 

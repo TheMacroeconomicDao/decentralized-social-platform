@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16
+    container_name: gprod-postgres
+    environment:
+      POSTGRES_DB: gprod_dev
+      POSTGRES_USER: gprod_user
+      POSTGRES_PASSWORD: gprod_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./apps/backend/prisma/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - gprod-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gprod_user -d gprod_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: gprod-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - gprod-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Development
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile.dev
+    container_name: gprod-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://gprod_user:gprod_password@postgres:5432/gprod_dev
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev-jwt-secret-key
+      - CORS_ORIGIN=http://localhost:5173
+    volumes:
+      - ./apps/backend:/app
+      - /app/node_modules
+    networks:
+      - gprod-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: npm run start:dev
+
+  # Frontend Development
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile.dev
+    container_name: gprod-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api/v1
+      - VITE_NODE_ENV=development
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+    networks:
+      - gprod-network
+    depends_on:
+      - backend
+    command: npm run dev
+
+  # Nginx Proxy (Optional for production-like setup)
+  nginx:
+    image: nginx:alpine
+    container_name: gprod-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    networks:
+      - gprod-network
+    depends_on:
+      - backend
+      - frontend
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  gprod-network:
+    driver: bridge 

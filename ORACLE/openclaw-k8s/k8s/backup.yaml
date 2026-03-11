@@ -1,0 +1,120 @@
+---
+# Backup PVC — on tmedm node (same as openclaw PVC)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openclaw-backup
+  namespace: openclaw
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
+---
+# ServiceAccount for backup job
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: openclaw-backup
+  namespace: openclaw
+---
+# Role: read pods (to verify openclaw is alive)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: openclaw-backup
+  namespace: openclaw
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: openclaw-backup
+  namespace: openclaw
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: openclaw-backup
+subjects:
+  - kind: ServiceAccount
+    name: openclaw-backup
+    namespace: openclaw
+---
+# CronJob: daily backup at 03:30 Moscow (00:30 UTC)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: openclaw-backup
+  namespace: openclaw
+spec:
+  schedule: "30 0 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          serviceAccountName: openclaw-backup
+          restartPolicy: OnFailure
+          # Must run on tmedm — same node as openclaw PVC
+          nodeSelector:
+            kubernetes.io/hostname: tmedm
+          volumes:
+            # Source: openclaw PVC data via hostPath (read-only)
+            - name: openclaw-data
+              hostPath:
+                path: /var/lib/rancher/k3s/storage/pvc-a4bcfa66-6914-4cb2-8c56-e3ee6cbe3ed1_openclaw_openclaw
+                type: Directory
+            # Destination: backup PVC
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: openclaw-backup
+          containers:
+            - name: backup
+              image: alpine:3.21
+              command:
+                - /bin/sh
+                - -euc
+                - |
+                  DATE=$(date +%Y-%m-%d)
+                  BACKUP_DIR=/backup
+                  DEST="$BACKUP_DIR/openclaw-$DATE.tar.gz"
+
+                  echo "[backup] Starting openclaw backup — $DATE"
+
+                  # Rotate: keep last 7 backups
+                  cd "$BACKUP_DIR"
+                  ls -t openclaw-*.tar.gz 2>/dev/null | tail -n +8 | xargs rm -f || true
+
+                  # Backup important dirs (exclude tmp, cache, node_modules)
+                  tar czf "$DEST" \
+                    --exclude='.openclaw/agents/*/sessions' \
+                    --exclude='node_modules' \
+                    --exclude='.npm' \
+                    --exclude='*.log' \
+                    -C /data . \
+                    2>/dev/null || true
+
+                  SIZE=$(du -sh "$DEST" | cut -f1)
+                  echo "[backup] Done: $DEST ($SIZE)"
+                  ls -lh "$BACKUP_DIR"/openclaw-*.tar.gz
+              volumeMounts:
+                - name: openclaw-data
+                  mountPath: /data
+                  readOnly: true
+                - name: backup-storage
+                  mountPath: /backup
+              resources:
+                requests:
+                  cpu: "50m"
+                  memory: "64Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"

@@ -1,0 +1,8 @@
+resources:
+  - deployment.yml
+  - service.yml
+  - istio-gateway.yml
+  - certificate.yml
+  - cluster-issuer.yml
+  # Production configuration - no PVC needed, using external DB
+  # - pvc-db-data.yml 

@@ -1,0 +1,66 @@
+{
+  "info": {
+    "_postman_id": "gprod-collection-gybernaty",
+    "name": "GPROD by Gybernaty API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": {"raw": "http://localhost:3000/api/v1/auth/register", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "auth", "register"]},
+        "body": {"mode": "raw", "raw": "{\n  \"username\": \"vasya\",\n  \"email\": \"vasya@mail.com\",\n  \"password\": \"qwerty\",\n  \"roles\": [\"user\"]\n}"}
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": {"raw": "http://localhost:3000/api/v1/auth/login", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "auth", "login"]},
+        "body": {"mode": "raw", "raw": "{\n  \"username\": \"vasya\",\n  \"password\": \"qwerty\"\n}"}
+      }
+    },
+    {
+      "name": "Get Users",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "http://localhost:3000/api/v1/users", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "users"]}
+      }
+    },
+    {
+      "name": "Get Projects (JWT)",
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": {"raw": "http://localhost:3000/api/v1/projects", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "projects"]}
+      }
+    },
+    {
+      "name": "Health-check",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "http://localhost:3000/api/v1/health", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "health"]}
+      }
+    },
+    {
+      "name": "Create Admin",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "url": {"raw": "http://localhost:3000/api/v1/auth/register", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "auth", "register"]},
+        "body": {"mode": "raw", "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@mail.com\",\n  \"password\": \"admin123\",\n  \"roles\": [\"admin\"]\n}"}
+      }
+    },
+    {
+      "name": "Delete User (admin only)",
+      "request": {
+        "method": "DELETE",
+        "header": [{"key": "Authorization", "value": "Bearer {{admin_token}}"}],
+        "url": {"raw": "http://localhost:3000/api/v1/users/2", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "v1", "users", "2"]}
+      }
+    }
+  ]
+} 

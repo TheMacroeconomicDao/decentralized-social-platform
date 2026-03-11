@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: gprod-db-dev
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-gprod_dev}
+    ports:
+      - '5432:5432'
+    volumes:
+      - gprod_dev_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: gprod-app-dev
+    image: node:20-alpine
+    restart: always
+    working_dir: /app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/gprod_dev}
+      NODE_ENV: ${NODE_ENV:-development}
+      PNPM_DISABLE_SCRIPTS: false
+    ports:
+      - '3008:3000'
+    volumes:
+      - ../:/app
+      - gprod_dev_node_modules:/app/node_modules
+    command: sh -c "npm install -g pnpm && pnpm install --ignore-scripts=false && pnpm prisma generate && pnpm prisma migrate dev && pnpm start:dev"
+
+volumes:
+  gprod_dev_db_data:
+  gprod_dev_node_modules:

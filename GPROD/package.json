@@ -1,0 +1,49 @@
+{
+  "name": "gprod-monorepo",
+  "version": "1.0.0",
+  "description": "GPROD Monorepo - Unified repository for GPROD Backend and Frontend applications",
+  "author": "The Macroeconomic DAO",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "build": "pnpm run --recursive build",
+    "test": "pnpm run --recursive test",
+    "lint": "pnpm run --recursive lint",
+    "clean": "pnpm run --recursive clean",
+    "backend:dev": "pnpm --filter backend dev",
+    "frontend:dev": "pnpm --filter frontend dev",
+    "backend:build": "pnpm --filter backend build",
+    "frontend:build": "pnpm --filter frontend build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "k8s:deploy": "kubectl apply -k apps/backend/k8s/overlays/develop-gprod/"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "prettier": "^3.0.0",
+    "eslint": "^8.0.0"
+  },
+  "keywords": [
+    "monorepo",
+    "typescript",
+    "nestjs",
+    "react",
+    "kubernetes",
+    "docker"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheMacroeconomicDao/gprod-monorepo.git"
+  }
+} 

@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: gprod-db-prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-gprod_prod}
+    ports:
+      - '5434:5432'
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: gprod-app-prod
+    build:
+      context: ../
+      dockerfile: ./Dockerfile.prod
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/gprod_prod}
+      NODE_ENV: ${NODE_ENV:-production}
+    ports:
+      - '3007:3000'
+    volumes:
+      - ../../logs:/app/logs
+    command: sh -c "pnpm prisma generate && pnpm prisma migrate deploy && pnpm start:prod"
+
+  nginx:
+    image: nginx:alpine
+    container_name: gprod-nginx-prod
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ../../nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../../nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: gprod-grafana-prod
+    restart: always
+    ports:
+      - '3500:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - app
+
+volumes:
+  postgres_data_prod:
+    name: gprod-postgres-prod-data
+  grafana_data:
+    name: gprod-grafana-prod-data 

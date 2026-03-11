@@ -1,0 +1,6 @@
+[submodule "apps/backend"]
+	path = apps/backend
+	url = https://github.com/TheMacroeconomicDao/gprod-backend.git
+[submodule "apps/frontend"]
+	path = apps/frontend
+	url = https://gitlab.com/GybernatyTech/gyberplan-web-app-frontend.git

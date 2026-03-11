@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    volumes:
+      - gprod_dev_node_modules:/app/node_modules
+
+  db:
+    volumes:
+      - gprod_dev_db_data:/var/lib/postgresql/data
+
+volumes:
+  gprod_dev_node_modules:
+  gprod_dev_db_data:

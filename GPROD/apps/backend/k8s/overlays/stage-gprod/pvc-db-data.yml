@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-data
+  namespace: stage-gprod
+  labels:
+    app: db
+    component: database
+    project: gprod
+    environment: staging
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: local-path
+  volumeMode: Filesystem 

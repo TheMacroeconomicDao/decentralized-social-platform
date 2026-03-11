@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext", 
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "composite": true,
+
+    // Type Checking
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+
+    // JavaScript Support
+    "allowJs": false,
+    "checkJs": false,
+
+    // Emit
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    // Interop Constraints
+    "forceConsistentCasingInFileNames": true,
+
+    // Base URL and Paths
+    "baseUrl": ".",
+    "paths": {
+      "@gprod/shared-types": ["./packages/shared-types/src"],
+      "@gprod/ui-components": ["./packages/ui-components/src"],
+      "@gprod/utils": ["./packages/utils/src"]
+    }
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./apps/backend"
+    },
+    {
+      "path": "./apps/frontend"
+    },
+    {
+      "path": "./packages/shared-types"
+    },
+    {
+      "path": "./packages/ui-components"
+    },
+    {
+      "path": "./packages/utils"
+    }
+  ]
+} 

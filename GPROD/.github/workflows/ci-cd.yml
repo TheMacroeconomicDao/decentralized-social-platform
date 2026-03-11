@@ -1,0 +1,316 @@
+name: 🚀 GPROD Monorepo CI/CD (Production & Staging)
+
+on:
+  push:
+    branches:
+      - main      # Production deployments
+      - stage     # Staging deployments
+  pull_request:
+    branches:
+      - main
+      - stage
+
+env:
+  NODE_VERSION: '18.x'
+  PNPM_VERSION: '8.15.6'
+
+jobs:
+  # 🔍 Detect changes in apps
+  detect-changes:
+    name: 🔍 Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      backend-changed: ${{ steps.changes.outputs.backend }}
+      frontend-changed: ${{ steps.changes.outputs.frontend }}
+      shared-changed: ${{ steps.changes.outputs.shared }}
+      environment: ${{ steps.environment.outputs.env }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Determine environment
+        id: environment
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "env=production" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/stage" ]]; then
+            echo "env=staging" >> $GITHUB_OUTPUT
+          else
+            echo "env=preview" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Detect changes
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            backend:
+              - 'apps/backend/**'
+              - 'packages/**'
+              - 'pnpm-workspace.yaml'
+              - 'package.json'
+            frontend:
+              - 'apps/frontend/**'
+              - 'packages/**'
+              - 'pnpm-workspace.yaml'
+              - 'package.json'
+            shared:
+              - 'packages/**'
+              - 'pnpm-workspace.yaml'
+              - 'package.json'
+
+  # 🏗️ Build and test shared packages
+  shared-packages:
+    name: 🏗️ Build Shared Packages
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.shared-changed == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared packages
+        run: pnpm --filter "@gprod/*" build
+
+      - name: Upload shared packages artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-packages
+          path: packages/*/dist
+
+  # 🐳 Backend CI/CD
+  backend:
+    name: 🐳 Backend CI/CD (${{ needs.detect-changes.outputs.environment }})
+    runs-on: ubuntu-latest
+    needs: [detect-changes, shared-packages]
+    if: always() && (needs.detect-changes.outputs.backend-changed == 'true' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage')
+    permissions:
+      contents: read
+      packages: write
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: themacroeconomicdao/gprod-backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set environment variables
+        id: env-setup
+        run: |
+          ENV_NAME="${{ needs.detect-changes.outputs.environment }}"
+          
+          if [[ "$ENV_NAME" == "production" ]]; then
+            echo "NAMESPACE=prod-gprod" >> $GITHUB_OUTPUT
+            echo "HOST=api.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+            echo "KUSTOMIZE_OVERLAY=k8s/overlays/prod-gprod" >> $GITHUB_OUTPUT
+            echo "IMAGE_TAG=latest" >> $GITHUB_OUTPUT
+          elif [[ "$ENV_NAME" == "staging" ]]; then
+            echo "NAMESPACE=stage-gprod" >> $GITHUB_OUTPUT
+            echo "HOST=api.stage.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+            echo "KUSTOMIZE_OVERLAY=k8s/overlays/stage-gprod" >> $GITHUB_OUTPUT
+            echo "IMAGE_TAG=stage" >> $GITHUB_OUTPUT
+          else
+            echo "NAMESPACE=preview-gprod" >> $GITHUB_OUTPUT
+            echo "HOST=api.preview.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+            echo "KUSTOMIZE_OVERLAY=k8s/overlays/develop-gprod" >> $GITHUB_OUTPUT
+            echo "IMAGE_TAG=preview" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download shared packages
+        if: needs.shared-packages.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-packages
+          path: packages
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/backend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.env-setup.outputs.IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.env-setup.outputs.IMAGE_TAG }}-${{ github.sha }}
+
+      - name: Deploy to Kubernetes
+        if: github.event_name == 'push'
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+          
+          # Create namespace if it doesn't exist
+          kubectl create namespace ${{ steps.env-setup.outputs.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+          
+          # Deploy application
+          kubectl apply -k apps/backend/${{ steps.env-setup.outputs.KUSTOMIZE_OVERLAY }}/
+          kubectl rollout status deployment/gprod-backend -n ${{ steps.env-setup.outputs.NAMESPACE }} --timeout=600s
+
+      - name: Health check
+        if: github.event_name == 'push'
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 60
+          
+          echo "Testing health endpoint: https://${{ steps.env-setup.outputs.HOST }}/api/v1/health"
+          
+          # Try HTTPS first, fallback to HTTP if needed
+          if ! curl -f --max-time 30 https://${{ steps.env-setup.outputs.HOST }}/api/v1/health; then
+            echo "HTTPS failed, trying HTTP..."
+            curl -f --max-time 30 http://${{ steps.env-setup.outputs.HOST }}/api/v1/health || exit 1
+          fi
+
+  # ⚡ Frontend CI/CD
+  frontend:
+    name: ⚡ Frontend CI/CD (${{ needs.detect-changes.outputs.environment }})
+    runs-on: ubuntu-latest
+    needs: [detect-changes, shared-packages]
+    if: always() && (needs.detect-changes.outputs.frontend-changed == 'true' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set environment variables
+        id: env-setup
+        run: |
+          ENV_NAME="${{ needs.detect-changes.outputs.environment }}"
+          
+          if [[ "$ENV_NAME" == "production" ]]; then
+            echo "BUILD_ENV=production" >> $GITHUB_OUTPUT
+            echo "API_URL=https://api.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+            echo "APP_URL=https://gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+          elif [[ "$ENV_NAME" == "staging" ]]; then
+            echo "BUILD_ENV=staging" >> $GITHUB_OUTPUT
+            echo "API_URL=https://api.stage.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+            echo "APP_URL=https://stage.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+          else
+            echo "BUILD_ENV=development" >> $GITHUB_OUTPUT
+            echo "API_URL=https://api.dev.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+            echo "APP_URL=https://dev.gprod.build.infra.gyber.org" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download shared packages
+        if: needs.shared-packages.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-packages
+          path: packages
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: |
+          cd apps/frontend
+          pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        env:
+          NODE_ENV: ${{ steps.env-setup.outputs.BUILD_ENV }}
+          VITE_API_URL: ${{ steps.env-setup.outputs.API_URL }}
+          VITE_APP_ENV: ${{ steps.env-setup.outputs.BUILD_ENV }}
+        run: |
+          cd apps/frontend
+          pnpm build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build-${{ needs.detect-changes.outputs.environment }}
+          path: apps/frontend/dist
+
+      # TODO: Add deployment steps for different hosting solutions:
+      # - S3 + CloudFront for production
+      # - Vercel/Netlify for staging
+      # - GitHub Pages for preview
+
+  # 📢 Notifications
+  notify:
+    name: 📢 Notifications
+    runs-on: ubuntu-latest
+    needs: [detect-changes, backend, frontend]
+    if: always() && github.event_name == 'push'
+    steps:
+      - name: Telegram Notify Success
+        if: needs.backend.result == 'success' && needs.frontend.result == 'success'
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          ENV_EMOJI="🚀"
+          if [[ "${{ needs.detect-changes.outputs.environment }}" == "production" ]]; then
+            ENV_EMOJI="🏭"
+          elif [[ "${{ needs.detect-changes.outputs.environment }}" == "staging" ]]; then
+            ENV_EMOJI="🎭"
+          fi
+          
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="${ENV_EMOJI} GPROD Monorepo deploy succeeded!
+          
+          🌍 Environment: ${{ needs.detect-changes.outputs.environment }}
+          🐳 Backend: ${{ needs.backend.result }}
+          ⚡ Frontend: ${{ needs.frontend.result }}
+          
+          📝 Commit: ${{ github.sha }}
+          🌿 Branch: ${{ github.ref_name }}
+          👤 Author: ${{ github.actor }}
+          
+          🔗 View: https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+
+      - name: Telegram Notify Failure
+        if: needs.backend.result == 'failure' || needs.frontend.result == 'failure'
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="❌ GPROD Monorepo deploy FAILED!
+          
+          🌍 Environment: ${{ needs.detect-changes.outputs.environment }}
+          🐳 Backend: ${{ needs.backend.result }}
+          ⚡ Frontend: ${{ needs.frontend.result }}
+          
+          📝 Commit: ${{ github.sha }}
+          🌿 Branch: ${{ github.ref_name }}
+          
+          🔗 Check logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" 

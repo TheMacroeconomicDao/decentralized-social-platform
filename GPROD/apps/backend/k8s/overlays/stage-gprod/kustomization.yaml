@@ -1,0 +1,8 @@
+resources:
+  - deployment.yml
+  - service.yml
+  - istio-gateway.yml
+  - certificate.yml
+  - cluster-issuer.yml
+  # Staging configuration - includes PVC for staging database
+  - pvc-db-data.yml 

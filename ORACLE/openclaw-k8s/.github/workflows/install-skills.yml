@@ -1,0 +1,68 @@
+name: Install Skills from ClawHub
+
+# Installs community skills from clawhub.ai registry using the clawhub CLI.
+# Custom/local skills (security team) are deployed automatically via deploy.yml.
+# Usage: provide skill slugs as space-separated list (e.g. "weather postgres-backup")
+
+on:
+  workflow_dispatch:
+    inputs:
+      skills:
+        description: "ClawHub skill slugs to install (space separated)"
+        required: true
+        default: "weather"
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@776406bce94f63e41d621b960d78ee25c8b76ede # v4.0.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Install skills via clawhub
+        env:
+          SKILLS_INPUT: ${{ github.event.inputs.skills }}
+        run: |
+          # Validate input — only allow safe skill slug characters
+          if ! echo "$SKILLS_INPUT" | grep -qE '^[a-zA-Z0-9/_@:. -]+$'; then
+            echo "ERROR: Skill input contains invalid characters"
+            exit 1
+          fi
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          echo "Pod: $POD"
+
+          # Install clawhub CLI on the pod (if not present) and install each skill
+          # clawhub installs skills into ~/.openclaw/skills/ which OpenClaw picks up automatically
+          for SKILL in $SKILLS_INPUT; do
+            echo "Installing from ClawHub: $SKILL"
+            kubectl exec -n openclaw "$POD" -c openclaw -- sh -c "
+              which clawhub 2>/dev/null || npm install -g clawhub --quiet
+              clawhub install '$SKILL'
+            "
+            echo "Done: $SKILL"
+          done
+
+      - name: List workspace skills
+        run: |
+          POD=$(kubectl get pod -n openclaw -l app.kubernetes.io/name=openclaw \
+            --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
+          echo "=== Custom skills (workspace/skills/) ==="
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            ls /home/openclaw/.openclaw/workspace/skills/ 2>/dev/null || echo "(none)"
+          echo "=== ClawHub managed skills (~/.openclaw/skills/) ==="
+          kubectl exec -n openclaw "$POD" -c openclaw -- \
+            ls /home/openclaw/.openclaw/skills/ 2>/dev/null || echo "(none)"
+
+      - name: Cleanup
+        if: always()
+        run: rm -f ~/.kube/config

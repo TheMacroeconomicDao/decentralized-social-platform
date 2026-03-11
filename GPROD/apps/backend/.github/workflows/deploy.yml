@@ -1,0 +1,109 @@
+name: Build and Deploy GPROD Backend
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: themacroeconomicdao/gprod-backend
+  NAMESPACE: develop-gprod
+  KUSTOMIZE_OVERLAY: k8s/overlays/develop-gprod
+  DEPLOYMENT_NAME: gprod-backend
+  SERVICE_NAME: gprod-backend
+  INGRESS_NAME: gprod-backend-ingress
+  HOST: api.dev.gprod.build.infra.gyber.org
+  IMAGE_TAG: dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Run Prisma Migrate
+        run: |
+          kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }} --timeout=120s || true
+          kubectl exec deploy/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }} -- npx prisma migrate deploy || true
+
+      - name: Deploy to cluster (Kustomize)
+        run: |
+          kubectl apply -k ${{ env.KUSTOMIZE_OVERLAY }}
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }} --timeout=300s
+
+      - name: Post-deploy diagnostics
+        run: |
+          kubectl get pods -n ${{ env.NAMESPACE }} -l app=${{ env.DEPLOYMENT_NAME }}
+          kubectl get svc -n ${{ env.NAMESPACE }} ${{ env.SERVICE_NAME }}
+          kubectl get ingress -n ${{ env.NAMESPACE }} ${{ env.INGRESS_NAME }}
+
+      - name: Healthcheck
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" https://${{ env.HOST }}/api/v1/health || true)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+          echo "$BODY" > healthcheck_response.txt
+          echo "Healthcheck status: $STATUS"
+          if [ "$STATUS" != "200" ]; then exit 1; fi
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Rolling back deployment..."
+          kubectl rollout undo deployment/${{ env.DEPLOYMENT_NAME }} -n ${{ env.NAMESPACE }}
+
+      - name: Telegram Notify Success
+        if: success()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="✅ GPROD Backend deploy succeeded: $GITHUB_SHA by $GITHUB_ACTOR\nПодробнее: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
+
+      - name: Telegram Notify Failure
+        if: failure()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="${TG_CHAT}" \
+            -d text="❌ GPROD Backend deploy FAILED: $GITHUB_SHA. Check Actions logs."

@@ -1,0 +1,13 @@
+# Control UI access — kubectl port-forward (no external ingress needed)
+#
+# OpenClaw connects to Telegram via outbound polling — no inbound traffic required.
+# Access the Control UI locally:
+#
+#   kubectl port-forward -n openclaw svc/openclaw 18789:18789
+#   open http://localhost:18789
+#
+# If public HTTPS access is needed in the future, restore:
+#   - cert-manager ClusterIssuer: letsencrypt-prod (already installed on cluster)
+#   - Traefik Ingress with TLS termination
+#   - DNS A record pointing to cluster LoadBalancer IP
+#   - values.yaml: dangerouslyAllowHostHeaderOriginFallback → allowedOrigins: ["https://..."]

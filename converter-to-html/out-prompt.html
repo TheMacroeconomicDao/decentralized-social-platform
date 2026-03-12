@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt: md2html CLI utility</title>
+  <style>:root {
+  --primary-color: #1a1a2e;
+  --secondary-color: #16213e;
+  --accent-color: #0f3460;
+  --highlight-color: #e94560;
+  --text-color: #2c2c2c;
+  --light-bg: #f8f9fa;
+  --border-color: #e0e0e0;
+  --code-bg: #f4f4f4;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.7;
+  color: var(--text-color);
+  background: #fff;
+}
+header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; bottom:0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+header h1 {
+  font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;
+  position: relative; z-index: 1; color: #fff;
+}
+header .subtitle {
+  font-size: 1.2rem; opacity: 0.9; position: relative; z-index: 1;
+}
+header .meta {
+  margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;
+  position: relative; z-index: 1;
+}
+.nav-sidebar {
+  position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
+  background: var(--light-bg); border-right: 1px solid var(--border-color);
+  overflow-y: auto; padding: 5rem 1.5rem 1.5rem; z-index: 100; display: none;
+}
+.nav-sidebar.active { display: block; }
+.nav-toggle {
+  position: fixed; left: 1rem; top: 1rem; z-index: 101;
+  background: var(--primary-color); color: white; border: none;
+  padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer;
+  font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: background 0.2s;
+}
+.nav-toggle:hover { background: var(--secondary-color); }
+.nav-toggle.open { background: var(--highlight-color); }
+.nav-title {
+  font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--accent-color);
+  margin-bottom: 1rem; padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--highlight-color);
+}
+.nav-list { list-style: none; }
+.nav-list li { margin-bottom: 0.25rem; }
+.nav-list a {
+  display: block; padding: 0.4rem 0.5rem; color: var(--text-color);
+  text-decoration: none; font-size: 0.9rem; border-radius: 4px; transition: all 0.2s;
+}
+.nav-list a:hover { background: var(--border-color); color: var(--highlight-color); }
+.nav-list .section { font-weight: 600; color: var(--primary-color); margin-top: 1rem; padding-left: 0; }
+.nav-list .subsection { padding-left: 1rem; font-size: 0.85rem; }
+.nav-list .subsubsection { padding-left: 2rem; font-size: 0.8rem; color: #666; }
+main { max-width: 900px; margin: 0; padding: 2rem; }
+main.with-nav { margin-left: 280px; }
+body.nav-open header { margin-left: 280px; }
+body.nav-open main { margin-left: 280px; }
+h1,h2,h3,h4,h5,h6 { color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem; line-height: 1.3; }
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.2rem; }
+p { margin-bottom: 1rem; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th,td { padding: 0.75rem; text-align: left; border: 1px solid var(--border-color); }
+th { background: var(--light-bg); font-weight: 600; }
+tr:nth-child(even) { background: #fafafa; }
+pre,code {
+  background: var(--code-bg);
+  font-family: 'SF Mono','Monaco','Inconsolata','Fira Code',monospace;
+  font-size: 0.85rem;
+}
+pre { padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border-color); }
+code { padding: 0.2rem 0.4rem; border-radius: 4px; }
+pre code { padding: 0; background: none; }
+blockquote {
+  border-left: 4px solid var(--highlight-color); padding: 1rem;
+  margin: 1.5rem 0; font-style: italic; color: #555;
+  background: var(--light-bg); border-radius: 0 8px 8px 0;
+}
+ul,ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+li { margin-bottom: 0.5rem; }
+a { color: var(--accent-color); text-decoration: none; }
+a:hover { color: var(--highlight-color); text-decoration: underline; }
+hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+.back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--highlight-color); color: white;
+  width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; transition: opacity 0.3s;
+  box-shadow: 0 4px 15px rgba(233,69,96,0.3);
+}
+.back-to-top.visible { opacity: 1; }
+.search-box {
+  position: sticky; top: 0; background: var(--light-bg);
+  padding-bottom: 1rem; margin-bottom: 1rem; z-index: 10;
+}
+.search-box input {
+  width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border-color);
+  border-radius: 8px; font-size: 0.95rem; transition: border-color 0.3s, box-shadow 0.3s;
+  background: white;
+}
+.search-box input:focus {
+  outline: none; border-color: var(--highlight-color);
+  box-shadow: 0 0 0 3px rgba(233,69,96,0.15);
+}
+.search-box input::placeholder { color: #999; }
+.print-btn {
+  position: fixed; bottom: 2rem; right: 5rem;
+  background: var(--accent-color); color: white;
+  width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 4px 15px rgba(15,52,96,0.3);
+  border: none; font-size: 1.3rem; z-index: 50;
+}
+.print-btn:hover { background: var(--primary-color); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--light-bg); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+figure { margin: 1.5rem 0; text-align: center; }
+figcaption { font-size: 0.9rem; color: #666; margin-top: 0.5rem; font-style: italic; }
+@media print {
+  .nav-toggle,.nav-sidebar,.back-to-top,.print-btn { display: none !important; }
+  main { margin-left: 0 !important; max-width: 100% !important; padding: 0 !important; }
+  body { font-size: 11pt; line-height: 1.5; }
+  header { padding: 1rem 0; background: none !important; color: var(--primary-color) !important; }
+  header .subtitle, header .meta { color: var(--text-color) !important; opacity: 1 !important; }
+  h1,h2,h3,h4 { page-break-after: avoid; }
+  pre,blockquote,table,figure { page-break-inside: avoid; }
+  pre { white-space: pre-wrap; word-wrap: break-word; }
+  a { color: var(--text-color) !important; text-decoration: none !important; }
+}
+@media (max-width: 768px) {
+  .nav-sidebar { width: 100%; height: auto; max-height: 60vh; position: relative; }
+  main { max-width: 100%; margin-left: 0; margin-right: 0; padding: 1.25rem; }
+  main.with-nav { margin-left: 0; }
+  body.nav-open header, body.nav-open main { margin-left: 0; }
+  header { padding: 2rem 1.25rem; }
+  header h1 { font-size: 1.8rem; }
+  table { font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+  <!-- Toggle button -->
+  <button class="nav-toggle" onclick="toggleNav()">
+    <span>☰</span> Содержание
+  </button>
+
+  <!-- Sidebar nav -->
+  <nav class="nav-sidebar" id="navSidebar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Поиск..." oninput="filterNav()">
+    </div>
+    <div class="nav-title">Содержание</div>
+    <ul class="nav-list" id="navList">
+    <li><a href="#usage" class="section">Usage</a></li>
+    <li><a href="#build-time-dependencies-npm" class="section">Build-time dependencies (npm)</a></li>
+    <li><a href="#front-matter-support" class="section">Front matter support</a></li>
+    <li><a href="#toc-navigation-generation" class="section">TOC / Navigation generation</a></li>
+    <li><a href="#output-html-structure" class="section">Output HTML structure</a></li>
+    <li><a href="#embedded-css-verbatim-copy-exactly" class="section">Embedded CSS (verbatim, copy exactly)</a></li>
+    <li><a href="#embedded-js-verbatim-copy-exactly" class="section">Embedded JS (verbatim, copy exactly)</a></li>
+    <li><a href="#slug-generation-rules-build-time-for-heading-id-attributes" class="section">Slug generation rules (build-time, for heading `id` attributes)</a></li>
+    <li><a href="#meta-fields-rendering-in-header" class="section">Meta fields rendering in header</a></li>
+    <li><a href="#error-handling" class="section">Error handling</a></li>
+    <li><a href="#example-invocation" class="section">Example invocation</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header>
+    <h1>Prompt: md2html CLI utility</h1>
+    <div class="subtitle"></div>
+  </header>
+
+  <!-- Content -->
+  <main id="mainContent">
+<h1>Prompt: md2html CLI utility</h1>
+<p>Write a Node.js CLI utility <code>md2html.js</code> that converts Markdown files to
+self-contained HTML. All CSS and JavaScript must be embedded inline in the
+output file (no external dependencies at runtime).</p>
+<hr>
+<h2 id="usage">Usage</h2>
+<pre><code>node md2html.js &lt;input.md&gt; [output.html]
+</code></pre>
+<p>If <code>output.html</code> is omitted, derive it from the input filename
+(<code>input.md</code> → <code>input.html</code>) in the same directory.</p>
+<hr>
+<h2 id="build-time-dependencies-npm">Build-time dependencies (npm)</h2>
+<ul>
+<li><code>marked</code> — Markdown → HTML conversion</li>
+<li><code>gray-matter</code> — parse YAML front matter from the MD file</li>
+<li><code>slugify</code> (or implement manually) — generate heading anchor IDs</li>
+</ul>
+<hr>
+<h2 id="front-matter-support">Front matter support</h2>
+<p>The MD file may start with a YAML front matter block:</p>
+<pre><code class="language-yaml">---
+title: &quot;CyberSocium&quot;
+subtitle: &quot;Theoretical foundations...&quot;
+version: &quot;2.0&quot;
+license: &quot;CC BY-NC 4.0 / GPL-v3&quot;
+author: &quot;Gybernaty Research Collective&quot;
+date: &quot;2026&quot;
+lang: &quot;ru&quot;
+---
+</code></pre>
+<p>If front matter is missing:</p>
+<ul>
+<li><code>title</code> — take the text of the first <code># H1</code> heading in the document</li>
+<li><code>subtitle</code> — empty string</li>
+<li>All other fields — empty strings</li>
+<li><code>lang</code> — default <code>&quot;ru&quot;</code></li>
+</ul>
+<hr>
+<h2 id="toc-navigation-generation">TOC / Navigation generation</h2>
+<p>Scan all headings (<code>h2</code>, <code>h3</code>, <code>h4</code>) in order from the parsed Markdown content.
+For each heading:</p>
+<ol>
+<li><p>Generate a slug ID using the following rules (matching pandoc behavior):</p>
+<ul>
+<li>lowercase</li>
+<li>replace spaces with <code>-</code></li>
+<li>strip all characters that are not alphanumeric, <code>-</code>, or unicode letters
+(keep Cyrillic, CJK, etc.)</li>
+<li>deduplicate: if the same slug appears more than once, append <code>-2</code>, <code>-3</code>, etc.</li>
+<li>set this as the <code>id</code> attribute on the <code>&lt;h2&gt;/&lt;h3&gt;/&lt;h4&gt;</code> element</li>
+</ul>
+</li>
+<li><p>Additionally, at runtime a small JS block auto-assigns short numeric IDs to
+headings whose text starts with a pattern like <code>&quot;1.&quot;</code>, <code>&quot;1.1.&quot;</code>, <code>&quot;4.6.5.&quot;</code>,
+<code>&quot;1.2a.&quot;</code> — include this same runtime script verbatim (see JS section below).</p>
+</li>
+<li><p>Build the navigation <code>&lt;ul id=&quot;navList&quot;&gt;</code> from headings:</p>
+<ul>
+<li><code>h2</code> → <code>&lt;li&gt;&lt;a href=&quot;#slug&quot; class=&quot;section&quot;&gt;text&lt;/a&gt;&lt;/li&gt;</code></li>
+<li><code>h3</code> → <code>&lt;li&gt;&lt;a href=&quot;#slug&quot; class=&quot;subsection&quot;&gt;text&lt;/a&gt;&lt;/li&gt;</code></li>
+<li><code>h4</code> → <code>&lt;li&gt;&lt;a href=&quot;#slug&quot; class=&quot;subsubsection&quot;&gt;text&lt;/a&gt;&lt;/li&gt;</code></li>
+<li>Skip <code>h1</code> (it&#39;s the document title, shown in the header)</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="output-html-structure">Output HTML structure</h2>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;{lang}&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;{title}&lt;/title&gt;
+  &lt;style&gt;/* full embedded CSS */&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;!-- Toggle button --&gt;
+  &lt;button class=&quot;nav-toggle&quot; onclick=&quot;toggleNav()&quot;&gt;
+    &lt;span&gt;☰&lt;/span&gt; Содержание
+  &lt;/button&gt;
+
+  &lt;!-- Sidebar nav --&gt;
+  &lt;nav class=&quot;nav-sidebar&quot; id=&quot;navSidebar&quot;&gt;
+    &lt;div class=&quot;search-box&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;searchInput&quot; placeholder=&quot;Поиск...&quot; oninput=&quot;filterNav()&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;nav-title&quot;&gt;Содержание&lt;/div&gt;
+    &lt;ul class=&quot;nav-list&quot; id=&quot;navList&quot;&gt;
+      &lt;!-- generated TOC items --&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+
+  &lt;!-- Header --&gt;
+  &lt;header&gt;
+    &lt;h1&gt;{title}&lt;/h1&gt;
+    &lt;div class=&quot;subtitle&quot;&gt;{subtitle}&lt;/div&gt;
+    &lt;div class=&quot;meta&quot;&gt;
+      &lt;!-- render only non-empty fields, separated by | --&gt;
+      &lt;strong&gt;Версия:&lt;/strong&gt; {version} |
+      &lt;strong&gt;Лицензия:&lt;/strong&gt; {license} |
+      &lt;strong&gt;Авторство:&lt;/strong&gt; {author} |
+      &lt;strong&gt;Дата:&lt;/strong&gt; {date}
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Content --&gt;
+  &lt;main id=&quot;mainContent&quot;&gt;
+    {html content}
+  &lt;/main&gt;
+
+  &lt;!-- Back to top --&gt;
+  &lt;div class=&quot;back-to-top&quot; id=&quot;backToTop&quot; onclick=&quot;scrollToTop()&quot;&gt;↑&lt;/div&gt;
+
+  &lt;!-- Print button --&gt;
+  &lt;button class=&quot;print-btn&quot; onclick=&quot;window.print()&quot; title=&quot;Сохранить как PDF&quot;&gt;🖨&lt;/button&gt;
+
+  &lt;script&gt;/* full embedded JS */&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<hr>
+<h2 id="embedded-css-verbatim-copy-exactly">Embedded CSS (verbatim, copy exactly)</h2>
+<pre><code class="language-css">:root {
+  --primary-color: #1a1a2e;
+  --secondary-color: #16213e;
+  --accent-color: #0f3460;
+  --highlight-color: #e94560;
+  --text-color: #2c2c2c;
+  --light-bg: #f8f9fa;
+  --border-color: #e0e0e0;
+  --code-bg: #f4f4f4;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto,
+               &#39;Helvetica Neue&#39;, Arial, sans-serif;
+  line-height: 1.7;
+  color: var(--text-color);
+  background: #fff;
+}
+header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: &#39;&#39;;
+  position: absolute; top:0; left:0; right:0; bottom:0;
+  background: url(&quot;data:image/svg+xml,%3Csvg width=&#39;60&#39; height=&#39;60&#39; viewBox=&#39;0 0 60 60&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39;%3E%3Cg fill=&#39;none&#39; fill-rule=&#39;evenodd&#39;%3E%3Cg fill=&#39;%23ffffff&#39; fill-opacity=&#39;0.05&#39;%3E%3Cpath d=&#39;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&#39;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;);
+  opacity: 0.5;
+}
+header h1 {
+  font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;
+  position: relative; z-index: 1; color: #fff;
+}
+header .subtitle {
+  font-size: 1.2rem; opacity: 0.9; position: relative; z-index: 1;
+}
+header .meta {
+  margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.8;
+  position: relative; z-index: 1;
+}
+.nav-sidebar {
+  position: fixed; left: 0; top: 0; width: 280px; height: 100vh;
+  background: var(--light-bg); border-right: 1px solid var(--border-color);
+  overflow-y: auto; padding: 5rem 1.5rem 1.5rem; z-index: 100; display: none;
+}
+.nav-sidebar.active { display: block; }
+.nav-toggle {
+  position: fixed; left: 1rem; top: 1rem; z-index: 101;
+  background: var(--primary-color); color: white; border: none;
+  padding: 0.75rem 1rem; border-radius: 8px; cursor: pointer;
+  font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: background 0.2s;
+}
+.nav-toggle:hover { background: var(--secondary-color); }
+.nav-toggle.open { background: var(--highlight-color); }
+.nav-title {
+  font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--accent-color);
+  margin-bottom: 1rem; padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--highlight-color);
+}
+.nav-list { list-style: none; }
+.nav-list li { margin-bottom: 0.25rem; }
+.nav-list a {
+  display: block; padding: 0.4rem 0.5rem; color: var(--text-color);
+  text-decoration: none; font-size: 0.9rem; border-radius: 4px; transition: all 0.2s;
+}
+.nav-list a:hover { background: var(--border-color); color: var(--highlight-color); }
+.nav-list .section { font-weight: 600; color: var(--primary-color); margin-top: 1rem; padding-left: 0; }
+.nav-list .subsection { padding-left: 1rem; font-size: 0.85rem; }
+.nav-list .subsubsection { padding-left: 2rem; font-size: 0.8rem; color: #666; }
+main { max-width: 900px; margin: 0; padding: 2rem; }
+main.with-nav { margin-left: 280px; }
+body.nav-open header { margin-left: 280px; }
+body.nav-open main { margin-left: 280px; }
+h1,h2,h3,h4,h5,h6 { color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem; line-height: 1.3; }
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.2rem; }
+p { margin-bottom: 1rem; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th,td { padding: 0.75rem; text-align: left; border: 1px solid var(--border-color); }
+th { background: var(--light-bg); font-weight: 600; }
+tr:nth-child(even) { background: #fafafa; }
+pre,code {
+  background: var(--code-bg);
+  font-family: &#39;SF Mono&#39;,&#39;Monaco&#39;,&#39;Inconsolata&#39;,&#39;Fira Code&#39;,monospace;
+  font-size: 0.85rem;
+}
+pre { padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border-color); }
+code { padding: 0.2rem 0.4rem; border-radius: 4px; }
+pre code { padding: 0; background: none; }
+blockquote {
+  border-left: 4px solid var(--highlight-color); padding: 1rem;
+  margin: 1.5rem 0; font-style: italic; color: #555;
+  background: var(--light-bg); border-radius: 0 8px 8px 0;
+}
+ul,ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+li { margin-bottom: 0.5rem; }
+a { color: var(--accent-color); text-decoration: none; }
+a:hover { color: var(--highlight-color); text-decoration: underline; }
+hr { border: none; border-top: 1px solid var(--border-color); margin: 2rem 0; }
+.back-to-top {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--highlight-color); color: white;
+  width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; transition: opacity 0.3s;
+  box-shadow: 0 4px 15px rgba(233,69,96,0.3);
+}
+.back-to-top.visible { opacity: 1; }
+.search-box {
+  position: sticky; top: 0; background: var(--light-bg);
+  padding-bottom: 1rem; margin-bottom: 1rem; z-index: 10;
+}
+.search-box input {
+  width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border-color);
+  border-radius: 8px; font-size: 0.95rem; transition: border-color 0.3s, box-shadow 0.3s;
+  background: white;
+}
+.search-box input:focus {
+  outline: none; border-color: var(--highlight-color);
+  box-shadow: 0 0 0 3px rgba(233,69,96,0.15);
+}
+.search-box input::placeholder { color: #999; }
+.print-btn {
+  position: fixed; bottom: 2rem; right: 5rem;
+  background: var(--accent-color); color: white;
+  width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 4px 15px rgba(15,52,96,0.3);
+  border: none; font-size: 1.3rem; z-index: 50;
+}
+.print-btn:hover { background: var(--primary-color); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--light-bg); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+figure { margin: 1.5rem 0; text-align: center; }
+figcaption { font-size: 0.9rem; color: #666; margin-top: 0.5rem; font-style: italic; }
+@media print {
+  .nav-toggle,.nav-sidebar,.back-to-top,.print-btn { display: none !important; }
+  main { margin-left: 0 !important; max-width: 100% !important; padding: 0 !important; }
+  body { font-size: 11pt; line-height: 1.5; }
+  header { padding: 1rem 0; background: none !important; color: var(--primary-color) !important; }
+  header .subtitle, header .meta { color: var(--text-color) !important; opacity: 1 !important; }
+  h1,h2,h3,h4 { page-break-after: avoid; }
+  pre,blockquote,table,figure { page-break-inside: avoid; }
+  pre { white-space: pre-wrap; word-wrap: break-word; }
+  a { color: var(--text-color) !important; text-decoration: none !important; }
+}
+@media (max-width: 768px) {
+  .nav-sidebar { width: 100%; height: auto; max-height: 60vh; position: relative; }
+  main { max-width: 100%; margin-left: 0; margin-right: 0; padding: 1.25rem; }
+  main.with-nav { margin-left: 0; }
+  body.nav-open header, body.nav-open main { margin-left: 0; }
+  header { padding: 2rem 1.25rem; }
+  header h1 { font-size: 1.8rem; }
+  table { font-size: 0.8rem; }
+}
+</code></pre>
+<hr>
+<h2 id="embedded-js-verbatim-copy-exactly">Embedded JS (verbatim, copy exactly)</h2>
+<pre><code class="language-js">// Auto-assign short numeric IDs (e.g. &quot;1.&quot;, &quot;1.1.&quot;, &quot;4.6.5.&quot;, &quot;1.2a.&quot;)
+(function() {
+  const headings = document.querySelectorAll(&#39;main h1, main h2, main h3, main h4&#39;);
+  headings.forEach(function(h) {
+    const text = h.textContent.trim();
+    const match = text.match(/^(\d+(?:\.\d+)*[a-z]?)[\.\s]/);
+    if (match &amp;&amp; !h.id) h.setAttribute(&#39;id&#39;, match[1]);
+  });
+  headings.forEach(function(h) {
+    const text = h.textContent.trim();
+    if (h.id) return;
+    if (/^Приложение\s+([A-Z])\./.test(text)) {
+      const letter = text.match(/^Приложение\s+([A-Z])\./)[1];
+      h.setAttribute(&#39;id&#39;, &#39;appendix-&#39; + letter);
+    }
+    if (/^Аннотация/.test(text)) h.setAttribute(&#39;id&#39;, &#39;abstract&#39;);
+    if (/^Содержание/.test(text)) h.setAttribute(&#39;id&#39;, &#39;toc&#39;);
+  });
+})();
+
+function toggleNav() {
+  const sidebar = document.getElementById(&#39;navSidebar&#39;);
+  const main = document.getElementById(&#39;mainContent&#39;);
+  const toggleBtn = document.querySelector(&#39;.nav-toggle&#39;);
+  sidebar.classList.toggle(&#39;active&#39;);
+  main.classList.toggle(&#39;with-nav&#39;);
+  toggleBtn.classList.toggle(&#39;open&#39;);
+  document.body.classList.toggle(&#39;nav-open&#39;);
+  const span = toggleBtn.querySelector(&#39;span&#39;);
+  span.textContent = sidebar.classList.contains(&#39;active&#39;) ? &#39;✕&#39; : &#39;☰&#39;;
+}
+
+function filterNav() {
+  const filter = document.getElementById(&#39;searchInput&#39;).value.toLowerCase();
+  const items = document.getElementById(&#39;navList&#39;).getElementsByTagName(&#39;li&#39;);
+  for (let i = 0; i &lt; items.length; i++) {
+    const a = items[i].querySelector(&#39;a&#39;);
+    if (!a) continue;
+    items[i].style.display =
+      (a.textContent || a.innerText).toLowerCase().includes(filter) ? &#39;&#39; : &#39;none&#39;;
+  }
+}
+
+window.onscroll = function() {
+  const btn = document.getElementById(&#39;backToTop&#39;);
+  const scrolled = document.body.scrollTop &gt; 300 || document.documentElement.scrollTop &gt; 300;
+  btn.classList.toggle(&#39;visible&#39;, scrolled);
+};
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: &#39;smooth&#39; });
+}
+
+// Smooth scroll with Cyrillic ID support
+document.querySelectorAll(&#39;a[href^=&quot;#&quot;]&#39;).forEach(anchor =&gt; {
+  anchor.addEventListener(&#39;click&#39;, function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute(&#39;href&#39;).substring(1);
+    let target = document.getElementById(targetId);
+    if (!target) {
+      try { target = document.getElementById(decodeURIComponent(targetId)); } catch(_) {}
+    }
+    if (target) {
+      const offset = 70;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: &#39;smooth&#39; });
+    }
+  });
+});
+</code></pre>
+<hr>
+<h2 id="slug-generation-rules-build-time-for-heading-id-attributes">Slug generation rules (build-time, for heading <code>id</code> attributes)</h2>
+<p>Implement a <code>slugify(text)</code> function that:</p>
+<ol>
+<li>Lowercase the text</li>
+<li>Normalize unicode (NFC)</li>
+<li>Replace spaces and <code>_</code> with <code>-</code></li>
+<li>Remove characters that are NOT: <code>a-z</code>, <code>0-9</code>, <code>-</code>, or any unicode letter/number
+(i.e., keep Cyrillic, etc.) — use regex <code>/[^\p{L}\p{N}\-]/gu</code> with unicode flag</li>
+<li>Collapse multiple <code>-</code> into one, trim leading/trailing <code>-</code></li>
+<li>If result is empty, use <code>section-{index}</code></li>
+<li>Deduplicate: track seen slugs, append <code>-2</code>, <code>-3</code>, etc.</li>
+</ol>
+<p>Apply this slug as the <code>id</code> on each <code>&lt;h2&gt;/&lt;h3&gt;/&lt;h4&gt;</code> in the marked output.
+Use a custom <code>marked</code> renderer for headings to inject these IDs.</p>
+<hr>
+<h2 id="meta-fields-rendering-in-header">Meta fields rendering in header</h2>
+<p>Only render <code>&lt;div class=&quot;meta&quot;&gt;</code> if at least one of version/license/author/date
+is non-empty. Render only the non-empty fields joined by <code>|</code>.</p>
+<hr>
+<h2 id="error-handling">Error handling</h2>
+<ul>
+<li>If input file doesn&#39;t exist → print error to stderr and exit with code 1</li>
+<li>If output directory doesn&#39;t exist → create it with <code>fs.mkdirSync</code> recursively</li>
+<li>Log to stdout: <code>✓ Converted: input.md → output.html</code></li>
+</ul>
+<hr>
+<h2 id="example-invocation">Example invocation</h2>
+<pre><code>node md2html.js docs/CyberSocium_Foundation_RU.md
+# → writes docs/CyberSocium_Foundation_RU.html
+
+node md2html.js docs/CyberSocium_Foundation_RU.md dist/output.html
+# → writes dist/output.html
+</code></pre>
+  </main>
+
+  <!-- Back to top -->
+  <div class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</div>
+
+  <!-- Print button -->
+  <button class="print-btn" onclick="window.print()" title="Сохранить как PDF">🖨</button>
+
+  <script>// Auto-assign short numeric IDs (e.g. "1.", "1.1.", "4.6.5.", "1.2a.")
+(function() {
+  const headings = document.querySelectorAll('main h1, main h2, main h3, main h4');
+  headings.forEach(function(h) {
+    const text = h.textContent.trim();
+    const match = text.match(/^(\d+(?:.\d+)*[a-z]?)[\.\s]/);
+    if (match && !h.id) h.setAttribute('id', match[1]);
+  });
+  headings.forEach(function(h) {
+    const text = h.textContent.trim();
+    if (h.id) return;
+    if (/^Приложение\s+([A-Z])\./.test(text)) {
+      const letter = text.match(/^Приложение\s+([A-Z])\./)[1];
+      h.setAttribute('id', 'appendix-' + letter);
+    }
+    if (/^Аннотация/.test(text)) h.setAttribute('id', 'abstract');
+    if (/^Содержание/.test(text)) h.setAttribute('id', 'toc');
+  });
+})();
+
+function toggleNav() {
+  const sidebar = document.getElementById('navSidebar');
+  const main = document.getElementById('mainContent');
+  const toggleBtn = document.querySelector('.nav-toggle');
+  sidebar.classList.toggle('active');
+  main.classList.toggle('with-nav');
+  toggleBtn.classList.toggle('open');
+  document.body.classList.toggle('nav-open');
+  const span = toggleBtn.querySelector('span');
+  span.textContent = sidebar.classList.contains('active') ? '\u2715' : '\u2630';
+}
+
+function filterNav() {
+  const filter = document.getElementById('searchInput').value.toLowerCase();
+  const items = document.getElementById('navList').getElementsByTagName('li');
+  for (let i = 0; i < items.length; i++) {
+    const a = items[i].querySelector('a');
+    if (!a) continue;
+    items[i].style.display =
+      (a.textContent || a.innerText).toLowerCase().includes(filter) ? '' : 'none';
+  }
+}
+
+window.onscroll = function() {
+  const btn = document.getElementById('backToTop');
+  const scrolled = document.body.scrollTop > 300 || document.documentElement.scrollTop > 300;
+  btn.classList.toggle('visible', scrolled);
+};
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Smooth scroll with Cyrillic ID support
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').substring(1);
+    let target = document.getElementById(targetId);
+    if (!target) {
+      try { target = document.getElementById(decodeURIComponent(targetId)); } catch(_) {}
+    }
+    if (target) {
+      const offset = 70;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

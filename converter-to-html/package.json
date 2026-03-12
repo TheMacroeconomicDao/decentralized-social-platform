@@ -1,0 +1,14 @@
+{
+  "name": "converter-to-html",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Markdown to self-contained HTML CLI",
+  "scripts": {
+    "convert": "node md2html.js",
+    "md2html": "node md2html.js"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.0"
+  }
+}

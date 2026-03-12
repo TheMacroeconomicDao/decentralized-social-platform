@@ -330,6 +330,287 @@ Policies — из PRD §7.3.
 
 ---
 
+## Technical Deep Dives (ОБЯЗАТЕЛЬНО к реализации)
+
+### TD-1: Auth Bridge — DSP (Wallet) ↔ GPROD (JWT)
+
+DSP использует wallet-based auth (SIWE — EIP-4361), GPROD — JWT с username/password. Нужен bridge.
+
+**Текущий JWT payload** (GPROD): `{ sub: user.id, username: user.username, roles: user.roles }`
+
+**Phase 1 (MVP):**
+1. Добавь `walletAddress String? @unique @map("wallet_address") @db.VarChar(42)` к модели `User` в Prisma
+2. Создай middleware `wallet-address.middleware.ts` — валидация `X-Wallet-Address` header: `/^0x[0-9a-fA-F]{40}$/`
+3. Обнови `JwtStrategy` — включи `walletAddress` в JWT payload: `{ sub, username, roles, walletAddress }`
+4. Создай `OracleOwnerGuard` — сверяет `req.user.walletAddress` с `oracle.unitAddress`
+5. Добавь endpoint `POST /api/v1/auth/link-wallet` — привязка wallet к существующему User (подписать сообщение → verify)
+
+**Phase 2+ (future):** полный SIWE (Sign-In With Ethereum) через `verifyMessage()` из viem
+
+---
+
+### TD-2: Profile Completeness Check (PRD §3.2)
+
+Кнопка "Init Oracle" активна только при полном профиле:
+
+```typescript
+// src/shared/utils/isOracleReady.ts (shared между GPROD и DSP)
+export const isOracleReady = (profile: UnitProfile): boolean => {
+  return !!(
+    profile.unitname &&
+    profile.bio && profile.bio.length >= 20 &&
+    profile.specialisation &&
+    profile.claAccepted &&
+    (profile.socialLinks?.telegram || profile.socialLinks?.github)
+  );
+};
+```
+
+GPROD должен проверять `isOracleReady()` перед `POST /init/*` — вернуть 400 с `missingFields[]`.
+
+---
+
+### TD-3: On-Chain Verification для Community Tier (PRD §11.2)
+
+Community tier требует `MemberStatus >= Dev (2)` из UnitManager.sol на BSC.
+
+```typescript
+// oracle.service.ts — verifyMemberStatus()
+import { createPublicClient, http } from 'viem';
+import { bsc } from 'viem/chains';
+
+const UNIT_MANAGER_ADDRESS = '0x...'; // из env: UNIT_MANAGER_CONTRACT_ADDRESS
+const CHAIN_ID = 56; // BSC Mainnet
+
+async function verifyMemberStatus(walletAddress: string): Promise<number> {
+  const client = createPublicClient({ chain: bsc, transport: http(process.env.BLOCKCHAIN_RPC_URL) });
+  const member = await client.readContract({
+    address: UNIT_MANAGER_ADDRESS,
+    abi: unitManagerABI, // из shared-types или отдельный JSON
+    functionName: 'members',
+    args: [walletAddress],
+  });
+  return Number(member.status); // 0=None, 1=Unit, 2=Dev, 3=LeadDev, 4=ArchDev
+}
+
+// В POST /init/community:
+const status = await verifyMemberStatus(walletAddress);
+if (status < 2) throw new ForbiddenException({
+  error: 'INSUFFICIENT_STATUS',
+  required: 'Dev (2)',
+  current: `${MemberStatusNames[status]} (${status})`,
+});
+```
+
+Добавь `viem` в GPROD backend dependencies: `pnpm add viem`
+
+---
+
+### TD-4: DO / GCP OAuth Flows (PRD §4.3)
+
+**DigitalOcean:**
+```
+POST /api/v1/oracle/init/self-hosted
+  → provider: "digitalocean", oauthToken: "dop_v1_xxx"
+  → GPROD calls DO API v2: POST /v2/droplets
+    { name: "oracle-{unitname}", region: "{user_selected}",
+      size: "s-2vcpu-4gb", image: "ubuntu-24-04-x64", tags: ["gybernaty-oracle"] }
+  → Poll GET /v2/droplets/{id} until status=active
+  → Extract IP → pass to SmartOracle DevOps Agent via gRPC
+```
+
+**Google Cloud:**
+```
+POST /api/v1/oracle/init/self-hosted
+  → provider: "gcp", oauthToken: "ya29.xxx"
+  → GPROD calls GCP Compute API: POST /compute/v1/projects/{project}/zones/{zone}/instances
+    { name: "oracle-{unitname}", machineType: "e2-medium",
+      disks: [{ initializeParams: { sourceImage: "ubuntu-2404-lts" } }] }
+  → Extract external IP → pass to SmartOracle
+```
+
+Реализуй `CloudProviderService` (strategy pattern) — `DigitalOceanProvider`, `GCPProvider` с единым интерфейсом:
+```typescript
+interface ICloudProvider {
+  createServer(config: ServerConfig): Promise<{ serverId: string; ip: string }>;
+  getServerStatus(serverId: string): Promise<ServerStatus>;
+  deleteServer(serverId: string): Promise<void>;
+}
+```
+
+---
+
+### TD-5: Provisioning Timeout & Rollback (PRD §4.5)
+
+Каждая фаза provisioning имеет timeout и rollback:
+
+| Phase | Timeout | Rollback Action |
+|-------|---------|-----------------|
+| `server_creation` | 5 min | Cancel + delete droplet/instance |
+| `security_hardening` | 3 min | Destroy server, notify user |
+| `k8s_join` | 5 min | Remove node label, destroy server |
+| `agent_deploy` | 3 min | Delete namespace, drain node |
+| `health_check` | 2 min | Retry once, then rollback deploy |
+| **Total** | **≤16 min** | Atomic cleanup on any failure |
+
+Реализуй в `oracle.service.ts` с AbortController / setTimeout per phase. Каждый шаг пишет `OracleProvisioningLog`. При failure — rollback предыдущих фаз в обратном порядке.
+
+---
+
+### TD-6: Server Lifecycle State Machine (PRD §3.3)
+
+```
+NONE → PROVISIONING → ACTIVE → SUSPENDED → ACTIVE (resume)
+                  ↘ FAILED            ↘ DECOMMISSIONED → DESTROYED
+```
+
+Допустимые transitions:
+```typescript
+const VALID_TRANSITIONS: Record<OracleState, OracleState[]> = {
+  'none':             ['provisioning'],
+  'provisioning':     ['active', 'failed'],
+  'active':           ['suspended', 'decommissioning'],
+  'suspended':        ['active', 'decommissioning'],  // resume или auto-decom через 30 дней
+  'decommissioning':  ['destroyed'],
+  'destroyed':        [],
+  'failed':           ['provisioning', 'destroyed'],   // retry или cleanup
+};
+```
+
+Реализуй `transitionState()` в service с валидацией допустимых переходов.
+
+---
+
+### TD-7: Health Monitoring Decision Tree (PRD §10.3)
+
+SmartOracle проверяет каждые 5 минут (для Phase 1 — заложи структуру):
+
+```typescript
+// oracle.service.ts — healthCheck() scaffold
+async checkAgentHealth(oracleId: string): Promise<HealthStatus> {
+  const oracle = await this.getOracle(oracleId);
+
+  // 1. Node Ready?
+  const nodeReady = await this.k8sClient.isNodeReady(oracle.k8sNodeName);
+  if (!nodeReady) {
+    await this.incrementFailure(oracleId);
+    if (await this.getFailureCount(oracleId) >= 3) {
+      await this.transitionState(oracleId, 'suspended', 'server_unreachable');
+    }
+    return 'node_not_ready';
+  }
+
+  // 2. Pod Running?
+  const podRunning = await this.k8sClient.isPodRunning(oracle.k8sNamespace);
+  if (!podRunning) {
+    await this.k8sClient.restartPod(oracle.k8sNamespace, 'picoclaw');
+    return 'pod_restarted';
+  }
+
+  // 3. Heartbeat < 1 hour?
+  if (Date.now() - oracle.lastHeartbeat.getTime() > 3600_000) {
+    this.logger.warn(`Stale heartbeat: ${oracleId}`);
+    return 'heartbeat_stale';
+  }
+
+  await this.resetFailure(oracleId);
+  return 'healthy';
+}
+```
+
+---
+
+### TD-8: Key Rotation Automation (PRD §7.5)
+
+Добавь в DevOps Agent playbooks:
+
+| Asset | Period | CronJob Schedule |
+|-------|--------|-----------------|
+| SSH keys | 90 days | `0 3 * * 0` (weekly check, rotate if ≥90d) |
+| K3s join token | 180 days | `0 3 1 * *` (monthly check) |
+| Vault tokens | 24 hours | Auto-renewal via Vault agent sidecar |
+
+`rotate-keys.yml` playbook:
+1. Generate new Ed25519 keypair
+2. Deploy new public key to server
+3. Verify SSH with new key
+4. Store new private key in Vault (новый version)
+5. Shred old local key files
+6. Update `OracleInstance.vaultSecretPath` если path changes
+
+---
+
+### TD-9: Node Affinity Rules (PRD §10.2)
+
+Добавь в `templates/` для DevOps Agent:
+
+**Self-hosted** — PicoClaw runs ONLY on user's own node:
+```yaml
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: gybernaty.org/unit
+              operator: In
+              values: ["{{ unit_address }}"]
+```
+
+**Community** — PicoClaw runs on shared community workers:
+```yaml
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: gybernaty.org/role
+              operator: In
+              values: ["community-worker"]
+```
+
+Включи affinity в `values-template.yaml.hbs` через Handlebars conditional.
+
+---
+
+### TD-10: Environment Variables
+
+Добавь `.env.example` в `GPROD/apps/backend/`:
+
+```env
+# === Oracle Module ===
+
+# Blockchain (BSC)
+UNIT_MANAGER_CONTRACT_ADDRESS=0x...
+BLOCKCHAIN_RPC_URL=https://bsc-dataseed.binance.org/
+
+# Cloud Providers
+DO_API_BASE_URL=https://api.digitalocean.com
+GCP_COMPUTE_API_URL=https://compute.googleapis.com/compute/v1
+
+# HashiCorp Vault
+VAULT_ADDR=https://vault.internal:8200
+VAULT_ROLE_ID=
+VAULT_SECRET_ID=
+
+# Kubernetes
+K3S_MASTER_URL=https://k8s-master:6443
+K3S_JOIN_TOKEN=
+
+# SmartOracle gRPC
+SMARTORACLE_GRPC_URL=grpc://smartoracle.openclaw.svc.cluster.local:5000
+
+# Provisioning
+PROVISIONING_TOTAL_TIMEOUT_MS=960000
+PROVISIONING_PHASE_TIMEOUT_MS=300000
+
+# PicoClaw Defaults
+OPENCLAW_HELM_CHART=openclaw/openclaw
+OPENCLAW_VERSION=2026.3.2
+DEFAULT_FREE_MODEL=openrouter/qwen/qwen3-coder:free
+```
+
+---
+
 ## Технические требования
 
 1. **NestJS 11** — используй стиль кода из `modules/auth/` и `modules/users/`. ES Modules, декораторы NestJS 11.
@@ -345,18 +626,21 @@ Policies — из PRD §7.3.
 
 ## Порядок выполнения
 
-1. Прочитай PRD целиком (`ORACLE/PRD-ORACLE-DSP-INTEGRATION.md`, §1-§17)
-2. Прочитай GPROD backend: `app.module.ts`, auth module (guards, strategies), prisma schema
-3. Создай shared types (oracle.ts в GPROD/packages/shared-types/src/ и DSP/src/shared/types/)
-4. Расширь UnitProfile type (добавь oracle field)
-5. Расширь User model в Prisma (добавь walletAddress)
-6. Создай OracleInstance + related models в Prisma + migration
-7. Создай NestJS Oracle module (controller → service → gateway → DTOs → guards)
-8. Создай gRPC proto file
-9. Создай DevOps Agent (SKILL.md + playbooks + templates)
-10. Создай PicoClaw Helm chart (values + workspace templates)
-11. Создай Vault config (policies + K8s manifests)
-12. Проверь: `cd GPROD && pnpm install && pnpm build`
+1. **Прочитай PRD** целиком (`ORACLE/PRD-ORACLE-DSP-INTEGRATION.md`, §1-§17) — это source of truth
+2. **Прочитай GPROD backend**: `app.module.ts`, auth module (guards, strategies, service), prisma schema, common/database
+3. **Shared types** — oracle.ts в GPROD/packages/shared-types/src/ + DSP/src/shared/types/
+4. **isOracleReady()** — `src/shared/utils/isOracleReady.ts` (TD-2)
+5. **UnitProfile extension** — добавь `oracle` field
+6. **Prisma models** — walletAddress в User + OracleInstance + logs + events → migration
+7. **Auth bridge** — walletAddress в JWT payload, X-Wallet-Address middleware (TD-1)
+8. **viem + on-chain verification** — `pnpm add viem`, verifyMemberStatus() (TD-3)
+9. **NestJS Oracle module** — controller → service (с CloudProviderService, state machine, timeout/rollback, health scaffold) → DTOs → guards → gateway
+10. **.env.example** — Oracle environment variables (TD-10)
+11. **gRPC proto** — `ORACLE/proto/oracle.proto`
+12. **DevOps Agent** — SKILL.md + playbooks + templates + affinity rules (TD-8, TD-9)
+13. **PicoClaw Helm** — values templates + workspace templates + skill
+14. **Vault config** — HCL policies + K8s manifests
+15. **Build** — `cd GPROD && pnpm install && pnpm build`
 
 ## НЕ делай
 
@@ -372,13 +656,28 @@ Policies — из PRD §7.3.
 
 ## Критерии готовности Phase 1
 
-- [ ] `GPROD/apps/backend/src/modules/oracle/` — полный NestJS module с 9 endpoints
-- [ ] `GPROD/apps/backend/prisma/schema.prisma` — 3 новых модели + walletAddress в User + успешная migration
-- [ ] `GPROD/packages/shared-types/src/oracle.ts` — все Oracle types + re-export в index.ts
-- [ ] `src/shared/types/oracle.ts` — frontend Oracle types (копия)
+### Backend (GPROD)
+- [ ] `modules/oracle/` — полный NestJS module с 9 REST endpoints + Swagger
+- [ ] `modules/oracle/oracle.service.ts` — CloudProviderService (strategy: DO + GCP), provisioning orchestration с timeout/rollback, state machine с `transitionState()`, health check scaffold
+- [ ] `modules/oracle/guards/oracle-owner.guard.ts` — wallet ownership verification
+- [ ] `prisma/schema.prisma` — OracleInstance + OracleProvisioningLog + OracleHealthEvent + `walletAddress` в User
+- [ ] Prisma migration: `add_oracle_module` — успешно
+- [ ] `modules/auth/` — walletAddress в JWT payload, X-Wallet-Address middleware
+- [ ] On-chain verification: `verifyMemberStatus()` с viem + UnitManager ABI
+- [ ] `isOracleReady()` validation в init endpoints
+- [ ] `.env.example` дополнен Oracle переменными
+
+### Shared Types
+- [ ] `GPROD/packages/shared-types/src/oracle.ts` — все types + re-export в index.ts
+- [ ] `src/shared/types/oracle.ts` — frontend Oracle types
 - [ ] `src/shared/types/unit-profile.ts` — расширен полем `oracle`
-- [ ] `ORACLE/proto/oracle.proto` — gRPC service definition
-- [ ] `ORACLE/devops-agent/` — SKILL.md + 5 playbooks + 4 templates + vars
-- [ ] `ORACLE/picoclaw/` — Helm values + 3 workspace templates + skill
+- [ ] `src/shared/utils/isOracleReady.ts` — profile completeness check
+
+### Infrastructure
+- [ ] `ORACLE/proto/oracle.proto` — gRPC OracleOrchestrator service + all messages
+- [ ] `ORACLE/devops-agent/` — SKILL.md + 5 playbooks + 4 J2 templates + 2 tier vars + ansible.cfg + requirements.yml
+- [ ] `ORACLE/picoclaw/` — Helm values (template + community + self-hosted) + 3 workspace templates + affinity rules + skill
 - [ ] `ORACLE/vault-config/` — 3 HCL policies + 2 K8s manifests
-- [ ] `pnpm build` в GPROD проходит без ошибок
+
+### Build
+- [ ] `cd GPROD && pnpm install && pnpm build` — без ошибок
